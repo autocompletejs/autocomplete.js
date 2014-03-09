@@ -9,3 +9,7 @@ The documentation is available [here](http://autocomplete.baptiste-donaux.fr).
 ###Slogan
 
 Lite, Open, made by a developer for developers. Help me and contributed :)
+
+###Thanks
+
+Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advices.
