@@ -147,7 +147,7 @@ var AutoComplete = function(params) {
 		var defaultParams = {
 			"method": "GET",
 			"paramName": "q",
-			"selector": ["input[data-autocomplete]"];
+			"selector": ["input[data-autocomplete]"],
 			"type": "JSON",
 			"noResult": "No result",
 		};
@@ -156,30 +156,20 @@ var AutoComplete = function(params) {
 			this.params = {};
 		};
 
+		this.params = Merge(defaultParams, this.params);
+		this.params.method = this.params.method.toUpperCase();
+		this.params.type = this.params.type.toUpperCase();
 
-
-		if (this.params.method === undefined || (this.params.method.toUpperCase() !== "GET" && this.params.method.toUpperCase() !== "POST")) {
-			this.params.method = "GET";
-		} else {
-			this.params.method = this.params.method.toUpperCase();
+		if (this.params.method !== "GET" && this.params.method !== "POST") {
+			this.params.method = defaultParams.method;
 		};
 
-		if (this.params.paramName === undefined) {
-			this.params.paramName = "q";
+		if (this.params.type !== "JSON" && this.params.type !== "HTML") {
+			this.params.type = defaultParams.type;
 		};
 
-		if (this.params.selector === undefined) {
-			this.params.selector = ["input[data-autocomplete]"];
-		};
-
-		if (this.params.type === undefined || (this.params.type.toUpperCase() !== "JSON" && this.params.type.toUpperCase() !== "HTML")) {
-			this.params.type = "JSON";
-		} else {
-			this.params.type = this.params.type.toUpperCase();
-		};
-
-		if (this.params.noResult === undefined) {
-			this.params.noResult = "No result";
+		if (!Array.isArray(this.params.selector)) {
+			this.params.selector = defaultParams.selector;
 		};
 	};
 
