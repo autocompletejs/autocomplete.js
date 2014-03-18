@@ -144,9 +144,19 @@ var AutoComplete = function(params) {
 	};
 
 	this.Initialize = function() {
+		var defaultParams = {
+			"method": "GET",
+			"paramName": "q",
+			"selector": ["input[data-autocomplete]"];
+			"type": "JSON",
+			"noResult": "No result",
+		};
+
 		if (this.params === undefined) {
 			this.params = {};
 		};
+
+
 
 		if (this.params.method === undefined || (this.params.method.toUpperCase() !== "GET" && this.params.method.toUpperCase() !== "POST")) {
 			this.params.method = "GET";
@@ -204,18 +214,7 @@ var AutoComplete = function(params) {
 			};
 		};
 
-		//Merge
-		var merge = {};
-	    
-	    for (var attrname in this.params) {
-	    	merge[attrname] = this.params[attrname];
-	    };
-
-	    for (var attrname in params) {
-	    	merge[attrname] = params[attrname];
-	    };
-
-	    return merge;
+		return Merge(this.params, params);
 	};
 
 	this.FindCustomParams = function(input) {
@@ -244,6 +243,20 @@ var AutoComplete = function(params) {
 				input.setAttribute("data-autocomplete-old-value", input.value);
 			});
 		};
+	};
+
+	this.Merge = function(obj1, obj2) {
+		var merge = {};
+	    
+	    for (var attrname in obj1) {
+	    	merge[attrname] = obj1[attrname];
+	    };
+
+	    for (var attrname in obj2) {
+	    	merge[attrname] = obj2[attrname];
+	    };
+
+	    return merge;
 	};
 
 	//Construct
