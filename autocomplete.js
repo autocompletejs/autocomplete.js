@@ -6,24 +6,26 @@
  * (c) 2014, Baptiste Donaux
  */
 var AutoComplete = function(params) {
-	this.Ajax = function(request, url, method, type, queryParams, input, result, noResult) {
+	this.Ajax = function(request, customParams, queryParams, input, result) {
 		if (request !== undefined) {
 			request.abort();
 		};
 		
-		if (method === "GET") {
-			url = url + "?" + queryParams;
+		var url = customParams.url;
+
+		if (customParams.method === "GET") {
+			url = customParams.url + "?" + queryParams;
 		};
 
 		request = new XMLHttpRequest();
-		request.open(method, url, true);
+		request.open(customParams.method, url, true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		request.setRequestHeader("Content-length", queryParams.length);
 		request.setRequestHeader("Connection", "close");
 
 		request.onreadystatechange = function () {
 			if (request.readyState === 4 && request.status === 200) {
-				if (type === "HTML") {
+				if (customParams.type === "HTML") {
 					result.innerHTML = request.response;
 				} else {
 					var empty = false,
@@ -43,13 +45,13 @@ var AutoComplete = function(params) {
 							empty = true;
 							li = document.createElement("li");
 							li.setAttribute("class", "locked");
-							li.innerHTML = noResult;
+							li.innerHTML = customParams.noResult;
 							ul.appendChild(li);
 						};
 					} else {
 						for (var index in response) {
-						   	if (response.hasOwnProperty(index)) {
-						    	li = document.createElement("li");
+							if (response.hasOwnProperty(index)) {
+								li = document.createElement("li");
 								li.innerHTML = response[index];
 								li.setAttribute("data-autocomplete-value", index);
 								ul.appendChild(li);
@@ -113,44 +115,20 @@ var AutoComplete = function(params) {
 			});
 
 			input.addEventListener("keyup", function(e) {				
-				var inputValue = e.currentTarget.value;
+				var input = e.currentTarget,
+					inputValue = input.value;
 
 				if (inputValue !== "") {
-					var queryParams,
-						url = e.currentTarget.getAttribute("data-autocomplete"),
-						method = e.currentTarget.getAttribute("data-autocomplete-method"),
-						paramName = e.currentTarget.getAttribute("data-autocomplete-param-name"),
-						type = input.getAttribute("data-autocomplete-type"),
-						noResult = input.getAttribute("data-autocomplete-no-result");
+					var customParams = FindCustomParams(input),
+						queryParams = customParams.paramName + "=" + inputValue;
 
-					method = method !== null ? method.toUpperCase() : null;
-					type = type !== null ? type.toUpperCase() : null;
-
-					if (type === null || (type !== "JSON" && type !== "HTML")) {
-						type = params.type;
-					};
-
-					if (method === null || (method != "GET" && method != "POST")) {
-						method = params.method;
-					};
-
-					if (paramName === null) {
-						paramName = params.paramName;
-					};
-
-					if (noResult === null) {
-						noResult = params.noResult;
-					};
-
-					queryParams = paramName + "=" + inputValue;
-
-					if (url !== null) {
+					if (customParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute("data-autocomplete-old-value");
 						if (dataAutocompleteOldValue === null || inputValue !== dataAutocompleteOldValue) {
 							result.setAttribute("class", "resultsAutocomplete open");
 						};
 
-						request = Ajax(request, url, method, type, queryParams, input, result, noResult);
+						request = Ajax(request, customParams, queryParams, input, result);
 					};
 				};
 			});
@@ -195,6 +173,63 @@ var AutoComplete = function(params) {
 		};
 	};
 
+	this.GenerateCustomParams = function(input) {
+		var params = {
+			"url": input.getAttribute("data-autocomplete"),
+			"method": input.getAttribute("data-autocomplete-method"),
+			"paramName": input.getAttribute("data-autocomplete-param-name"),
+			"type": input.getAttribute("data-autocomplete-type"),
+			"noResult": input.getAttribute("data-autocomplete-no-result"),
+		};
+
+		for (var option in params) {
+			if (params.hasOwnProperty(option) && params[option] === null) {
+				delete params[option];
+			};
+		};
+
+		if (params.method) {
+			if (params.method.toUpperCase() !== "GET" && params.method.toUpperCase() !== "POST") {
+				delete params.method;
+			} else {
+				params.method = params.method.toUpperCase();
+			};
+		};
+
+		if (params.type) {
+			if (params.type.toUpperCase() !== "JSON" && params.type.toUpperCase() !== "HTML") {
+				delete params.type;
+			} else {
+				params.type = params.type.toUpperCase();
+			};
+		};
+
+		//Merge
+		var merge = {};
+	    
+	    for (var attrname in this.params) {
+	    	merge[attrname] = this.params[attrname];
+	    };
+
+	    for (var attrname in params) {
+	    	merge[attrname] = params[attrname];
+	    };
+
+	    return merge;
+	};
+
+	this.FindCustomParams = function(input) {
+		if (input.hasAttribute("data-autocomplete-id")) {
+			return this.customParams[input.getAttribute("data-autocomplete-id")];
+		} else {
+			input.setAttribute("data-autocomplete-id", this.customParams.length);
+			var newParams = GenerateCustomParams(input);
+			this.customParams.push(newParams);
+
+			return newParams;
+		};
+	};
+
 	this.Result = function(input, result) {
 		var allLi = result.getElementsByTagName("li");
 		for (var i = allLi.length - 1; i >= 0; i--) {
@@ -213,6 +248,7 @@ var AutoComplete = function(params) {
 
 	//Construct
 	this.params = params;
+	this.customParams = new Array();
 	this.Initialize();
 
 	for (var i = this.params.selector.length - 1; i >= 0; i--) {
