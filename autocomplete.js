@@ -7,7 +7,7 @@
  */
 var AutoComplete = function(params) {
 	this.Ajax = function(request, customParams, queryParams, input, result) {
-		if (request !== undefined) {
+		if (request) {
 			request.abort();
 		};
 		
@@ -17,7 +17,7 @@ var AutoComplete = function(params) {
 			url = customParams.url + "?" + queryParams;
 		};
 
-		request = new XMLHttpRequest();
+		request = XMLHttpRequest();
 		request.open(customParams.method, url, true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		request.setRequestHeader("Content-length", queryParams.length);
@@ -25,45 +25,48 @@ var AutoComplete = function(params) {
 
 		request.onreadystatechange = function () {
 			if (request.readyState === 4 && request.status === 200) {
-				if (customParams.type === "HTML") {
-					result.innerHTML = request.response;
-				} else {
-					var empty = false,
-						li,
-						response = JSON.parse(request.response),
-						ul = document.createElement("ul");
+				switch (customParams.type) {
+					case "HTML":
+						result.innerHTML = request.response;
+						break;
 
-					if (Object.prototype.toString.call(response) === "[object Array]") {
-						if (response.length !== 0) {
-								for (var i = 0; i < response.length; i++) {
+					default:
+						var empty = false,
+							li,
+							response = JSON.parse(request.response),
+							ul = document.createElement("ul");
+
+						if (Object.prototype.toString.call(response) === "[object Array]") {
+							if (response.length !== 0) {
+									for (var i = 0; i < response.length; i++) {
+									li = document.createElement("li");
+									li.innerHTML = response[i];
+									ul.appendChild(li);
+								};
+							} else {
+								//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
+								empty = true;
 								li = document.createElement("li");
-								li.innerHTML = response[i];
+								li.setAttribute("class", "locked");
+								li.innerHTML = customParams.noResult;
 								ul.appendChild(li);
 							};
 						} else {
-							//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
-							empty = true;
-							li = document.createElement("li");
-							li.setAttribute("class", "locked");
-							li.innerHTML = customParams.noResult;
-							ul.appendChild(li);
-						};
-					} else {
-						for (var index in response) {
-							if (response.hasOwnProperty(index)) {
-								li = document.createElement("li");
-								li.innerHTML = response[index];
-								li.setAttribute("data-autocomplete-value", index);
-								ul.appendChild(li);
+							for (var index in response) {
+								if (response.hasOwnProperty(index)) {
+									li = document.createElement("li");
+									li.innerHTML = response[index];
+									li.setAttribute("data-autocomplete-value", index);
+									ul.appendChild(li);
+								};
 							};
 						};
-					};
 
-					if (result.hasChildNodes()) {
-						result.childNodes[0].remove();
-					};
-					
-					result.appendChild(ul);
+						if (result.hasChildNodes()) {
+							result.childNodes[0].remove();
+						};
+						
+						result.appendChild(ul);
 				};
 
 				if (empty === false) {
@@ -91,14 +94,11 @@ var AutoComplete = function(params) {
 
 	this.BindOne = function(input) {
 		if (input != null) {
-			var params = this.params,
-				result = document.createElement("div"),
-				request,
-				top = input.offsetTop + input.offsetHeight,
-				type;
+			var result = document.createElement("div"),
+				request;
 			
 			result.setAttribute("class", "resultsAutocomplete");
-			result.setAttribute("style", "top:" + top + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
+			result.setAttribute("style", "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
 
 			input.parentNode.appendChild(result);
 			input.setAttribute("autocomplete", "off");
