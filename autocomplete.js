@@ -1,12 +1,12 @@
 /*
- * Autocomplete.js v1.1.0
+ * Autocomplete.js v1.2.0
  * Developed by Baptiste Donaux
  * 
  * Under MIT Licence
  * (c) 2014, Baptiste Donaux
  */
 var AutoComplete = function(params) {
-	this.Ajax = function(request, url, method, type, queryParams, input, result) {
+	this.Ajax = function(request, url, method, type, queryParams, input, result, noResult) {
 		if (request !== undefined) {
 			request.abort();
 		};
@@ -26,18 +26,28 @@ var AutoComplete = function(params) {
 				if (type === "HTML") {
 					result.innerHTML = request.response;
 				} else {
-					var li,
+					var empty = false,
+						li,
 						response = JSON.parse(request.response),
 						ul = document.createElement("ul");
 
 					if (Object.prototype.toString.call(response) === "[object Array]") {
-						for (var i = 0; i < response.length; i++) {
+						if (response.length !== 0) {
+								for (var i = 0; i < response.length; i++) {
+								li = document.createElement("li");
+								li.innerHTML = response[i];
+								ul.appendChild(li);
+							};
+						} else {
+							//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
+							empty = true;
 							li = document.createElement("li");
-							li.innerHTML = response[i];
+							li.setAttribute("class", "locked");
+							li.innerHTML = noResult;
 							ul.appendChild(li);
 						};
 					} else {
-						for (var index in response) { 
+						for (var index in response) {
 						   	if (response.hasOwnProperty(index)) {
 						    	li = document.createElement("li");
 								li.innerHTML = response[index];
@@ -54,7 +64,9 @@ var AutoComplete = function(params) {
 					result.appendChild(ul);
 				};
 
-				Result(input, result);
+				if (empty === false) {
+					Result(input, result);
+				};
 			};
 		};
 
@@ -108,7 +120,8 @@ var AutoComplete = function(params) {
 						url = e.currentTarget.getAttribute("data-autocomplete"),
 						method = e.currentTarget.getAttribute("data-autocomplete-method"),
 						paramName = e.currentTarget.getAttribute("data-autocomplete-param-name"),
-						type = input.getAttribute("data-autocomplete-type");
+						type = input.getAttribute("data-autocomplete-type"),
+						noResult = input.getAttribute("data-autocomplete-no-result");
 
 					method = method !== null ? method.toUpperCase() : null;
 					type = type !== null ? type.toUpperCase() : null;
@@ -125,6 +138,10 @@ var AutoComplete = function(params) {
 						paramName = params.paramName;
 					};
 
+					if (noResult === null) {
+						noResult = params.noResult;
+					};
+
 					queryParams = paramName + "=" + inputValue;
 
 					if (url !== null) {
@@ -133,7 +150,7 @@ var AutoComplete = function(params) {
 							result.setAttribute("class", "resultsAutocomplete open");
 						};
 
-						request = Ajax(request, url, method, type, queryParams, input, result);
+						request = Ajax(request, url, method, type, queryParams, input, result, noResult);
 					};
 				};
 			});
@@ -171,6 +188,10 @@ var AutoComplete = function(params) {
 			this.params.type = "JSON";
 		} else {
 			this.params.type = this.params.type.toUpperCase();
+		};
+
+		if (this.params.noResult === undefined) {
+			this.params.noResult = "No result";
 		};
 	};
 

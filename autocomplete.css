@@ -37,6 +37,10 @@
 	padding: 5px 0 5px 10px;
 }
 
+.resultsAutocomplete > ul > li.locked {
+	cursor: inherit;
+}
+
 .resultsAutocomplete > ul > li:active,
 .resultsAutocomplete > ul > li:focus, 
 .resultsAutocomplete > ul > li:hover
