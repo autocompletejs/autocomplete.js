@@ -57,7 +57,7 @@ var AutoComplete = function(params) {
 							};
 						} else {
 							var properties = Object.getOwnPropertyNames(response);
-							for (propertie in properties) {
+							for (var propertie in properties) {
 								li.innerHTML = response[properties[propertie]];
 								li.setAttribute("data-autocomplete-value", properties[propertie]);
 								ul.appendChild(li);
