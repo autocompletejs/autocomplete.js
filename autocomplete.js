@@ -190,19 +190,11 @@ var AutoComplete = function(params) {
 		};
 
 		if (params.method) {
-			if (!params.method.match("^GET|POST$")) {
-				delete params.method;
-			} else {
-				params.method = params.method.toUpperCase();
-			};
+			(!params.method.match("^GET|POST$")) ? delete params.method : (params.method = params.method.toUpperCase());
 		};
 
 		if (params.type) {
-			if (!params.type.match("^JSON|HTML$")) {
-				delete params.type;
-			} else {
-				params.type = params.type.toUpperCase();
-			};
+			(!params.type.match("^JSON|HTML$")) ? delete params.type : (params.type = params.type.toUpperCase());
 		};
 
 		return Merge(this.params, params);
