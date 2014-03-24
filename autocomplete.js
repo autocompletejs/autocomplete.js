@@ -40,8 +40,8 @@ var AutoComplete = function(params) {
 							length = response.length,
 							li = document.createElement("li"),
 							ul = document.createElement("ul");
-
-						if (Object.prototype.toString.call(response) == "[object Array]") {
+							
+						if (Array.isArray(response)) {
 							if (length) {
 								for (var i = 0; i < length; i++) {
 									li.innerHTML = response[i];
