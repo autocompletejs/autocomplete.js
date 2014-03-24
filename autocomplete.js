@@ -110,7 +110,7 @@ var AutoComplete = function(params) {
 			
 			input.addEventListener("focus", function() {
 				var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
-				if (dataAutocompleteOldValue == null || input.value != dataAutocompleteOldValue) {
+				if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
 					result.setAttribute("class", "resultsAutocomplete open");
 				};
 			});
@@ -123,13 +123,13 @@ var AutoComplete = function(params) {
 				var input = e.currentTarget,
 					inputValue = input.value;
 
-				if (inputValue !== "") {
+				if (inputValue) {
 					var customParams = FindCustomParams(input),
 						queryParams = customParams.paramName + "=" + inputValue;
 
 					if (customParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
-						if (dataAutocompleteOldValue == null || inputValue != dataAutocompleteOldValue) {
+						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
 							result.setAttribute("class", "resultsAutocomplete open");
 						};
 
@@ -141,11 +141,7 @@ var AutoComplete = function(params) {
 	};
 
 	this.Close = function(result, closeNow) {
-		if (closeNow) {
-			result.setAttribute("class", "resultsAutocomplete");
-		} else {
-			setTimeout(function() {Close(result, true);}, 100);
-		};
+		closeNow ? result.setAttribute("class", "resultsAutocomplete") : setTimeout(function() {Close(result, true);}, 150);
 	};
 
 	this.Initialize = function() {
@@ -165,11 +161,11 @@ var AutoComplete = function(params) {
 		this.params.method = this.params.method.toUpperCase();
 		this.params.type = this.params.type.toUpperCase();
 
-		if (this.params.method != "GET" && this.params.method != "POST") {
+		if (!this.params.method.match("^GET|POST$")) {
 			this.params.method = defaultParams.method;
 		};
 
-		if (this.params.type !== "JSON" && this.params.type !== "HTML") {
+		if (!this.params.type.match("^JSON|HTML$")) {
 			this.params.type = defaultParams.type;
 		};
 
@@ -180,21 +176,21 @@ var AutoComplete = function(params) {
 
 	this.GenerateCustomParams = function(input) {
 		var params = {
-			"url": input.getAttribute("data-autocomplete"),
-			"method": input.getAttribute("data-autocomplete-method"),
+			"url":       input.getAttribute("data-autocomplete"),
+			"method":    input.getAttribute("data-autocomplete-method"),
 			"paramName": input.getAttribute("data-autocomplete-param-name"),
-			"type": input.getAttribute("data-autocomplete-type"),
-			"noResult": input.getAttribute("data-autocomplete-no-result"),
+			"type":      input.getAttribute("data-autocomplete-type"),
+			"noResult":  input.getAttribute("data-autocomplete-no-result")
 		};
 
 		for (var option in params) {
-			if (params.hasOwnProperty(option) && params[option] == null) {
+			if (params.hasOwnProperty(option) && !params[option]) {
 				delete params[option];
 			};
 		};
 
 		if (params.method) {
-			if (params.method.toUpperCase() != "GET" && params.method.toUpperCase() != "POST") {
+			if (!params.method.match("^GET|POST$")) {
 				delete params.method;
 			} else {
 				params.method = params.method.toUpperCase();
@@ -202,7 +198,7 @@ var AutoComplete = function(params) {
 		};
 
 		if (params.type) {
-			if (params.type.toUpperCase() != "JSON" && params.type.toUpperCase() != "HTML") {
+			if (!params.type.match("^JSON|HTML$")) {
 				delete params.type;
 			} else {
 				params.type = params.type.toUpperCase();
