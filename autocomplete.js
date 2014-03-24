@@ -96,7 +96,7 @@ var AutoComplete = function(params) {
 	};
 
 	this.BindOne = function(input) {
-		if (input != null) {
+		if (input) {
 			var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
 				result = document.createElement("div"),
 				request;
@@ -202,15 +202,12 @@ var AutoComplete = function(params) {
 	this.CustParams = function(input) {
 		var dataAutocompleteIdLabel = "data-autocomplete-id";
 
-		if (input.hasAttribute(dataAutocompleteIdLabel)) {
-			return this.customParams[input.getAttribute(dataAutocompleteIdLabel)];
-		} else {
+		if (!input.hasAttribute(dataAutocompleteIdLabel)) {
 			input.setAttribute(dataAutocompleteIdLabel, this.customParams.length);
-			var newParams = CreateCustParams(input);
-			this.customParams.push(newParams);
-
-			return newParams;
+			this.customParams.push(CreateCustParams(input));
 		};
+
+		return this.customParams[input.getAttribute(dataAutocompleteIdLabel)];
 	};
 
 	this.Open = function(input, result) {
