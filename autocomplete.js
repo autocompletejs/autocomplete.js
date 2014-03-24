@@ -124,7 +124,7 @@ var AutoComplete = function(params) {
 					inputValue = input.value;
 
 				if (inputValue) {
-					var customParams = FindCustomParams(input),
+					var customParams = CustParams(input),
 						queryParams = customParams.paramName + "=" + inputValue;
 
 					if (customParams.url) {
@@ -174,7 +174,7 @@ var AutoComplete = function(params) {
 		};
 	};
 
-	this.GenerateCustomParams = function(input) {
+	this.CreateCustParams = function(input) {
 		var params = {
 			"url":       input.getAttribute("data-autocomplete"),
 			"method":    input.getAttribute("data-autocomplete-method"),
@@ -200,14 +200,14 @@ var AutoComplete = function(params) {
 		return Merge(this.params, params);
 	};
 
-	this.FindCustomParams = function(input) {
+	this.CustParams = function(input) {
 		var dataAutocompleteIdLabel = "data-autocomplete-id";
 
 		if (input.hasAttribute(dataAutocompleteIdLabel)) {
 			return this.customParams[input.getAttribute(dataAutocompleteIdLabel)];
 		} else {
 			input.setAttribute(dataAutocompleteIdLabel, this.customParams.length);
-			var newParams = GenerateCustomParams(input);
+			var newParams = CreateCustParams(input);
 			this.customParams.push(newParams);
 
 			return newParams;
