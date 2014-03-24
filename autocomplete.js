@@ -56,13 +56,12 @@ var AutoComplete = function(params) {
 								ul.appendChild(li);
 							};
 						} else {
-							for (var index in response) {
-								if (response.hasOwnProperty(index)) {
-									li.innerHTML = response[index];
-									li.setAttribute("data-autocomplete-value", index);
-									ul.appendChild(li);
-									li = document.createElement("li");
-								};
+							var properties = Object.getOwnPropertyNames(response);
+							for (propertie in properties) {
+								li.innerHTML = response[properties[propertie]];
+								li.setAttribute("data-autocomplete-value", properties[propertie]);
+								ul.appendChild(li);
+								li = document.createElement("li");
 							};
 						};
 
