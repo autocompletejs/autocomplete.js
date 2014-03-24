@@ -74,7 +74,7 @@ var AutoComplete = function(params) {
 				};
 
 				if (empty !== true) {
-					Result(input, result);
+					Open(input, result);
 				};
 			};
 		};
@@ -214,7 +214,7 @@ var AutoComplete = function(params) {
 		};
 	};
 
-	this.Result = function(input, result) {
+	this.Open = function(input, result) {
 		var liS = result.getElementsByTagName("li");
 		for (var i = liS.length - 1; i >= 0; i--) {
 			liS[i].addEventListener("click", function(e) {
