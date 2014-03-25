@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.3.0
+ * Autocomplete.js v1.4.0 unstable
  * Developed by Baptiste Donaux
  * 
  * Under MIT Licence
@@ -40,7 +40,7 @@ var AutoComplete = function(params) {
 						
 					if (Array.isArray(response)) {
 						if (length) {
-							for (var i = 0; i < length; i++) {
+							for (var i = 0; i < length && (i < custParams.limit || !custParams.limit); i++) {
 								li.innerHTML = response[i];
 								ul.appendChild(li);
 								li = document.createElement("li");
@@ -55,10 +55,12 @@ var AutoComplete = function(params) {
 					} else {
 						var properties = Object.getOwnPropertyNames(response);
 						for (var propertie in properties) {
-							li.innerHTML = response[properties[propertie]];
-							li.setAttribute("data-autocomplete-value", properties[propertie]);
-							ul.appendChild(li);
-							li = document.createElement("li");
+							if (parseInt(propertie) < custParams.limit) {
+								li.innerHTML = response[properties[propertie]];
+								li.setAttribute("data-autocomplete-value", properties[propertie]);
+								ul.appendChild(li);
+								li = document.createElement("li");
+							};
 						};
 					};
 
@@ -147,6 +149,7 @@ var AutoComplete = function(params) {
 			"selector": ["input[data-autocomplete]"],
 			"type":     "JSON",
 			"noResult": "No result",
+			"limit": 2,
 		};
 
 		if (this.params === undefined) {
