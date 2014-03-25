@@ -125,6 +125,8 @@ var AutoComplete = function(params) {
 					var custParams = CustParams(input),
 						queryParams = custParams.paramName + "=" + inputValue;
 
+					console.log(custParams);
+
 					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
@@ -149,7 +151,7 @@ var AutoComplete = function(params) {
 			"selector": ["input[data-autocomplete]"],
 			"type":     "JSON",
 			"noResult": "No result",
-			"limit": 2,
+			"limit": 0,
 		};
 
 		if (this.params === undefined) {
@@ -179,7 +181,8 @@ var AutoComplete = function(params) {
 			"method":    input.getAttribute("data-autocomplete-method"),
 			"paramName": input.getAttribute("data-autocomplete-param-name"),
 			"type":      input.getAttribute("data-autocomplete-type"),
-			"noResult":  input.getAttribute("data-autocomplete-no-result")
+			"noResult":  input.getAttribute("data-autocomplete-no-result"),
+			"limit":	 input.getAttribute("data-autocomplete-limit")
 		};
 
 		for (var option in params) {
@@ -194,6 +197,10 @@ var AutoComplete = function(params) {
 
 		if (params.type) {
 			(!params.type.match("^JSON|HTML$")) ? delete params.type : (params.type = params.type.toUpperCase());
+		};
+
+		if (params.limit) {
+			(isNaN(params.limit)) ? delete params.limit : (params.limit = parseInt(params.limit));
 		};
 
 		return Merge(this.params, params);
