@@ -186,12 +186,17 @@ var AutoComplete = function(params) {
 
 	this.CreateCustParams = function(input) {
 		var params = {
-			"url":       input.getAttribute("data-autocomplete"),
-			"method":    input.getAttribute("data-autocomplete-method"),
-			"paramName": input.getAttribute("data-autocomplete-param-name"),
-			"type":      input.getAttribute("data-autocomplete-type"),
-			"noResult":  input.getAttribute("data-autocomplete-no-result"),
-			"limit":	 input.getAttribute("data-autocomplete-limit")
+			"url":       "data-autocomplete",
+			"method":    "data-autocomplete-method",
+			"paramName": "data-autocomplete-param-name",
+			"type":      "data-autocomplete-type",
+			"noResult":  "data-autocomplete-no-result",
+			"limit":	 "data-autocomplete-limit"
+		};
+
+		var paramsAttribute = Object.getOwnPropertyNames(params);
+		for (var i = paramsAttribute.length - 1; i >= 0; i--) {
+			params[paramsAttribute[i]] = input.getAttribute(params[paramsAttribute[i]]);
 		};
 
 		for (var option in params) {
