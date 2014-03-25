@@ -6,13 +6,13 @@
  * (c) 2014, Baptiste Donaux
  */
 var AutoComplete = function(params) {
-	this.Ajax = function(request, customParams, queryParams, input, result) {
+	this.Ajax = function(request, custParams, queryParams, input, result) {
 		if (request) {
 			request.abort();
 		};
 		
-		var method = customParams.method,
-			url = customParams.url;
+		var method = custParams.method,
+			url = custParams.url;
 
 		if (method == "GET") {
 			url += "?" + queryParams;
@@ -28,7 +28,7 @@ var AutoComplete = function(params) {
 			if (request.readyState == 4 && request.status == 200) {
 				var response = request.response;
 
-				switch (customParams.type) {
+				switch (custParams.type) {
 					case "HTML":
 						result.innerHTML = response;
 						break;
@@ -52,7 +52,7 @@ var AutoComplete = function(params) {
 								//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
 								empty = true;
 								li.setAttribute("class", "locked");
-								li.innerHTML = customParams.noResult;
+								li.innerHTML = custParams.noResult;
 								ul.appendChild(li);
 							};
 						} else {
@@ -123,16 +123,16 @@ var AutoComplete = function(params) {
 					inputValue = input.value;
 
 				if (inputValue) {
-					var customParams = CustParams(input),
-						queryParams = customParams.paramName + "=" + inputValue;
+					var custParams = CustParams(input),
+						queryParams = custParams.paramName + "=" + inputValue;
 
-					if (customParams.url) {
+					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
 							result.setAttribute("class", "resultsAutocomplete open");
 						};
 
-						request = Ajax(request, customParams, queryParams, input, result);
+						request = Ajax(request, custParams, queryParams, input, result);
 					};
 				};
 			});
@@ -203,11 +203,11 @@ var AutoComplete = function(params) {
 		var dataAutocompleteIdLabel = "data-autocomplete-id";
 
 		if (!input.hasAttribute(dataAutocompleteIdLabel)) {
-			input.setAttribute(dataAutocompleteIdLabel, this.customParams.length);
-			this.customParams.push(CreateCustParams(input));
+			input.setAttribute(dataAutocompleteIdLabel, this.custParams.length);
+			this.custParams.push(CreateCustParams(input));
 		};
 
-		return this.customParams[input.getAttribute(dataAutocompleteIdLabel)];
+		return this.custParams[input.getAttribute(dataAutocompleteIdLabel)];
 	};
 
 	this.Open = function(input, result) {
@@ -240,7 +240,7 @@ var AutoComplete = function(params) {
 
 	//Construct
 	this.params = params;
-	this.customParams = new Array();
+	this.custParams = new Array();
 	this.Initialize();
 
 	for (var i = this.params.selector.length - 1; i >= 0; i--) {
