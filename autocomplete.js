@@ -109,11 +109,13 @@ var AutoComplete = function(params) {
 				result = document.createElement("div"),
 				request;
 			
-			result.setAttribute("class", "autocomplete");
-			result.setAttribute("style", "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
+			Attributes(result, {
+				"autocomplete": "off",
+				"class": "autocomplete",
+				"style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+			});
 
 			input.parentNode.appendChild(result);
-			input.setAttribute("autocomplete", "off");
 			
 			input.addEventListener("focus", function() {
 				var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
@@ -250,6 +252,12 @@ var AutoComplete = function(params) {
 	    };
 
 	    return merge;
+	};
+
+	this.Attributes = function(item, attrs) {
+		for (var key in attrs) {
+			item.setAttribute(key, attrs[key]);
+		};
 	};
 
 	//Construct
