@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.3.0 unstable
+ * Autocomplete.js v1.3.0
  * Developed by Baptiste Donaux
  * 
  * Under MIT Licence
