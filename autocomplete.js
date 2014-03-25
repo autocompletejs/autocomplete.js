@@ -98,7 +98,7 @@ var AutoComplete = function(params) {
 				result = document.createElement("div"),
 				request;
 			
-			result.setAttribute("class", "resultsAutocomplete");
+			result.setAttribute("class", "autocomplete");
 			result.setAttribute("style", "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
 
 			input.parentNode.appendChild(result);
@@ -107,7 +107,7 @@ var AutoComplete = function(params) {
 			input.addEventListener("focus", function() {
 				var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 				if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
-					result.setAttribute("class", "resultsAutocomplete open");
+					result.setAttribute("class", "autocomplete open");
 				};
 			});
 
@@ -126,7 +126,7 @@ var AutoComplete = function(params) {
 					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-							result.setAttribute("class", "resultsAutocomplete open");
+							result.setAttribute("class", "autocomplete open");
 						};
 
 						request = Ajax(request, custParams, queryParams, input, result);
@@ -137,7 +137,7 @@ var AutoComplete = function(params) {
 	};
 
 	this.Close = function(result, closeNow) {
-		closeNow ? result.setAttribute("class", "resultsAutocomplete") : setTimeout(function() {Close(result, true);}, 150);
+		closeNow ? result.setAttribute("class", "autocomplete") : setTimeout(function() {Close(result, true);}, 150);
 	};
 
 	this.Initialize = function() {

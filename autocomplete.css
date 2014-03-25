@@ -1,4 +1,4 @@
-.resultsAutocomplete {
+.autocomplete {
 	display: none;
 	position: absolute;
 	border: 1px solid rgb(128, 128, 128);
@@ -7,43 +7,43 @@
 	transition: all 0.5s ease 0s;
 }
 
-.resultsAutocomplete.open {
+.autocomplete.open {
 	display: block;
 	transition: all 0.5s ease 0s;
 }
 
-.resultsAutocomplete:empty,
-.resultsAutocomplete.open:empty
+.autocomplete:empty,
+.autocomplete.open:empty
 {
 	display: none;
 }
 
-.resultsAutocomplete:active,
-.resultsAutocomplete:focus,
-.resultsAutocomplete:hover
+.autocomplete:active,
+.autocomplete:focus,
+.autocomplete:hover
 {
 	background-color: #FAFAFA;
 	transition: all 0.5s ease 0s;
 }
 
-.resultsAutocomplete > ul {
+.autocomplete > ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
 }
 
-.resultsAutocomplete > ul > li {
+.autocomplete > ul > li {
 	cursor: pointer;
 	padding: 5px 0 5px 10px;
 }
 
-.resultsAutocomplete > ul > li.locked {
+.autocomplete > ul > li.locked {
 	cursor: inherit;
 }
 
-.resultsAutocomplete > ul > li:active,
-.resultsAutocomplete > ul > li:focus, 
-.resultsAutocomplete > ul > li:hover
+.autocomplete > ul > li:active,
+.autocomplete > ul > li:focus, 
+.autocomplete > ul > li:hover
 {
 	background-color: #EEEEEE;
 	font-weight: bold;
