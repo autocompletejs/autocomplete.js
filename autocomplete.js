@@ -28,48 +28,45 @@ var AutoComplete = function(params) {
 			if (request.readyState == 4 && request.status == 200) {
 				var response = request.response;
 
-				switch (custParams.type) {
-					case "HTML":
-						result.innerHTML = response;
-						break;
-
-					default:
-						response = JSON.parse(response);
+				if (custParams.type == "HTML") {
+					result.innerHTML = response;
+				} else {	
+					response = JSON.parse(response);
+					
+					var empty,
+						length = response.length,
+						li = document.createElement("li"),
+						ul = document.createElement("ul");
 						
-						var empty,
-							length = response.length,
-							li = document.createElement("li"),
-							ul = document.createElement("ul");
-							
-						if (Array.isArray(response)) {
-							if (length) {
-								for (var i = 0; i < length; i++) {
-									li.innerHTML = response[i];
-									ul.appendChild(li);
-									li = document.createElement("li");
-								};
-							} else {
-								//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
-								empty = true;
-								li.setAttribute("class", "locked");
-								li.innerHTML = custParams.noResult;
-								ul.appendChild(li);
-							};
-						} else {
-							var properties = Object.getOwnPropertyNames(response);
-							for (var propertie in properties) {
-								li.innerHTML = response[properties[propertie]];
-								li.setAttribute("data-autocomplete-value", properties[propertie]);
+					if (Array.isArray(response)) {
+						if (length) {
+							for (var i = 0; i < length; i++) {
+								li.innerHTML = response[i];
 								ul.appendChild(li);
 								li = document.createElement("li");
 							};
+						} else {
+							//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
+							empty = true;
+							li.setAttribute("class", "locked");
+							li.innerHTML = custParams.noResult;
+							ul.appendChild(li);
 						};
+					} else {
+						var properties = Object.getOwnPropertyNames(response);
+						for (var propertie in properties) {
+							li.innerHTML = response[properties[propertie]];
+							li.setAttribute("data-autocomplete-value", properties[propertie]);
+							ul.appendChild(li);
+							li = document.createElement("li");
+						};
+					};
 
-						if (result.hasChildNodes()) {
-							result.childNodes[0].remove();
-						};
-						
-						result.appendChild(ul);
+					if (result.hasChildNodes()) {
+						result.childNodes[0].remove();
+					};
+					
+					result.appendChild(ul);
 				};
 
 				if (empty !== true) {
@@ -145,10 +142,10 @@ var AutoComplete = function(params) {
 
 	this.Initialize = function() {
 		var defaultParams = {
-			"method": "GET",
-			"paramName": "q",
+			"method":   "GET",
+			"paramName":"q",
 			"selector": ["input[data-autocomplete]"],
-			"type": "JSON",
+			"type":     "JSON",
 			"noResult": "No result",
 		};
 
