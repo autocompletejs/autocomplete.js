@@ -14,7 +14,7 @@ var AutoComplete = function(params) {
 		var method = custParams.method,
 			url = custParams.url;
 
-		if (method == "GET") {
+		if (method.match("^GET$", "i")) {
 			url += "?" + queryParams;
 		};
 
@@ -28,7 +28,7 @@ var AutoComplete = function(params) {
 			if (request.readyState == 4 && request.status == 200) {
 				var response = request.response;
 
-				if (custParams.type == "HTML") {
+				if (custParams.type.match("^HTML$", "i")) {
 					result.innerHTML = response;
 				} else {	
 					response = JSON.parse(response);
@@ -97,7 +97,7 @@ var AutoComplete = function(params) {
 
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
-			if (input.nodeName.toUpperCase() == "INPUT" && input.type.toUpperCase() == "TEXT") {
+			if (input.nodeName.match("^INPUT$", "i") && input.type.match("^TEXT$", "i")) {
 				BindOne(input);
 			};
 		};
@@ -168,14 +168,12 @@ var AutoComplete = function(params) {
 		};
 
 		this.params = Merge(defaultParams, this.params);
-		this.params.method = this.params.method.toUpperCase();
-		this.params.type = this.params.type.toUpperCase();
 
-		if (!this.params.method.match("^GET|POST$")) {
+		if (!this.params.method.match("^GET|POST$", "i")) {
 			this.params.method = defaultParams.method;
 		};
 
-		if (!this.params.type.match("^JSON|HTML$")) {
+		if (!this.params.type.match("^JSON|HTML$", "i")) {
 			this.params.type = defaultParams.type;
 		};
 
@@ -205,12 +203,12 @@ var AutoComplete = function(params) {
 			};
 		};
 
-		if (params.method) {
-			(!params.method.match("^GET|POST$")) ? delete params.method : (params.method = params.method.toUpperCase());
+		if (params.method && !params.method.match("^GET|POST$", "i")) {
+			delete params.method;
 		};
 
-		if (params.type) {
-			(!params.type.match("^JSON|HTML$")) ? delete params.type : (params.type = params.type.toUpperCase());
+		if (params.type && !params.type.match("^JSON|HTML$", "i")) {
+			delete params.type;
 		};
 
 		if (params.limit) {
