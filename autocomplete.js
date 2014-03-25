@@ -40,7 +40,11 @@ var AutoComplete = function(params) {
 						
 					if (Array.isArray(response)) {
 						if (length) {
-							for (var i = 0; i < length && (i < custParams.limit || !custParams.limit); i++) {
+							if (custParams.limit < 0) {
+								response.reverse();
+							};
+
+							for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
 								li.innerHTML = response[i];
 								ul.appendChild(li);
 								li = document.createElement("li");
@@ -54,8 +58,13 @@ var AutoComplete = function(params) {
 						};
 					} else {
 						var properties = Object.getOwnPropertyNames(response);
+
+						if (custParams.limit < 0) {
+							properties.reverse();
+						};
+
 						for (var propertie in properties) {
-							if (parseInt(propertie) < custParams.limit) {
+							if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
 								li.innerHTML = response[properties[propertie]];
 								li.setAttribute("data-autocomplete-value", properties[propertie]);
 								ul.appendChild(li);
@@ -124,8 +133,6 @@ var AutoComplete = function(params) {
 				if (inputValue) {
 					var custParams = CustParams(input),
 						queryParams = custParams.paramName + "=" + inputValue;
-
-					console.log(custParams);
 
 					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
