@@ -1,5 +1,5 @@
 ##autocomplete.js
-[![Dependency Status](https://www.versioneye.com/php/ruflin:Elastica/master/badge.png)](https://www.versioneye.com/php/ruflin:elastica/)
+![Dependency Status](https://www.versioneye.com/php/ruflin:Elastica/master/badge.png)
 
 autocomplete.js is a Javascript project with purpose to propose an autocomplete, fast, lite and without dependency.
 
