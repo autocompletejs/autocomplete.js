@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.3.0
+ * Autocomplete.js v1.3.1
  * Developed by Baptiste Donaux
  * 
  * Under MIT Licence
@@ -18,7 +18,7 @@ var AutoComplete = function(params) {
 			url += "?" + queryParams;
 		};
 
-		request = XMLHttpRequest();
+		request = new XMLHttpRequest();
 		request.open(method, url, true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		request.setRequestHeader("Content-length", queryParams.length);
