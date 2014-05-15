@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.3.1
+ * Autocomplete.js v1.4.0 unstable
  * Developed by Baptiste Donaux
  * 
  * Under MIT Licence
@@ -14,7 +14,7 @@ var AutoComplete = function(params) {
 		var method = custParams.method,
 			url = custParams.url;
 
-		if (method == "GET") {
+		if (method.match("^GET$", "i")) {
 			url += "?" + queryParams;
 		};
 
@@ -28,7 +28,7 @@ var AutoComplete = function(params) {
 			if (request.readyState == 4 && request.status == 200) {
 				var response = request.response;
 
-				if (custParams.type == "HTML") {
+				if (custParams.type.match("^HTML$", "i")) {
 					result.innerHTML = response;
 				} else {	
 					response = JSON.parse(response);
@@ -40,7 +40,11 @@ var AutoComplete = function(params) {
 						
 					if (Array.isArray(response)) {
 						if (length) {
-							for (var i = 0; i < length; i++) {
+							if (custParams.limit < 0) {
+								response.reverse();
+							};
+
+							for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
 								li.innerHTML = response[i];
 								ul.appendChild(li);
 								li = document.createElement("li");
@@ -54,11 +58,18 @@ var AutoComplete = function(params) {
 						};
 					} else {
 						var properties = Object.getOwnPropertyNames(response);
+
+						if (custParams.limit < 0) {
+							properties.reverse();
+						};
+
 						for (var propertie in properties) {
-							li.innerHTML = response[properties[propertie]];
-							li.setAttribute("data-autocomplete-value", properties[propertie]);
-							ul.appendChild(li);
-							li = document.createElement("li");
+							if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
+								li.innerHTML = response[properties[propertie]];
+								li.setAttribute("data-autocomplete-value", properties[propertie]);
+								ul.appendChild(li);
+								li = document.createElement("li");
+							};
 						};
 					};
 
@@ -86,7 +97,7 @@ var AutoComplete = function(params) {
 
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
-			if (input.nodeName.toUpperCase() == "INPUT" && input.type.toUpperCase() == "TEXT") {
+			if (input.nodeName.match("^INPUT$", "i") && input.type.match("^TEXT$", "i")) {
 				BindOne(input);
 			};
 		};
@@ -98,11 +109,13 @@ var AutoComplete = function(params) {
 				result = document.createElement("div"),
 				request;
 			
-			result.setAttribute("class", "autocomplete");
-			result.setAttribute("style", "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
+			Attributes(result, {
+				"autocomplete": "off",
+				"class": "autocomplete",
+				"style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+			});
 
 			input.parentNode.appendChild(result);
-			input.setAttribute("autocomplete", "off");
 			
 			input.addEventListener("focus", function() {
 				var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
@@ -147,6 +160,7 @@ var AutoComplete = function(params) {
 			"selector": ["input[data-autocomplete]"],
 			"type":     "JSON",
 			"noResult": "No result",
+			"limit": 0,
 		};
 
 		if (this.params === undefined) {
@@ -154,14 +168,12 @@ var AutoComplete = function(params) {
 		};
 
 		this.params = Merge(defaultParams, this.params);
-		this.params.method = this.params.method.toUpperCase();
-		this.params.type = this.params.type.toUpperCase();
 
-		if (!this.params.method.match("^GET|POST$")) {
+		if (!this.params.method.match("^GET|POST$", "i")) {
 			this.params.method = defaultParams.method;
 		};
 
-		if (!this.params.type.match("^JSON|HTML$")) {
+		if (!this.params.type.match("^JSON|HTML$", "i")) {
 			this.params.type = defaultParams.type;
 		};
 
@@ -172,11 +184,17 @@ var AutoComplete = function(params) {
 
 	this.CreateCustParams = function(input) {
 		var params = {
-			"url":       input.getAttribute("data-autocomplete"),
-			"method":    input.getAttribute("data-autocomplete-method"),
-			"paramName": input.getAttribute("data-autocomplete-param-name"),
-			"type":      input.getAttribute("data-autocomplete-type"),
-			"noResult":  input.getAttribute("data-autocomplete-no-result")
+			"url":       "data-autocomplete",
+			"method":    "data-autocomplete-method",
+			"paramName": "data-autocomplete-param-name",
+			"type":      "data-autocomplete-type",
+			"noResult":  "data-autocomplete-no-result",
+			"limit":	 "data-autocomplete-limit"
+		};
+
+		var paramsAttribute = Object.getOwnPropertyNames(params);
+		for (var i = paramsAttribute.length - 1; i >= 0; i--) {
+			params[paramsAttribute[i]] = input.getAttribute(params[paramsAttribute[i]]);
 		};
 
 		for (var option in params) {
@@ -185,12 +203,16 @@ var AutoComplete = function(params) {
 			};
 		};
 
-		if (params.method) {
-			(!params.method.match("^GET|POST$")) ? delete params.method : (params.method = params.method.toUpperCase());
+		if (params.method && !params.method.match("^GET|POST$", "i")) {
+			delete params.method;
 		};
 
-		if (params.type) {
-			(!params.type.match("^JSON|HTML$")) ? delete params.type : (params.type = params.type.toUpperCase());
+		if (params.type && !params.type.match("^JSON|HTML$", "i")) {
+			delete params.type;
+		};
+
+		if (params.limit) {
+			(isNaN(params.limit)) ? delete params.limit : (params.limit = parseInt(params.limit));
 		};
 
 		return Merge(this.params, params);
@@ -233,6 +255,12 @@ var AutoComplete = function(params) {
 	    };
 
 	    return merge;
+	};
+
+	this.Attributes = function(item, attrs) {
+		for (var key in attrs) {
+			item.setAttribute(key, attrs[key]);
+		};
 	};
 
 	//Construct
