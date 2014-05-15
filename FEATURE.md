@@ -1,4 +1,4 @@
-##Last features added
+##Features added in this version
 
 * limit param on JSON response (if the limit is negative and if sort DESC)
 
