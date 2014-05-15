@@ -57,8 +57,8 @@ var AutoComplete = function(params) {
 			
 			Attributes(result, {
 				"autocomplete": "off",
-				"class": "autocomplete",
-				"style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+				"class":        "autocomplete",
+				"style":        "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
 			});
 
 			input.parentNode.appendChild(result);
@@ -74,22 +74,18 @@ var AutoComplete = function(params) {
 				Close(result);
 			});
 
-			input.addEventListener("keyup", function(e) {				
+			input.addEventListener("keyup", function(e) {
 				var input = e.currentTarget,
-					inputValue = input.value;
+					custParams = CustParams(input),
+					inputValue = custParams.pre(input.value);
 
-				if (inputValue) {
-					var custParams = CustParams(input),
-						queryParams = custParams.paramName + "=" + inputValue;
-
-					if (custParams.url) {
-						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
-						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-							result.setAttribute("class", "autocomplete open");
-						};
-
-						request = Ajax(request, custParams, queryParams, input, result);
+				if (inputValue && custParams.url) {
+					var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
+					if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
+						result.setAttribute("class", "autocomplete open");
 					};
+
+					request = Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
 				};
 			});
 		};
@@ -171,6 +167,9 @@ var AutoComplete = function(params) {
 
 					return empty;
 				};
+			},
+			pre: function(value) {
+				return value;
 			},
 			type:      "JSON",
 			selector:  ["input[data-autocomplete]"]
