@@ -50,7 +50,7 @@ var AutoComplete = function(params) {
 								li = document.createElement("li");
 							};
 						} else {
-							//If the response is an object or an array and that the response is empty, so thi script is here, for the message no response.
+							//If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
 							empty = true;
 							li.setAttribute("class", "locked");
 							li.innerHTML = custParams.noResult;
@@ -155,12 +155,12 @@ var AutoComplete = function(params) {
 
 	this.Initialize = function() {
 		var defaultParams = {
-			"method":   "GET",
-			"paramName":"q",
-			"selector": ["input[data-autocomplete]"],
-			"type":     "JSON",
-			"noResult": "No result",
-			"limit": 0,
+			"limit":     0,
+			"method":    "GET",
+			"noResult":  "No result",
+			"paramName": "q",
+			"type":      "JSON",
+			"selector":  ["input[data-autocomplete]"]
 		};
 
 		if (this.params === undefined) {
@@ -184,12 +184,12 @@ var AutoComplete = function(params) {
 
 	this.CreateCustParams = function(input) {
 		var params = {
-			"url":       "data-autocomplete",
+			"limit":	 "data-autocomplete-limit",
 			"method":    "data-autocomplete-method",
+			"noResult":  "data-autocomplete-no-result",
 			"paramName": "data-autocomplete-param-name",
 			"type":      "data-autocomplete-type",
-			"noResult":  "data-autocomplete-no-result",
-			"limit":	 "data-autocomplete-limit"
+			"url":       "data-autocomplete"
 		};
 
 		var paramsAttribute = Object.getOwnPropertyNames(params);
