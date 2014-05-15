@@ -1,11 +1,11 @@
 ##Features added in this version
 
 * limit param on JSON response (if the limit is negative and if sort DESC)
+* custom pre, post, open method
 
 ##Future Feature
 
 * implement the top and bottom key to naviguate into result
-* custom pre and post send
 
 ##Evolution for the next version (v2)
 
