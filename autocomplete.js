@@ -26,61 +26,7 @@ var AutoComplete = function(params) {
 
 		request.onreadystatechange = function () {
 			if (request.readyState == 4 && request.status == 200) {
-				var response = request.response;
-
-				if (custParams.type.match("^HTML$", "i")) {
-					result.innerHTML = response;
-				} else {	
-					response = JSON.parse(response);
-					
-					var empty,
-						length = response.length,
-						li = document.createElement("li"),
-						ul = document.createElement("ul");
-						
-					if (Array.isArray(response)) {
-						if (length) {
-							if (custParams.limit < 0) {
-								response.reverse();
-							};
-
-							for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
-								li.innerHTML = response[i];
-								ul.appendChild(li);
-								li = document.createElement("li");
-							};
-						} else {
-							//If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
-							empty = true;
-							li.setAttribute("class", "locked");
-							li.innerHTML = custParams.noResult;
-							ul.appendChild(li);
-						};
-					} else {
-						var properties = Object.getOwnPropertyNames(response);
-
-						if (custParams.limit < 0) {
-							properties.reverse();
-						};
-
-						for (var propertie in properties) {
-							if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
-								li.innerHTML = response[properties[propertie]];
-								li.setAttribute("data-autocomplete-value", properties[propertie]);
-								ul.appendChild(li);
-								li = document.createElement("li");
-							};
-						};
-					};
-
-					if (result.hasChildNodes()) {
-						result.childNodes[0].remove();
-					};
-					
-					result.appendChild(ul);
-				};
-
-				if (empty !== true) {
+				if (custParams.post(result, request.response, custParams) !== true) {
 					Open(input, result);
 				};
 			};
@@ -135,7 +81,7 @@ var AutoComplete = function(params) {
 				if (inputValue) {
 					var custParams = CustParams(input),
 						queryParams = custParams.paramName + "=" + inputValue;
-					
+
 					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
@@ -159,6 +105,60 @@ var AutoComplete = function(params) {
 			method:    "GET",
 			noResult:  "No result",
 			paramName: "q",
+			post: function(result, response, custParams) {
+				if (custParams.type.match("^HTML$", "i")) {
+					result.innerHTML = response;
+				} else {
+					response = JSON.parse(response);
+					var empty,
+						length = response.length,
+						li = document.createElement("li"),
+						ul = document.createElement("ul");
+						
+					if (Array.isArray(response)) {
+						if (length) {
+							if (custParams.limit < 0) {
+								response.reverse();
+							};
+
+							for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
+								li.innerHTML = response[i];
+								ul.appendChild(li);
+								li = document.createElement("li");
+							};
+						} else {
+							//If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
+							empty = true;
+							li.setAttribute("class", "locked");
+							li.innerHTML = custParams.noResult;
+							ul.appendChild(li);
+						};
+					} else {
+						var properties = Object.getOwnPropertyNames(response);
+
+						if (custParams.limit < 0) {
+							properties.reverse();
+						};
+
+						for (var propertie in properties) {
+							if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
+								li.innerHTML = response[properties[propertie]];
+								li.setAttribute("data-autocomplete-value", properties[propertie]);
+								ul.appendChild(li);
+								li = document.createElement("li");
+							};
+						};
+					};
+
+					if (result.hasChildNodes()) {
+						result.childNodes[0].remove();
+					};
+					
+					result.appendChild(ul);
+
+					return empty;
+				};
+			},
 			type:      "JSON",
 			selector:  ["input[data-autocomplete]"]
 		};
@@ -188,6 +188,7 @@ var AutoComplete = function(params) {
 			method:    "data-autocomplete-method",
 			noResult:  "data-autocomplete-no-result",
 			paramName: "data-autocomplete-param-name",
+			post:      "data-autocomplete-post",
 			type:      "data-autocomplete-type",
 			url:       "data-autocomplete"
 		};
