@@ -77,7 +77,7 @@ var AutoComplete = function(params) {
 			input.addEventListener("keyup", function(e) {
 				var input = e.currentTarget,
 					custParams = CustParams(input),
-					inputValue = custParams.pre(input.value);
+					inputValue = custParams.pre(input);
 
 				if (inputValue && custParams.url) {
 					var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
@@ -168,8 +168,8 @@ var AutoComplete = function(params) {
 					return empty;
 				};
 			},
-			pre: function(value) {
-				return value;
+			pre: function(input) {
+				return input.value;
 			},
 			type:      "JSON",
 			selector:  ["input[data-autocomplete]"]
