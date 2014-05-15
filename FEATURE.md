@@ -1,7 +1,11 @@
+##Last features added
+
+* limit param on JSON response (if the limit is negative and if sort DESC)
+
 ##Future Feature
 
-* add limit param on JSON response (take and check if -0 is negative and if sort DESC)
 * implement the top and bottom key to naviguate into result
+* custom pre and post send
 
 ##Evolution for the next version (v2)
 
