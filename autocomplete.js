@@ -188,7 +188,6 @@ var AutoComplete = function(params) {
 			method:    "data-autocomplete-method",
 			noResult:  "data-autocomplete-no-result",
 			paramName: "data-autocomplete-param-name",
-			post:      "data-autocomplete-post",
 			type:      "data-autocomplete-type",
 			url:       "data-autocomplete"
 		};
