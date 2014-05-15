@@ -27,7 +27,7 @@ var AutoComplete = function(params) {
 		request.onreadystatechange = function () {
 			if (request.readyState == 4 && request.status == 200) {
 				if (custParams.post(result, request.response, custParams) !== true) {
-					Open(input, result);
+					custParams.open(input, result);
 				};
 			};
 		};
@@ -105,6 +105,19 @@ var AutoComplete = function(params) {
 			method:    "GET",
 			noResult:  "No result",
 			paramName: "q",
+			open: function(input, result) {
+				var liS = result.getElementsByTagName("li");
+				for (var i = liS.length - 1; i >= 0; i--) {
+					liS[i].addEventListener("click", function(e) {
+						var li = e.currentTarget,
+							dataAutocompleteValueLabel = "data-autocomplete-value";
+
+						input.value = li.hasAttribute(dataAutocompleteValueLabel) ? li.getAttribute(dataAutocompleteValueLabel) : li.innerHTML;
+
+						input.setAttribute("data-autocomplete-old-value", input.value);
+					});
+				};
+			},
 			post: function(result, response, custParams) {
 				if (custParams.type.match("^HTML$", "i")) {
 					result.innerHTML = response;
@@ -227,20 +240,6 @@ var AutoComplete = function(params) {
 		};
 
 		return this.custParams[input.getAttribute(dataAutocompleteIdLabel)];
-	};
-
-	this.Open = function(input, result) {
-		var liS = result.getElementsByTagName("li");
-		for (var i = liS.length - 1; i >= 0; i--) {
-			liS[i].addEventListener("click", function(e) {
-				var li = e.currentTarget,
-					dataAutocompleteValueLabel = "data-autocomplete-value";
-
-				input.value = li.hasAttribute(dataAutocompleteValueLabel) ? li.getAttribute(dataAutocompleteValueLabel) : li.innerHTML;
-
-				input.setAttribute("data-autocomplete-old-value", input.value);
-			});
-		};
 	};
 
 	this.Merge = function(obj1, obj2) {
