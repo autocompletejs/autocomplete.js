@@ -135,7 +135,7 @@ var AutoComplete = function(params) {
 				if (inputValue) {
 					var custParams = CustParams(input),
 						queryParams = custParams.paramName + "=" + inputValue;
-
+					
 					if (custParams.url) {
 						var dataAutocompleteOldValue = input.getAttribute(dataAutocompleteOldValueLabel);
 						if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
@@ -155,12 +155,12 @@ var AutoComplete = function(params) {
 
 	this.Initialize = function() {
 		var defaultParams = {
-			"limit":     0,
-			"method":    "GET",
-			"noResult":  "No result",
-			"paramName": "q",
-			"type":      "JSON",
-			"selector":  ["input[data-autocomplete]"]
+			limit:     0,
+			method:    "GET",
+			noResult:  "No result",
+			paramName: "q",
+			type:      "JSON",
+			selector:  ["input[data-autocomplete]"]
 		};
 
 		if (this.params === undefined) {
@@ -184,12 +184,12 @@ var AutoComplete = function(params) {
 
 	this.CreateCustParams = function(input) {
 		var params = {
-			"limit":	 "data-autocomplete-limit",
-			"method":    "data-autocomplete-method",
-			"noResult":  "data-autocomplete-no-result",
-			"paramName": "data-autocomplete-param-name",
-			"type":      "data-autocomplete-type",
-			"url":       "data-autocomplete"
+			limit:	 "data-autocomplete-limit",
+			method:    "data-autocomplete-method",
+			noResult:  "data-autocomplete-no-result",
+			paramName: "data-autocomplete-param-name",
+			type:      "data-autocomplete-type",
+			url:       "data-autocomplete"
 		};
 
 		var paramsAttribute = Object.getOwnPropertyNames(params);
