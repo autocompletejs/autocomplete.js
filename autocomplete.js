@@ -55,8 +55,8 @@ var AutoComplete = function(params) {
 				result = document.createElement("div"),
 				request;
 			
+			input.setAttribute("autocomplete", "off");
 			Attributes(result, {
-				"autocomplete": "off",
 				"class":        "autocomplete",
 				"style":        "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
 			});
