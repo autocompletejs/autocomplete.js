@@ -61,6 +61,10 @@ var AutoComplete = function(params) {
 				"style":        "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
 			});
 
+			input.addEventListener("autocomplete:refresh:position", function() {
+				result.setAttribute("style", "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;");
+			}, false);
+
 			input.parentNode.appendChild(result);
 			
 			input.addEventListener("focus", function() {
