@@ -124,9 +124,7 @@ var AutoComplete = function(params) {
 				};
 			},
 			post: function(result, response, custParams) {
-				if (custParams.type.match("^HTML$", "i")) {
-					result.innerHTML = response;
-				} else {
+				try {
 					response = JSON.parse(response);
 					var empty,
 						length = response.length,
@@ -175,12 +173,13 @@ var AutoComplete = function(params) {
 					result.appendChild(ul);
 
 					return empty;
-				};
+				} catch (e) {
+					 result.innerHTML = response;
+				}
 			},
 			pre: function(input) {
 				return input.value;
 			},
-			type:      "JSON",
 			selector:  ["input[data-autocomplete]"]
 		};
 
@@ -194,10 +193,6 @@ var AutoComplete = function(params) {
 			this.params.method = defaultParams.method;
 		};
 
-		if (!this.params.type.match("^JSON|HTML$", "i")) {
-			this.params.type = defaultParams.type;
-		};
-
 		if (!Array.isArray(this.params.selector)) {
 			this.params.selector = defaultParams.selector;
 		};
@@ -209,7 +204,6 @@ var AutoComplete = function(params) {
 			method:    "data-autocomplete-method",
 			noResult:  "data-autocomplete-no-result",
 			paramName: "data-autocomplete-param-name",
-			type:      "data-autocomplete-type",
 			url:       "data-autocomplete"
 		};
 
@@ -226,10 +220,6 @@ var AutoComplete = function(params) {
 
 		if (params.method && !params.method.match("^GET|POST$", "i")) {
 			delete params.method;
-		};
-
-		if (params.type && !params.type.match("^JSON|HTML$", "i")) {
-			delete params.type;
 		};
 
 		if (params.limit) {
