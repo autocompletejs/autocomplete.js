@@ -75,7 +75,7 @@ AutoComplete.prototype.Ajax = function(request, custParams, queryParams, input, 
     var method = custParams.method,
         url = custParams.url;
 
-    if (method.match("^GET$", "i")) {
+    if (method.match(/^GET$/i)) {
         url += "?" + queryParams;
     }
 
@@ -104,7 +104,8 @@ AutoComplete.prototype.BindCollection = function(selector) {
 
     for (var i = inputs.length - 1; i >= 0; i--) {
         input = inputs[i];
-        if (input.nodeName.match("^INPUT$", "i") && input.type.match("^TEXT$", "i")) {
+
+        if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT$/i)) {
             this.BindOne(input);
         }
     }
@@ -217,7 +218,7 @@ AutoComplete.prototype.Init = function() {
 
     this.params = this.Merge(defaultParams, this.params);
 
-    if (!this.params.method.match("^GET|POST$", "i")) {
+    if (!this.params.method.match(/^GET|POST$/i)) {
         this.params.method = defaultParams.method;
     }
 
@@ -246,7 +247,7 @@ AutoComplete.prototype.CreateCustParams = function(input) {
         }
     }
 
-    if (params.method && !params.method.match("^GET|POST$", "i")) {
+    if (params.method && !params.method.match(/^GET|POST$/i)) {
         delete params.method;
     }
 
