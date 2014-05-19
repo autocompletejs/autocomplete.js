@@ -9,12 +9,12 @@
 var AutoComplete = function(params) {
     //Construct
     if (this) {
-        this.params = params;
-        this.custParams = [];
+        this._args = params;
+        this._custArgs = [];
         this.Init();
 
-        for (var i = this.params.selector.length - 1; i >= 0; i--) {
-            this.BindCollection(this.params.selector[i]);
+        for (var i = this._args.selector.length - 1; i >= 0; i--) {
+            this.BindCollection(this._args.selector[i]);
         }
     } else {
         new AutoComplete(params);
@@ -125,102 +125,101 @@ AutoComplete.prototype = {
         }
     },
     Init: function() {
-        var
-        self = this,
-        defaultParams = {
-            limit:     0,
-            method:    "GET",
-            noResult:  "No result",
-            paramName: "q",
-            open: function(input, result) {
-                var lambda = function(li) {
-                    li.addEventListener("click", function(e) {
-                        var li = e.currentTarget,
-                            dataAutocompleteValueLabel = "data-autocomplete-value";
+        var self = this,
+            defaultParams = {
+                limit:     0,
+                method:    "GET",
+                noResult:  "No result",
+                paramName: "q",
+                open: function(input, result) {
+                    var lambda = function(li) {
+                        li.addEventListener("click", function(e) {
+                            var li = e.currentTarget,
+                                dataAutocompleteValueLabel = "data-autocomplete-value";
 
-                        input.value = li.hasAttribute(dataAutocompleteValueLabel) ? Attr(li, dataAutocompleteValueLabel) : li.innerHTML;
+                            input.value = li.hasAttribute(dataAutocompleteValueLabel) ? Attr(li, dataAutocompleteValueLabel) : li.innerHTML;
 
-                        Attr(input, {"data-autocomplete-old-value": input.value});
-                    });
-                };
+                            Attr(input, {"data-autocomplete-old-value": input.value});
+                        });
+                    };
 
-                var liS = result.getElementsByTagName("li");
-                for (var i = liS.length - 1; i >= 0; i--) {
-                    lambda(liS[i]);
-                }
-            },
-            post: function(result, response, custParams) {            
-                try {
-                    response = JSON.parse(response);
-                    var empty,
-                        length = response.length,
-                        li = DOMCreate("li"),
-                        ul = DOMCreate("ul");
-                        
-                    if (Array.isArray(response)) {
-                        if (length) {
-                            if (custParams.limit < 0) {
-                                response.reverse();
-                            }
+                    var liS = result.getElementsByTagName("li");
+                    for (var i = liS.length - 1; i >= 0; i--) {
+                        lambda(liS[i]);
+                    }
+                },
+                post: function(result, response, custParams) {
+                    try {
+                        response = JSON.parse(response);
+                        var empty,
+                            length = response.length,
+                            li = DOMCreate("li"),
+                            ul = DOMCreate("ul");
+                            
+                        if (Array.isArray(response)) {
+                            if (length) {
+                                if (custParams.limit < 0) {
+                                    response.reverse();
+                                }
 
-                            for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
-                                li.innerHTML = response[i];
+                                for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
+                                    li.innerHTML = response[i];
+                                    ul.appendChild(li);
+                                    li = DOMCreate("li");
+                                }
+                            } else {
+                                //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
+                                empty = true;
+                                Attr(li, {"class": "locked"});
+                                li.innerHTML = custParams.noResult;
                                 ul.appendChild(li);
-                                li = DOMCreate("li");
                             }
                         } else {
-                            //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
-                            empty = true;
-                            Attr(li, {"class": "locked"});
-                            li.innerHTML = custParams.noResult;
-                            ul.appendChild(li);
-                        }
-                    } else {
-                        var properties = Object.getOwnPropertyNames(response);
+                            var properties = Object.getOwnPropertyNames(response);
 
-                        if (custParams.limit < 0) {
-                            properties.reverse();
-                        }
+                            if (custParams.limit < 0) {
+                                properties.reverse();
+                            }
 
-                        for (var propertie in properties) {
-                            if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
-                                li.innerHTML = response[properties[propertie]];
-                                Attr(li, {"data-autocomplete-value": properties[propertie]});
-                                ul.appendChild(li);
-                                li = DOMCreate("li");
+                            for (var propertie in properties) {
+                                if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
+                                    li.innerHTML = response[properties[propertie]];
+                                    Attr(li, {"data-autocomplete-value": properties[propertie]});
+                                    ul.appendChild(li);
+                                    li = DOMCreate("li");
+                                }
                             }
                         }
+
+                        if (result.hasChildNodes()) {
+                            result.childNodes[0].remove();
+                        }
+                        
+                        result.appendChild(ul);
+
+                        return empty;
+                    } catch (e) {
+                        result.innerHTML = response;
                     }
+                },
+                pre: function(input) {
+                    return input.value;
+                },
+                selector:  ["input[data-autocomplete]"]
+            };
 
-                    if (result.hasChildNodes()) {
-                        result.childNodes[0].remove();
-                    }
-                    
-                    result.appendChild(ul);
-
-                    return empty;
-                } catch (e) {
-                    result.innerHTML = response;
-                }
-            },
-            pre: function(input) {
-                return input.value;
-            },
-            selector:  ["input[data-autocomplete]"]
-        };
-
-        if (self.params === undefined) {
-            self.params = {};
+        if (self._args === undefined) {
+            self._args = {};
         }
 
-        self.params = Merge(defaultParams, self.params);
+        self._args = Merge(defaultParams, self._args);
 
-        if (!self.params.method.match(/^GET|POST$/i)) {
-            self.params.method = defaultParams.method;
+        if (!self._args.method.match(/^GET|POST$/i)) {
+            self._args.method = defaultParams.method;
         }
 
-        if (!Array.isArray(self.params.selector)) {
-            self.params.selector = defaultParams.selector;
+        if (!Array.isArray(self._args.selector)) {
+            self._args.selector = defaultParams.selector;
         }
     },
     CreateCustParams: function(input) {
@@ -256,19 +255,19 @@ AutoComplete.prototype = {
             }
         }
 
-        return Merge(self.params, params);
+        return Merge(self._args, params);
     },
     CustParams: function(input) {
         var dataAutocompleteIdLabel = "data-autocomplete-id",
             self = this;
 
         if (!input.hasAttribute(dataAutocompleteIdLabel)) {
-            input.setAttribute(dataAutocompleteIdLabel, self.custParams.length);
+            input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
 
-            self.custParams.push(self.CreateCustParams(input));
+            self._custArgs.push(self.CreateCustParams(input));
         }
 
-        return self.custParams[Attr(input, dataAutocompleteIdLabel)];
+        return self._custArgs[Attr(input, dataAutocompleteIdLabel)];
     }
 };
 
