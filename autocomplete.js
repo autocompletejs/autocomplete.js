@@ -102,7 +102,7 @@ var AutoComplete = function(params) {
 
     this.Close = function(result, closeNow) {
         if (closeNow) {
-            Attr(result, {"class": "autocomplete"})
+            Attr(result, {"class": "autocomplete"});
         } else {
             setTimeout(function() {Close(result, true);}, 150);
         }
@@ -231,7 +231,11 @@ var AutoComplete = function(params) {
         }
 
         if (params.limit) {
-            isNaN(params.limit) ? delete params.limit : params.limit = parseInt(params.limit);
+            if (isNaN(params.limit)) {
+                delete params.limit;
+            } else {
+                params.limit = parseInt(params.limit);
+            }
         }
 
         return Merge(this.params, params);
