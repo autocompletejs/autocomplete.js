@@ -37,8 +37,6 @@ AutoComplete.prototype = {
         request = new XMLHttpRequest();
         request.open(method, url, true);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.setRequestHeader("Content-length", queryParams.length);
-        request.setRequestHeader("Connection", "close");
 
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
