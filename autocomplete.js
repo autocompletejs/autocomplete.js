@@ -22,6 +22,48 @@ var AutoComplete = function(params) {
 };
 
 AutoComplete.prototype = {
+    Ajax: function(request, custParams, queryParams, input, result) {
+        if (request) {
+            request.abort();
+        }
+        
+        var method = custParams.method,
+            url = custParams.url;
+
+        if (method.match(/^GET$/i)) {
+            url += "?" + queryParams;
+        }
+
+        request = new XMLHttpRequest();
+        request.open(method, url, true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.setRequestHeader("Content-length", queryParams.length);
+        request.setRequestHeader("Connection", "close");
+
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                if (custParams.post(result, request.response, custParams) !== true) {
+                    custParams.open(input, result);
+                }
+            }
+        };
+
+        request.send(queryParams);
+
+        return request;
+    },
+    BindCollection: function(selector) {
+        var input,
+            inputs = document.querySelectorAll(selector);
+
+        for (var i = inputs.length - 1; i >= 0; i--) {
+            input = inputs[i];
+
+            if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT$/i)) {
+                this.BindOne(input);
+            }
+        }
+    },
     BindOne: function(input) {
         if (input) {
             var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
@@ -68,54 +110,6 @@ AutoComplete.prototype = {
             });
         }
     },
-    Ajax: function(request, custParams, queryParams, input, result) {
-        if (request) {
-            request.abort();
-        }
-        
-        var method = custParams.method,
-            url = custParams.url;
-
-        if (method.match(/^GET$/i)) {
-            url += "?" + queryParams;
-        }
-
-        request = new XMLHttpRequest();
-        request.open(method, url, true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.setRequestHeader("Content-length", queryParams.length);
-        request.setRequestHeader("Connection", "close");
-
-        request.onreadystatechange = function () {
-            if (request.readyState == 4 && request.status == 200) {
-                if (custParams.post(result, request.response, custParams) !== true) {
-                    custParams.open(input, result);
-                }
-            }
-        };
-
-        request.send(queryParams);
-
-        return request;
-    },
-    BindCollection: function(selector) {
-        var input,
-            inputs = document.querySelectorAll(selector);
-
-        for (var i = inputs.length - 1; i >= 0; i--) {
-            input = inputs[i];
-
-            if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT$/i)) {
-                this.BindOne(input);
-            }
-        }
-    },
-    Position: function(input, result) {
-        Attr(result, {
-            "class": "autocomplete",
-            "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
-        });
-    },
     Close: function(result, closeNow) {
         var self = this;
         if (closeNow) {
@@ -123,6 +117,53 @@ AutoComplete.prototype = {
         } else {
             setTimeout(function() {self.Close(result, true);}, 150);
         }
+    },
+    CreateCustParams: function(input) {
+        var params = {
+            limit:     "data-autocomplete-limit",
+            method:    "data-autocomplete-method",
+            noResult:  "data-autocomplete-no-result",
+            paramName: "data-autocomplete-param-name",
+            url:       "data-autocomplete"
+        },
+        self = this;
+
+        var paramsAttribute = Object.getOwnPropertyNames(params);
+        for (var i = paramsAttribute.length - 1; i >= 0; i--) {
+            params[paramsAttribute[i]] = Attr(input, params[paramsAttribute[i]]);
+        }
+
+        for (var option in params) {
+            if (params.hasOwnProperty(option) && !params[option]) {
+                delete params[option];
+            }
+        }
+
+        if (params.method && !params.method.match(/^GET|POST$/i)) {
+            delete params.method;
+        }
+
+        if (params.limit) {
+            if (isNaN(params.limit)) {
+                delete params.limit;
+            } else {
+                params.limit = parseInt(params.limit);
+            }
+        }
+
+        return Merge(self._args, params);
+    },
+    CustParams: function(input) {
+        var dataAutocompleteIdLabel = "data-autocomplete-id",
+            self = this;
+
+        if (!input.hasAttribute(dataAutocompleteIdLabel)) {
+            input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
+
+            self._custArgs.push(self.CreateCustParams(input));
+        }
+
+        return self._custArgs[Attr(input, dataAutocompleteIdLabel)];
     },
     Init: function() {
         var self = this,
@@ -222,52 +263,11 @@ AutoComplete.prototype = {
             self._args.selector = defaultParams.selector;
         }
     },
-    CreateCustParams: function(input) {
-        var params = {
-            limit:     "data-autocomplete-limit",
-            method:    "data-autocomplete-method",
-            noResult:  "data-autocomplete-no-result",
-            paramName: "data-autocomplete-param-name",
-            url:       "data-autocomplete"
-        },
-        self = this;
-
-        var paramsAttribute = Object.getOwnPropertyNames(params);
-        for (var i = paramsAttribute.length - 1; i >= 0; i--) {
-            params[paramsAttribute[i]] = Attr(input, params[paramsAttribute[i]]);
-        }
-
-        for (var option in params) {
-            if (params.hasOwnProperty(option) && !params[option]) {
-                delete params[option];
-            }
-        }
-
-        if (params.method && !params.method.match(/^GET|POST$/i)) {
-            delete params.method;
-        }
-
-        if (params.limit) {
-            if (isNaN(params.limit)) {
-                delete params.limit;
-            } else {
-                params.limit = parseInt(params.limit);
-            }
-        }
-
-        return Merge(self._args, params);
-    },
-    CustParams: function(input) {
-        var dataAutocompleteIdLabel = "data-autocomplete-id",
-            self = this;
-
-        if (!input.hasAttribute(dataAutocompleteIdLabel)) {
-            input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
-
-            self._custArgs.push(self.CreateCustParams(input));
-        }
-
-        return self._custArgs[Attr(input, dataAutocompleteIdLabel)];
+    Position: function(input, result) {
+        Attr(result, {
+            "class": "autocomplete",
+            "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+        });
     }
 };
 
