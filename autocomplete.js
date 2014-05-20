@@ -66,10 +66,10 @@ AutoComplete.prototype = {
         if (input) {
             var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
                 self = this,
-                result = DOMCreate("div"),
+                result = domCreate("div"),
                 request;
             
-            Attr(input, {"autocomplete": "off"});
+            attr(input, {"autocomplete": "off"});
             
             self.Position(input, result);
 
@@ -82,9 +82,9 @@ AutoComplete.prototype = {
             
 
             input.addEventListener("focus", function() {
-                var dataAutocompleteOldValue = Attr(input, dataAutocompleteOldValueLabel);
+                var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                 if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
-                    Attr(result, {"class": "autocomplete open"});
+                    attr(result, {"class": "autocomplete open"});
                 }
             });
 
@@ -98,9 +98,9 @@ AutoComplete.prototype = {
                     inputValue = custParams.pre(input);
 
                 if (inputValue && custParams.url) {
-                    var dataAutocompleteOldValue = Attr(input, dataAutocompleteOldValueLabel);
+                    var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                     if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-                        Attr(result, {"class": "autocomplete open"});
+                        attr(result, {"class": "autocomplete open"});
                     }
 
                     request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
@@ -111,7 +111,7 @@ AutoComplete.prototype = {
     Close: function(result, closeNow) {
         var self = this;
         if (closeNow) {
-            Attr(result, {"class": "autocomplete"});
+            attr(result, {"class": "autocomplete"});
         } else {
             setTimeout(function() {self.Close(result, true);}, 150);
         }
@@ -128,7 +128,7 @@ AutoComplete.prototype = {
 
         var paramsAttribute = Object.getOwnPropertyNames(params);
         for (var i = paramsAttribute.length - 1; i >= 0; i--) {
-            params[paramsAttribute[i]] = Attr(input, params[paramsAttribute[i]]);
+            params[paramsAttribute[i]] = attr(input, params[paramsAttribute[i]]);
         }
 
         for (var option in params) {
@@ -149,7 +149,7 @@ AutoComplete.prototype = {
             }
         }
 
-        return Merge(self._args, params);
+        return merge(self._args, params);
     },
     CustParams: function(input) {
         var dataAutocompleteIdLabel = "data-autocomplete-id",
@@ -161,7 +161,7 @@ AutoComplete.prototype = {
             self._custArgs.push(self.CreateCustParams(input));
         }
 
-        return self._custArgs[Attr(input, dataAutocompleteIdLabel)];
+        return self._custArgs[attr(input, dataAutocompleteIdLabel)];
     },
     Init: function() {
         var self = this,
@@ -176,9 +176,9 @@ AutoComplete.prototype = {
                             var li = e.currentTarget,
                                 dataAutocompleteValueLabel = "data-autocomplete-value";
 
-                            input.value = li.hasAttribute(dataAutocompleteValueLabel) ? Attr(li, dataAutocompleteValueLabel) : li.innerHTML;
+                            input.value = li.hasAttribute(dataAutocompleteValueLabel) ? attr(li, dataAutocompleteValueLabel) : li.innerHTML;
 
-                            Attr(input, {"data-autocomplete-old-value": input.value});
+                            attr(input, {"data-autocomplete-old-value": input.value});
                         });
                     };
 
@@ -192,8 +192,8 @@ AutoComplete.prototype = {
                         response = JSON.parse(response);
                         var empty,
                             length = response.length,
-                            li = DOMCreate("li"),
-                            ul = DOMCreate("ul");
+                            li = domCreate("li"),
+                            ul = domCreate("ul");
                             
                         if (Array.isArray(response)) {
                             if (length) {
@@ -204,12 +204,12 @@ AutoComplete.prototype = {
                                 for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
                                     li.innerHTML = response[i];
                                     ul.appendChild(li);
-                                    li = DOMCreate("li");
+                                    li = domCreate("li");
                                 }
                             } else {
                                 //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
                                 empty = true;
-                                Attr(li, {"class": "locked"});
+                                attr(li, {"class": "locked"});
                                 li.innerHTML = custParams.noResult;
                                 ul.appendChild(li);
                             }
@@ -223,9 +223,9 @@ AutoComplete.prototype = {
                             for (var propertie in properties) {
                                 if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
                                     li.innerHTML = response[properties[propertie]];
-                                    Attr(li, {"data-autocomplete-value": properties[propertie]});
+                                    attr(li, {"data-autocomplete-value": properties[propertie]});
                                     ul.appendChild(li);
-                                    li = DOMCreate("li");
+                                    li = domCreate("li");
                                 }
                             }
                         }
@@ -251,7 +251,7 @@ AutoComplete.prototype = {
             self._args = {};
         }
 
-        self._args = Merge(defaultParams, self._args);
+        self._args = merge(defaultParams, self._args);
 
         if (!self._args.method.match(/^GET|POST$/i)) {
             self._args.method = defaultParams.method;
@@ -262,7 +262,7 @@ AutoComplete.prototype = {
         }
     },
     Position: function(input, result) {
-        Attr(result, {
+        attr(result, {
             "class": "autocomplete",
             "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
         });
@@ -270,7 +270,7 @@ AutoComplete.prototype = {
 };
 
 //Method deported
-function Attr(item, attrs) {
+function attr(item, attrs) {
     if (typeof attrs == "string") {
         return item.getAttribute(attrs);
     }
@@ -278,22 +278,22 @@ function Attr(item, attrs) {
     for (var key in attrs) {
         item.setAttribute(key, attrs[key]);
     }
-};
+}
 
-function DOMCreate(item) {
+function domCreate(item) {
     return document.createElement(item);
-};
+}
 
-function Merge(obj1, obj2) {
-    var merge = {};
+function merge(obj1, obj2) {
+    var concat = {};
     
     for (var a in obj1) {
-        merge[a] = obj1[a];
+        concat[a] = obj1[a];
     }
 
     for (var b in obj2) {
-        merge[b] = obj2[b];
+        concat[b] = obj2[b];
     }
 
-    return merge;
+    return concat;
 }
