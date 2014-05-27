@@ -1,8 +1,9 @@
 /*
- * Autocomplete.js v1.4.0 unstable
+ * Autocomplete.js v1.4.0
  * Developed by Baptiste Donaux
+ * http://autocomplete-js.com
  * 
- * Under MIT Licence
+ * Under MIT Licence
  * (c) 2014, Baptiste Donaux
  */
 "use strict";
