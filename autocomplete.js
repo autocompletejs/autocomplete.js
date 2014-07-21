@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.4.0
+ * Autocomplete.js v1.4.1
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  * 
@@ -58,7 +58,7 @@ AutoComplete.prototype = {
         for (var i = inputs.length - 1; i >= 0; i--) {
             input = inputs[i];
 
-            if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT$/i)) {
+            if (input.nodeName.match(/^INPUT$/i) && (input.type.match(/^TEXT$/i) || input.type.match(/^SEARCH$/i))) {
                 this.BindOne(input);
             }
         }
