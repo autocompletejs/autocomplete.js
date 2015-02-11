@@ -1,10 +1,10 @@
 /*
- * Autocomplete.js v1.4.1
+ * Autocomplete.js v1.5.0
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  * 
  * Under MIT Licence
- * (c) 2014, Baptiste Donaux
+ * (c) 2015, Baptiste Donaux
  */
 "use strict";
 var AutoComplete = function(params) {
