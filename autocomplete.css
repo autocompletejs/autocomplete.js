@@ -41,11 +41,12 @@
 	cursor: inherit;
 }
 
+.autocomplete > ul > li.active,
 .autocomplete > ul > li:active,
 .autocomplete > ul > li:focus, 
 .autocomplete > ul > li:hover
 {
-	background-color: #EEEEEE;
-	font-weight: bold;
-	transition: all 0.5s ease 0s;
+  background-color: #EEEEEE;
+  font-weight: bold;
+  transition: all 0.5s ease 0s;
 }

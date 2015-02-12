@@ -80,13 +80,29 @@ AutoComplete.prototype = {
 
             input.parentNode.appendChild(result);
             
-            
-
             input.addEventListener("focus", function() {
                 var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                 if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
                     attr(result, {"class": "autocomplete open"});
                 }
+
+                input.addEventListener("keyup", function(e) {
+                    if (/*e.keyCode == 38 || */e.keyCode == 40) {
+                        // console.log(e.key + " -> " + e.keyCode);
+
+                        var liActive = result.querySelector("li.active");
+                        if (liActive == null) {
+                            var first = result.querySelector("li:first-child:not(.locked)");
+                            if (first != null) {
+                                attr(first, {"class": "active"});
+                            }
+                        } else {
+                            var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
+                            attr(liActive, {"class": ""});
+                            attr(liActive.parentElement.childNodes.item(currentIndex + 1), {"class": "active"});
+                        }
+                    }
+                });
             });
 
             input.addEventListener("blur", function() {
@@ -272,12 +288,14 @@ AutoComplete.prototype = {
 
 //Method deported
 function attr(item, attrs) {
-    if (typeof attrs == "string") {
-        return item.getAttribute(attrs);
-    }
+    if (item != null) {
+        if (typeof attrs == "string") {
+            return item.getAttribute(attrs);
+        }
 
-    for (var key in attrs) {
-        item.setAttribute(key, attrs[key]);
+        for (var key in attrs) {
+            item.setAttribute(key, attrs[key]);
+        }
     }
 }
 
