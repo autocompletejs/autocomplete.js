@@ -80,13 +80,13 @@ AutoComplete.prototype = {
 
             input.parentNode.appendChild(result);
             
-            input.addEventListener("focus", function() {
+            input.addEventListener("focus", function(event) {
                 var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                 if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
                     attr(result, {"class": "autocomplete open"});
                 }
 
-                input.addEventListener("keyup", function(e) {
+                var selectActive = function(e) {
                     var keyCode = e.keyCode;
                     if (keyCode == 38 || keyCode == 40) {
                         var liActive = result.querySelector("li.active");
@@ -106,7 +106,10 @@ AutoComplete.prototype = {
                             attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
                         }
                     }
-                });
+                };
+
+                input.removeEventListener("keyup", selectActive);
+                input.addEventListener("keyup", selectActive);
             });
 
             input.addEventListener("blur", function() {
@@ -114,17 +117,19 @@ AutoComplete.prototype = {
             });
 
             input.addEventListener("keyup", function(e) {
-                var input = e.currentTarget,
-                    custParams = self.CustParams(input),
-                    inputValue = custParams.pre(input);
+                if (e.keyCode < 35 || e.keyCode > 40) {
+                    var input = e.currentTarget,
+                        custParams = self.CustParams(input),
+                        inputValue = custParams.pre(input);
 
-                if (inputValue && custParams.url) {
-                    var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
-                    if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-                        attr(result, {"class": "autocomplete open"});
+                    if (inputValue && custParams.url) {
+                        var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
+                        if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
+                            attr(result, {"class": "autocomplete open"});
+                        }
+
+                        request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                     }
-
-                    request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                 }
             });
         }
