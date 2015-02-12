@@ -15,7 +15,7 @@ var AutoComplete = function(params) {
         this.Init();
 
         for (var i = this._args.selector.length - 1; i >= 0; i--) {
-            this.BindCollection(this._args.selector[i]);
+            this.BindCollection(this, this._args.selector[i]);
         }
     } else {
         new AutoComplete(params);
@@ -51,7 +51,7 @@ AutoComplete.prototype = {
 
         return request;
     },
-    BindCollection: function(selector) {
+    BindCollection: function(instance, selector) {
         var input,
             inputs = document.querySelectorAll(selector);
 
@@ -59,11 +59,11 @@ AutoComplete.prototype = {
             input = inputs[i];
 
             if (input.nodeName.match(/^INPUT$/i) && (input.type.match(/^TEXT$/i) || input.type.match(/^SEARCH$/i))) {
-                this.BindOne(input);
+                this.BindOne(instance, input);
             }
         }
     },
-    BindOne: function(input) {
+    BindOne: function(instance, input) {
         if (input) {
             var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
                 self = this,
@@ -96,10 +96,7 @@ AutoComplete.prototype = {
                 if (keyCode == 13 && result.getAttribute("class").indexOf("open") != -1) {
                     var liActive = result.querySelector("li.active");
                     if (liActive != null) {
-                        var dataAutocompleteValueLabel = "data-autocomplete-value";
-                        e.currentTarget.value = liActive.hasAttribute(dataAutocompleteValueLabel) ? attr(liActive, dataAutocompleteValueLabel) : liActive.innerHTML;
-                        attr(e.currentTarget, {"data-autocomplete-old-value": e.currentTarget.value});
-
+                        instance._args.select(e.currentTarget, liActive);
                         attr(result, {"class": "autocomplete"});
                     }
                 }
@@ -205,18 +202,21 @@ AutoComplete.prototype = {
                 method:    "GET",
                 noResult:  "No result",
                 paramName: "q",
+                select: function(input, item) {
+                    var dataAutocompleteValueLabel = "data-autocomplete-value";
+                    input.value = item.hasAttribute(dataAutocompleteValueLabel) ? attr(item, dataAutocompleteValueLabel) : item.innerHTML;
+                    attr(input, {"data-autocomplete-old-value": input.value});
+                },
                 open: function(input, result) {
-                    var lambda = function(li) {
+                    var lambda = function(self, li) {
                         li.addEventListener("click", function(e) {
-                            var dataAutocompleteValueLabel = "data-autocomplete-value";
-                            input.value = e.currentTarget.hasAttribute(dataAutocompleteValueLabel) ? attr(e.currentTarget, dataAutocompleteValueLabel) : e.currentTarget.innerHTML;
-                            attr(input, {"data-autocomplete-old-value": input.value});
+                            self.select(input, e.currentTarget);
                         });
                     };
 
                     var liS = result.getElementsByTagName("li");
                     for (var i = liS.length - 1; i >= 0; i--) {
-                        lambda(liS[i]);
+                        lambda(this, liS[i]);
                     }
                 },
                 post: function(result, response, custParams) {
