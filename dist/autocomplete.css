@@ -8,10 +8,10 @@
   display: block;
   transition: all 0.5s ease 0s;
   background-color: #fafafa;
+  max-height: 500px;
   overflow-y: hidden;
-  max-height: 680px;
-  transition-property: all;
   transition-duration: 0.3s;
+  transition-property: all;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 .autocomplete:empty,
@@ -26,8 +26,8 @@
 }
 .autocomplete > ul {
   list-style-type: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 .autocomplete > ul > li {
   cursor: pointer;
@@ -44,10 +44,10 @@
   transition: all 0.5s ease 0s;
 }
 input[data-autocomplete] {
-  width: 100%;
-  padding: 5px;
-  margin: 0px;
-  border-width: 0px 0px 1px 0px;
-  border-style: none none solid none;
   border-color: #808080;
+  border-style: none none solid none;
+  border-width: 0px 0px 1px 0px;
+  margin: 0px;
+  padding: 5px;
+  width: 100%;
 }

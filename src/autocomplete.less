@@ -1,0 +1,68 @@
+@background_color:  #FAFAFA;
+@item_active_color: #EEEEEE;
+@result_transition: all 0.5s ease 0s;
+
+.autocomplete {
+  position: absolute;
+  transition: @result_transition;
+  max-height: 0;
+  overflow-y: hidden;
+}
+
+.autocomplete.open {
+  display: block;
+  transition: @result_transition;
+  background-color: @background_color;
+  max-height: 500px;
+  overflow-y: hidden;
+  transition-duration: 0.3s;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.autocomplete:empty,
+.autocomplete.open:empty
+{
+	display: none;
+}
+
+.autocomplete:active,
+.autocomplete:focus,
+.autocomplete:hover
+{
+  background-color: @background_color;
+  transition: @result_transition;
+}
+
+.autocomplete > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete > ul > li {
+  cursor: pointer;
+  padding: 5px 0 5px 10px;
+}
+
+.autocomplete > ul > li.locked {
+	cursor: inherit;
+}
+
+.autocomplete > ul > li.active,
+.autocomplete > ul > li:active,
+.autocomplete > ul > li:focus, 
+.autocomplete > ul > li:hover
+{
+  background-color: @item_active_color;
+  transition: @result_transition;
+}
+
+input[data-autocomplete] {
+  border-color: #808080;
+  border-style: none none solid none;
+  border-width: 0px 0px 1px 0px;
+  margin: 0px;
+  padding: 5px;
+  width: 100%;
+}

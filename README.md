@@ -17,3 +17,20 @@ Lite, Open, made by a developer for developers. Help me and contributed :)
 ###Thanks
 
 Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advices.
+
+##Features
+
+###Just added
+
+* limit param on JSON response (if the limit is negative and if sort DESC)
+* custom pre, post, open method
+
+###Next release
+
+* implement the top and bottom key to naviguate into result
+
+###For the v2
+
+* replace from noResult to empty
+* escape keypress event which are not char
+* input conf use only one attribute and take a JSON Object
