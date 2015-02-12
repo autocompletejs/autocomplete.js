@@ -3,6 +3,9 @@
   transition: all 0.5s ease 0s;
   max-height: 0;
   overflow-y: hidden;
+  transition-duration: 0.3s;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 .autocomplete.open {
   display: block;
