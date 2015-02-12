@@ -91,7 +91,7 @@ AutoComplete.prototype = {
                 self.Close(result);
             });
 
-            var keyEvent = function(e) {
+            input.addEventListener("keyup", function(e) {
                 var keyCode = e.keyCode;
                 if (keyCode == 38 || keyCode == 40) {
                     var liActive = result.querySelector("li.active");
@@ -125,9 +125,7 @@ AutoComplete.prototype = {
                         request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                     }
                 }
-            };
-
-            input.addEventListener("keyup", keyEvent);
+            });
         }
     },
     Close: function(result, closeNow) {
