@@ -105,8 +105,12 @@ AutoComplete.prototype = {
                         attr(liActive, {"class": ""});
 
                         var position = currentIndex + (keyCode - 39);
+                        var lisCount = result.getElementsByTagName("li").length;
+
                         if (position < 0) {
-                            position = result.getElementsByTagName("li").length - 1;
+                            position = lisCount - 1;
+                        } else if (position >= lisCount) {
+                            position = 0;
                         }
 
                         attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
