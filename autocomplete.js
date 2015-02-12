@@ -85,39 +85,33 @@ AutoComplete.prototype = {
                 if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
                     attr(result, {"class": "autocomplete open"});
                 }
-
-                var selectActive = function(e) {
-                    var keyCode = e.keyCode;
-                    if (keyCode == 38 || keyCode == 40) {
-                        var liActive = result.querySelector("li.active");
-                        if (liActive == null) {
-                            var first = result.querySelector("li:first-child:not(.locked)");
-                            if (first != null) {
-                                attr(first, {"class": "active"});
-                            }
-                        } else {
-                            var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
-                            attr(liActive, {"class": ""});
-
-                            var position = currentIndex + (keyCode - 39);
-                            if (position < 0) {
-                                position = result.getElementsByTagName("li").length - 1;
-                            }
-                            attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
-                        }
-                    }
-                };
-
-                input.removeEventListener("keyup", selectActive);
-                input.addEventListener("keyup", selectActive);
             });
 
             input.addEventListener("blur", function() {
                 self.Close(result);
             });
 
-            input.addEventListener("keyup", function(e) {
-                if (e.keyCode < 35 || e.keyCode > 40) {
+            var keyEvent = function(e) {
+                var keyCode = e.keyCode;
+                if (keyCode == 38 || keyCode == 40) {
+                    var liActive = result.querySelector("li.active");
+                    if (liActive == null) {
+                        var first = result.querySelector("li:first-child:not(.locked)");
+                        if (first != null) {
+                            attr(first, {"class": "active"});
+                        }
+                    } else {
+                        var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
+                        attr(liActive, {"class": ""});
+
+                        var position = currentIndex + (keyCode - 39);
+                        if (position < 0) {
+                            position = result.getElementsByTagName("li").length - 1;
+                        }
+
+                        attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
+                    }
+                } else if (keyCode < 35 || keyCode > 40) {
                     var input = e.currentTarget,
                         custParams = self.CustParams(input),
                         inputValue = custParams.pre(input);
@@ -131,7 +125,9 @@ AutoComplete.prototype = {
                         request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                     }
                 }
-            });
+            };
+
+            input.addEventListener("keyup", keyEvent);
         }
     },
     Close: function(result, closeNow) {
