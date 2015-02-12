@@ -87,9 +87,8 @@ AutoComplete.prototype = {
                 }
 
                 input.addEventListener("keyup", function(e) {
-                    if (/*e.keyCode == 38 || */e.keyCode == 40) {
-                        // console.log(e.key + " -> " + e.keyCode);
-
+                    var keyCode = e.keyCode;
+                    if (keyCode == 38 || keyCode == 40) {
                         var liActive = result.querySelector("li.active");
                         if (liActive == null) {
                             var first = result.querySelector("li:first-child:not(.locked)");
@@ -99,7 +98,12 @@ AutoComplete.prototype = {
                         } else {
                             var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
                             attr(liActive, {"class": ""});
-                            attr(liActive.parentElement.childNodes.item(currentIndex + 1), {"class": "active"});
+
+                            var position = currentIndex + (keyCode - 39);
+                            if (position < 0) {
+                                position = result.getElementsByTagName("li").length - 1;
+                            }
+                            attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
                         }
                     }
                 });
