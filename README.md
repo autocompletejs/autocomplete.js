@@ -22,12 +22,10 @@ Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advice
 
 ###Just added
 
-* limit param on JSON response (if the limit is negative and if sort DESC)
-* custom pre, post, open method
-
-###Next release
-
-* implement the top and bottom key to naviguate into result
+* Naviguate into results with keyboard.
+* Up, down, left and right key cancel ajax.
+* Apply a new default CSS.
+* Use GruntJS to compile assert.
 
 ###For the v2
 
