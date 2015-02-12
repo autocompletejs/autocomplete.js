@@ -99,6 +99,8 @@ AutoComplete.prototype = {
                         var dataAutocompleteValueLabel = "data-autocomplete-value";
                         e.currentTarget.value = liActive.hasAttribute(dataAutocompleteValueLabel) ? attr(liActive, dataAutocompleteValueLabel) : liActive.innerHTML;
                         attr(e.currentTarget, {"data-autocomplete-old-value": e.currentTarget.value});
+
+                        attr(result, {"class": "autocomplete"});
                     }
                 }
                 
