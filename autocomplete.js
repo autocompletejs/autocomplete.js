@@ -93,6 +93,15 @@ AutoComplete.prototype = {
 
             input.addEventListener("keyup", function(e) {
                 var keyCode = e.keyCode;
+                if (keyCode == 13 && result.getAttribute("class").indexOf("open") != -1) {
+                    var liActive = result.querySelector("li.active");
+                    if (liActive != null) {
+                        var dataAutocompleteValueLabel = "data-autocomplete-value";
+                        e.currentTarget.value = liActive.hasAttribute(dataAutocompleteValueLabel) ? attr(liActive, dataAutocompleteValueLabel) : liActive.innerHTML;
+                        attr(e.currentTarget, {"data-autocomplete-old-value": e.currentTarget.value});
+                    }
+                }
+                
                 if (keyCode == 38 || keyCode == 40) {
                     var liActive = result.querySelector("li.active");
                     if (liActive == null) {
@@ -197,11 +206,8 @@ AutoComplete.prototype = {
                 open: function(input, result) {
                     var lambda = function(li) {
                         li.addEventListener("click", function(e) {
-                            var li = e.currentTarget,
-                                dataAutocompleteValueLabel = "data-autocomplete-value";
-
-                            input.value = li.hasAttribute(dataAutocompleteValueLabel) ? attr(li, dataAutocompleteValueLabel) : li.innerHTML;
-
+                            var dataAutocompleteValueLabel = "data-autocomplete-value";
+                            input.value = e.currentTarget.hasAttribute(dataAutocompleteValueLabel) ? attr(e.currentTarget, dataAutocompleteValueLabel) : e.currentTarget.innerHTML;
                             attr(input, {"data-autocomplete-old-value": input.value});
                         });
                     };
