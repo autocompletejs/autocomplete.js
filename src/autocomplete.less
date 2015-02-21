@@ -59,6 +59,13 @@
 {
   background-color: @item_active_color;
   transition: @result_transition;
+
+  a:active,
+  a:focus,
+  a:hover
+  {
+    text-decoration: none;
+  }
 }
 
 input[data-autocomplete] {
