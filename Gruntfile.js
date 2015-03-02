@@ -37,6 +37,11 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        jshint: {
+            source: [
+                'src/autocomplete.js'
+            ]
         }
     });
 
