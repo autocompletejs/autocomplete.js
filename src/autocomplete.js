@@ -22,51 +22,58 @@ var AutoComplete = (function () {
                         attr(input, {"data-autocomplete-old-value": input.value = attr(item, "data-autocomplete-value", item.innerHTML)});
                     },
                     open: function(input, result) {
+                        var self = this;
                         Array.prototype.forEach.call(result.getElementsByTagName("li"), function(li) {
                             li.onclick = function(event) {
-                                this.select(input, event.target);
+                                self.select(input, event.target);
                             };
                         });
                     },
                     post: function(result, response, custParams) {
                         try {
                             response = JSON.parse(response);
-                            var empty,
+                            var createLi = function() {return domCreate("li");},
+                                autoReverse = function(param, limit) {
+                                    return (limit < 0) ? param.reverse() : param;
+                                },
+                                addLi = function(ul, li, response) {
+                                    li.innerHTML = response;
+                                    ul.appendChild(li);
+                                    return createLi();
+                                },
+                                empty,
+                                i = 0,
                                 length = response.length,
-                                li = domCreate("li"),
-                                ul = domCreate("ul");
+                                li     = createLi(),
+                                ul     = domCreate("ul"),
+                                limit  = custParams.limit,
+                                propertie,
+                                properties,
+                                value;
                                 
                             if (Array.isArray(response)) {
                                 if (length) {
-                                    if (custParams.limit < 0) {
-                                        response.reverse();
-                                    }
+                                    
+                                    response = autoReverse(response, limit);
 
-                                    for (var i = 0; i < length && (i < Math.abs(custParams.limit) || !custParams.limit); i++) {
-                                        li.innerHTML = response[i];
-                                        ul.appendChild(li);
-                                        li = domCreate("li");
+                                    for (; i < length && (i < Math.abs(limit) || !limit); i++) {
+                                        li = addLi(ul, li, response[i]);
                                     }
                                 } else {
                                     //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
                                     empty = true;
                                     attrClass(li, "locked");
-                                    li.innerHTML = custParams.noResult;
-                                    ul.appendChild(li);
+                                    li = addLi(ul, li, custParams.noResult);
                                 }
                             } else {
-                                var properties = Object.getOwnPropertyNames(response);
+                                properties = autoReverse(Object.getOwnPropertyNames(response), limit);
 
-                                if (custParams.limit < 0) {
-                                    properties.reverse();
-                                }
+                                for (propertie in properties) {
+                                    value = properties[propertie];
 
-                                for (var propertie in properties) {
-                                    if (parseInt(propertie) < Math.abs(custParams.limit) || !custParams.limit) {
-                                        li.innerHTML = response[properties[propertie]];
-                                        attr(li, {"data-autocomplete-value": properties[propertie]});
-                                        ul.appendChild(li);
-                                        li = domCreate("li");
+                                    if (parseInt(propertie) < Math.abs(limit) || !limit) {
+                                        attr(li, {"data-autocomplete-value": value});
+                                        li = addLi(ul, li, response[value]);
                                     }
                                 }
                             }
