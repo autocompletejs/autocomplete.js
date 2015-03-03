@@ -19,8 +19,7 @@ var AutoComplete = (function () {
                     noResult:  "No result",
                     paramName: "q",
                     select: function(input, item) {
-                        var dataAutocompleteValueLabel = "data-autocomplete-value";
-                        input.value = item.hasAttribute(dataAutocompleteValueLabel) ? attr(item, dataAutocompleteValueLabel) : item.innerHTML;
+                        input.value = attr(item, "data-autocomplete-value", item.innerHTML);
                         attr(input, {"data-autocomplete-old-value": input.value});
                     },
                     open: function(input, result) {
@@ -92,7 +91,7 @@ var AutoComplete = (function () {
                     pre: function(input) {
                         return input.value;
                     },
-                    selector:  ["input[data-autocomplete]"]
+                    selector: ["input[data-autocomplete]"]
                 };
 
             self._custArgs = [];
@@ -294,10 +293,10 @@ var AutoComplete = (function () {
     }
 
     //Method deported
-    function attr(item, attrs) {
+    function attr(item, attrs, defaultValue) {
         if (item !== null) {
             if (typeof attrs == "string") {
-                return item.getAttribute(attrs);
+                return item.hasAttribute(attrs) ? item.getAttribute(attrs) : defaultValue;
             }
 
             for (var key in attrs) {
