@@ -24,34 +24,6 @@ var AutoComplete = (function () {
     };
 
     AutoComplete.prototype = {
-        Ajax: function(request, custParams, queryParams, input, result) {
-            if (request) {
-                request.abort();
-            }
-            
-            var method = custParams.method,
-                url = custParams.url;
-
-            if (method.match(/^GET$/i)) {
-                url += "?" + queryParams;
-            }
-
-            request = new XMLHttpRequest();
-            request.open(method, url, true);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-            request.onreadystatechange = function () {
-                if (request.readyState == 4 && request.status == 200) {
-                    if (custParams.post(result, request.response, custParams) !== true) {
-                        custParams.open(input, result);
-                    }
-                }
-            };
-
-            request.send(queryParams);
-
-            return request;
-        },
         BindCollection: function(instance, selector) {
             var i,
                 input,
@@ -76,10 +48,10 @@ var AutoComplete = (function () {
 
                 attr(input, {"autocomplete": "off"});
                 
-                self.Position(input, result);
+                autocompletePosition(input, result);
 
                 addEventListener("position", function() {
-                    self.Position(input, result);
+                    autocompletePosition(input, result);
                 });
 
                 input.parentNode.appendChild(result);
@@ -92,7 +64,7 @@ var AutoComplete = (function () {
                 });
 
                 addEventListener("blur", function() {
-                    self.Close(result);
+                    autocompleteClose(result);
                 });
 
                 addEventListener("keyup", function(e) {
@@ -140,18 +112,10 @@ var AutoComplete = (function () {
                                 attrClass(result, "autocomplete open");
                             }
 
-                            request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
+                            request = autocompleteAjax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                         }
                     }
                 });
-            }
-        },
-        Close: function(result, closeNow) {
-            var self = this;
-            if (closeNow) {
-                attrClass(result, "autocomplete");
-            } else {
-                setTimeout(function() {self.Close(result, true);}, 150);
             }
         },
         CreateCustParams: function(input) {
@@ -161,8 +125,7 @@ var AutoComplete = (function () {
                 noResult:  "data-autocomplete-no-result",
                 paramName: "data-autocomplete-param-name",
                 url:       "data-autocomplete"
-            },
-            self = this;
+            };
 
             var paramsAttribute = Object.getOwnPropertyNames(params);
             for (var i = paramsAttribute.length - 1; i >= 0; i--) {
@@ -187,7 +150,7 @@ var AutoComplete = (function () {
                 }
             }
 
-            return merge(self._args, params);
+            return merge(this._args, params);
         },
         CustParams: function(input) {
             var dataAutocompleteIdLabel = "data-autocomplete-id",
@@ -298,14 +261,52 @@ var AutoComplete = (function () {
             if (!Array.isArray(self._args.selector)) {
                 self._args.selector = defaultParams.selector;
             }
-        },
-        Position: function(input, result) {
-            attr(result, {
-                "class": "autocomplete",
-                "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
-            });
         }
     };
+
+    //Method without object called
+    function autocompletePosition(input, result) {
+        attr(result, {
+            "class": "autocomplete",
+            "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+        });
+    }
+
+    function autocompleteAjax(request, custParams, queryParams, input, result) {
+        if (request) {
+            request.abort();
+        }
+        
+        var method = custParams.method,
+            url    = custParams.url;
+
+        if (method.match(/^GET$/i)) {
+            url += "?" + queryParams;
+        }
+
+        request = new XMLHttpRequest();
+        request.open(method, url, true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                if (custParams.post(result, request.response, custParams) !== true) {
+                    custParams.open(input, result);
+                }
+            }
+        };
+
+        request.send(queryParams);
+
+        return request;
+    }
+    function autocompleteClose(result, closeNow) {
+        if (closeNow) {
+            attrClass(result, "autocomplete");
+        } else {
+            setTimeout(function() {autocompleteClose(result, true);}, 150);
+        }
+    }
 
     //Method deported
     function attr(item, attrs) {
