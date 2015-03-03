@@ -107,7 +107,7 @@ var AutoComplete = (function () {
             }
 
             for (i = self._args.selector.length - 1; i >= 0; i--) {
-                self.BindCollection(self, self._args.selector[i]);
+                self.BindCollection(self._args.selector[i]);
             }
         } else {
             new AutoComplete(params);
@@ -115,16 +115,16 @@ var AutoComplete = (function () {
     };
 
     AutoComplete.prototype = {
-        BindCollection: function(instance, selector) {
+        BindCollection: function(selector) {
             var self = this;
 
             Array.prototype.forEach.call(document.querySelectorAll(selector), function(input) {
                 if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT|SEARCH$/i)) {
-                    self.BindOne(instance, input);
+                    self.BindOne(input);
                 }
             });
         },
-        BindOne: function(instance, input) {
+        BindOne: function(input) {
             var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
                 self                          = this,
                 result                        = domCreate("div"),
@@ -159,7 +159,7 @@ var AutoComplete = (function () {
                 if (keyCode == 13 && attrClass(result).indexOf("open") != -1) {
                     liActive = result.querySelector("li.active");
                     if (liActive !== null) {
-                        instance._args.select(input, liActive);
+                        self._args.select(input, liActive);
                         attrClass(result, "autocomplete");
                     }
                 }
