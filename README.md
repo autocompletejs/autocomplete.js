@@ -26,6 +26,8 @@ Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advice
 * Up, down, left and right key cancel ajax.
 * Apply a new default CSS.
 * Use GruntJS to compile assert.
+* Use GruntJS to apply JSHint validation.
+* Replace "autocomplete:position" event by "position"
 
 ###For the v2
 

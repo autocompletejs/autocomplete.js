@@ -6,7 +6,7 @@
  * Under MIT Licence
  * (c) 2015, Baptiste Donaux
  */
-(function () {
+var AutoComplete = (function () {
     "use strict";
     var AutoComplete = function(params) {
         //Construct
@@ -53,13 +53,15 @@
             return request;
         },
         BindCollection: function(instance, selector) {
-            var input,
-                inputs = document.querySelectorAll(selector);
+            var i,
+                input,
+                inputs = document.querySelectorAll(selector),
+                type;
 
-            for (var i = inputs.length - 1; i >= 0; i--) {
+            for (i = inputs.length - 1; i >= 0; i--) {
                 input = inputs[i];
 
-                if (input.nodeName.match(/^INPUT$/i) && (input.type.match(/^TEXT$/i) || input.type.match(/^SEARCH$/i))) {
+                if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT|SEARCH$/i)) {
                     this.BindOne(instance, input);
                 }
             }
@@ -67,39 +69,42 @@
         BindOne: function(instance, input) {
             if (input) {
                 var dataAutocompleteOldValueLabel = "data-autocomplete-old-value",
-                    self = this,
-                    result = domCreate("div"),
+                    self                          = this,
+                    result                        = domCreate("div"),
+                    addEventListener              = input.addEventListener,
                     request;
-                
+
                 attr(input, {"autocomplete": "off"});
                 
                 self.Position(input, result);
 
-                input.addEventListener("autocomplete:position", function() {
+                addEventListener("position", function() {
                     self.Position(input, result);
                 });
 
                 input.parentNode.appendChild(result);
                 
-                input.addEventListener("focus", function(event) {
+                addEventListener("focus", function() {
                     var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                     if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
-                        attr(result, {"class": "autocomplete open"});
+                        attrClass(result, "autocomplete open");
                     }
                 });
 
-                input.addEventListener("blur", function() {
+                addEventListener("blur", function() {
                     self.Close(result);
                 });
 
-                input.addEventListener("keyup", function(e) {
+                addEventListener("keyup", function(e) {
                     var keyCode = e.keyCode,
+                        input   = e.target,
                         liActive;
-                    if (keyCode == 13 && result.getAttribute("class").indexOf("open") != -1) {
+
+                    if (keyCode == 13 && attrClass(result).indexOf("open") != -1) {
                         liActive = result.querySelector("li.active");
                         if (liActive !== null) {
-                            instance._args.select(e.currentTarget, liActive);
-                            attr(result, {"class": "autocomplete"});
+                            instance._args.select(input, liActive);
+                            attrClass(result, "autocomplete");
                         }
                     }
                     
@@ -108,11 +113,11 @@
                         if (liActive === null) {
                             var first = result.querySelector("li:first-child:not(.locked)");
                             if (first !== null) {
-                                attr(first, {"class": "active"});
+                                attrClass(first, "active");
                             }
                         } else {
                             var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
-                            attr(liActive, {"class": ""});
+                            attrClass(liActive, "");
 
                             var position = currentIndex + (keyCode - 39);
                             var lisCount = result.getElementsByTagName("li").length;
@@ -123,17 +128,16 @@
                                 position = 0;
                             }
 
-                            attr(liActive.parentElement.childNodes.item(position), {"class": "active"});
+                            attrClass(liActive.parentElement.childNodes.item(position), "active");
                         }
                     } else if (keyCode < 35 || keyCode > 40) {
-                        var input = e.currentTarget,
-                            custParams = self.CustParams(input),
+                        var custParams = self.CustParams(input),
                             inputValue = custParams.pre(input);
 
                         if (inputValue && custParams.url) {
                             var dataAutocompleteOldValue = attr(input, dataAutocompleteOldValueLabel);
                             if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-                                attr(result, {"class": "autocomplete open"});
+                                attrClass(result, "autocomplete open");
                             }
 
                             request = self.Ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
@@ -145,7 +149,7 @@
         Close: function(result, closeNow) {
             var self = this;
             if (closeNow) {
-                attr(result, {"class": "autocomplete"});
+                attrClass(result, "autocomplete");
             } else {
                 setTimeout(function() {self.Close(result, true);}, 150);
             }
@@ -212,7 +216,7 @@
                     open: function(input, result) {
                         var lambda = function(self, li) {
                             li.addEventListener("click", function(e) {
-                                self.select(input, e.currentTarget);
+                                self.select(input, e.target);
                             });
                         };
 
@@ -243,7 +247,7 @@
                                 } else {
                                     //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
                                     empty = true;
-                                    attr(li, {"class": "locked"});
+                                    attrClass(li, "locked");
                                     li.innerHTML = custParams.noResult;
                                     ul.appendChild(li);
                                 }
@@ -316,6 +320,16 @@
         }
     }
 
+    function attrClass(item, value) {
+        if (item !== null) {
+            if (typeof value === undefined) {
+                return attr(item, "class");
+            }
+
+            attr(item, {"class": value});
+        }
+    }
+
     function domCreate(item) {
         return document.createElement(item);
     }
@@ -333,4 +347,6 @@
 
         return concat;
     }
+
+    return AutoComplete;
 }());
