@@ -118,10 +118,10 @@ var AutoComplete = (function () {
 
                         attr(input, {"autocomplete": "off"});
                         
-                        autocompletePosition(input, result);
+                        position(input, result);
 
                         input.addEventListener("position", function() {
-                            autocompletePosition(input, result);
+                            position(input, result);
                         });
 
                         input.parentNode.appendChild(result);
@@ -134,7 +134,7 @@ var AutoComplete = (function () {
                         };
 
                         input.onblur = function() {
-                            autocompleteClose(result);
+                            closeBox(result);
                         };
 
                         input.onkeyup = function(e) {
@@ -182,7 +182,7 @@ var AutoComplete = (function () {
                                         attrClass(result, "autocomplete open");
                                     }
 
-                                    request = autocompleteAjax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
+                                    request = ajax(request, custParams, custParams.paramName + "=" + inputValue, input, result);
                                 }
                             }
                         };
@@ -241,14 +241,14 @@ var AutoComplete = (function () {
     };
 
     //Method without object called
-    function autocompletePosition(input, result) {
+    function position(input, result) {
         attr(result, {
             "class": "autocomplete",
             "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
         });
     }
 
-    function autocompleteAjax(request, custParams, queryParams, input, result) {
+    function ajax(request, custParams, queryParams, input, result) {
         if (request) {
             request.abort();
         }
@@ -276,11 +276,11 @@ var AutoComplete = (function () {
 
         return request;
     }
-    function autocompleteClose(result, closeNow) {
+    function closeBox(result, closeNow) {
         if (closeNow) {
             attrClass(result, "autocomplete");
         } else {
-            setTimeout(function() {autocompleteClose(result, true);}, 150);
+            setTimeout(function() {closeBox(result, true);}, 150);
         }
     }
 
