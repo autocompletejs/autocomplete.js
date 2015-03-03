@@ -19,20 +19,14 @@ var AutoComplete = (function () {
                     noResult:  "No result",
                     paramName: "q",
                     select: function(input, item) {
-                        input.value = attr(item, "data-autocomplete-value", item.innerHTML);
-                        attr(input, {"data-autocomplete-old-value": input.value});
+                        attr(input, {"data-autocomplete-old-value": input.value = attr(item, "data-autocomplete-value", item.innerHTML)});
                     },
                     open: function(input, result) {
-                        var lambda = function(self, li) {
-                            li.addEventListener("click", function(e) {
-                                self.select(input, e.target);
-                            });
-                        };
-
-                        var liS = result.getElementsByTagName("li");
-                        for (var i = liS.length - 1; i >= 0; i--) {
-                            lambda(this, liS[i]);
-                        }
+                        Array.prototype.forEach.call(result.getElementsByTagName("li"), function(li) {
+                            li.onclick = function(event) {
+                                this.select(input, event.target);
+                            };
+                        });
                     },
                     post: function(result, response, custParams) {
                         try {
