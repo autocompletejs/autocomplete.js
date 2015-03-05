@@ -285,32 +285,6 @@ var AutoComplete = (function () {
     }
 
     //Method deported
-    function attr(item, attrs, defaultValue) {
-        if (item !== null) {
-            if (typeof attrs == "string") {
-                return item.hasAttribute(attrs) ? item.getAttribute(attrs) : defaultValue;
-            }
-
-            for (var key in attrs) {
-                item.setAttribute(key, attrs[key]);
-            }
-        }
-    }
-
-    function attrClass(item, value) {
-        if (item !== null) {
-            if (value === undefined) {
-                return attr(item, "class");
-            }
-
-            attr(item, {"class": value});
-        }
-    }
-
-    function domCreate(item) {
-        return document.createElement(item);
-    }
-
     function merge(obj1, obj2) {
         var concat = {};
         
@@ -327,3 +301,29 @@ var AutoComplete = (function () {
 
     return AutoComplete;
 }());
+
+function attr(item, attrs, defaultValue) {
+    if (item !== null) {
+        if (typeof attrs == "string") {
+            return item.hasAttribute(attrs) ? item.getAttribute(attrs) : defaultValue;
+        }
+
+        for (var key in attrs) {
+            item.setAttribute(key, attrs[key]);
+        }
+    }
+}
+
+function attrClass(item, value) {
+    if (item !== null) {
+        if (value === undefined) {
+            return attr(item, "class");
+        }
+
+        attr(item, {"class": value});
+    }
+}
+
+function domCreate(item) {
+    return document.createElement(item);
+}
