@@ -120,9 +120,19 @@ var AutoComplete = (function () {
                         
                         position(input, result);
 
-                        input.addEventListener("position", function() {
-                            position(input, result);
-                        });
+                        var
+                            positionLambda = function() {
+                                position(input, result);
+                            },
+                            destroyLambda = function() {
+                                input.onfocus = input.onblur = input.onkeyup = null;
+                                input.removeEventListener("position", positionLambda);
+                                input.removeEventListener("destroy", destroyLambda);
+                                self.CustParams(input, true);
+                            };
+
+                        input.addEventListener("position", positionLambda);
+                        input.addEventListener("destroy", destroyLambda);
 
                         input.parentNode.appendChild(result);
                         
@@ -195,9 +205,14 @@ var AutoComplete = (function () {
     };
 
     AutoComplete.prototype = {
-        CustParams: function(input) {
+        CustParams: function(input, toDelete) {
             var dataAutocompleteIdLabel = "data-autocomplete-id",
                 self = this;
+
+            if (toDelete) {
+                delete self._custArgs[attr(input, dataAutocompleteIdLabel)];
+                return;
+            }
 
             if (!input.hasAttribute(dataAutocompleteIdLabel)) {
                 input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
