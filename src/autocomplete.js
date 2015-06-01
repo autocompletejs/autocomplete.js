@@ -217,22 +217,24 @@ var AutoComplete = (function () {
             if (!input.hasAttribute(dataAutocompleteIdLabel)) {
                 input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
 
-                var params = {
-                    limit:     "data-autocomplete-limit",
-                    method:    "data-autocomplete-method",
-                    noResult:  "data-autocomplete-no-result",
-                    paramName: "data-autocomplete-param-name",
-                    url:       "data-autocomplete"
-                };
+                var prefix = "data-autocomplete",
+                    params = {
+                        limit:     prefix + "-limit",
+                        method:    prefix + "-method",
+                        noResult:  prefix + "-no-result",
+                        paramName: prefix + "-param-name",
+                        url:       prefix
+                    },
+                    paramsAttribute = Object.getOwnPropertyNames(params)
+                    i;
 
-                var paramsAttribute = Object.getOwnPropertyNames(params);
-                for (var i = paramsAttribute.length - 1; i >= 0; i--) {
+                for (i = paramsAttribute.length - 1; i >= 0; i--) {
                     params[paramsAttribute[i]] = attr(input, params[paramsAttribute[i]]);
                 }
 
-                for (var option in params) {
-                    if (params.hasOwnProperty(option) && !params[option]) {
-                        delete params[option];
+                for (i in params) {
+                    if (params.hasOwnProperty(i) && !params[i]) {
+                        delete params[i];
                     }
                 }
 
