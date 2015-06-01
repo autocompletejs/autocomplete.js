@@ -114,38 +114,38 @@ var AutoComplete = (function () {
                     if (input.nodeName.match(/^INPUT$/i) && input.type.match(/^TEXT|SEARCH$/i)) {
                         var oldValueLabel = "data-autocomplete-old-value",
                             result        = domCreate("div"),
-                            request;
-
-                        attr(input, {"autocomplete": "off"});
-                        
-                        position(input, result);
-
-                        var
+                            request,
                             positionLambda = function() {
-                                position(input, result);
+                                attr(result, {
+                                    "class": "autocomplete",
+                                    "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
+                                });
                             },
                             destroyLambda = function() {
                                 input.onfocus = input.onblur = input.onkeyup = null;
                                 input.removeEventListener("position", positionLambda);
                                 input.removeEventListener("destroy", destroyLambda);
+                                result.parentNode.removeChild(result);
                                 self.CustParams(input, true);
+                            },
+                            focusLamdba = function() {
+                                var dataAutocompleteOldValue = attr(input, oldValueLabel);
+                                if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
+                                    attrClass(result, "autocomplete open");
+                                }
                             };
 
+                        attr(input, {"autocomplete": "off"});
+
+                        positionLambda(input, result);
                         input.addEventListener("position", positionLambda);
                         input.addEventListener("destroy", destroyLambda);
 
                         input.parentNode.appendChild(result);
                         
-                        input.onfocus = function() {
-                            var dataAutocompleteOldValue = attr(input, oldValueLabel);
-                            if (!dataAutocompleteOldValue || input.value != dataAutocompleteOldValue) {
-                                attrClass(result, "autocomplete open");
-                            }
-                        };
+                        input.onfocus = focusLamdba;
 
-                        input.onblur = function() {
-                            closeBox(result);
-                        };
+                        input.onblur = closeBox.bind(null, result);
 
                         input.onkeyup = function(e) {
                             var keyCode = e.keyCode,
@@ -168,11 +168,11 @@ var AutoComplete = (function () {
                                         attrClass(first, "active");
                                     }
                                 } else {
-                                    var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
-                                    attrClass(liActive, "");
+                                    var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive),
+                                        position = currentIndex + (keyCode - 39),
+                                        lisCount = result.getElementsByTagName("li").length;
 
-                                    var position = currentIndex + (keyCode - 39);
-                                    var lisCount = result.getElementsByTagName("li").length;
+                                    attrClass(liActive, "");
 
                                     if (position < 0) {
                                         position = lisCount - 1;
@@ -184,10 +184,10 @@ var AutoComplete = (function () {
                                 }
                             } else if (keyCode < 35 || keyCode > 40) {
                                 var custParams = self.CustParams(input),
-                                    inputValue = custParams.pre(input);
+                                    inputValue = custParams.pre(input),
+                                    dataAutocompleteOldValue = attr(input, oldValueLabel);
 
                                 if (inputValue && custParams.url) {
-                                    var dataAutocompleteOldValue = attr(input, oldValueLabel);
                                     if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
                                         attrClass(result, "autocomplete open");
                                     }
@@ -225,7 +225,7 @@ var AutoComplete = (function () {
                         paramName: prefix + "-param-name",
                         url:       prefix
                     },
-                    paramsAttribute = Object.getOwnPropertyNames(params)
+                    paramsAttribute = Object.getOwnPropertyNames(params),
                     i;
 
                 for (i = paramsAttribute.length - 1; i >= 0; i--) {
@@ -256,14 +256,6 @@ var AutoComplete = (function () {
             return self._custArgs[attr(input, dataAutocompleteIdLabel)];
         }
     };
-
-    //Method without object called
-    function position(input, result) {
-        attr(result, {
-            "class": "autocomplete",
-            "style": "top:" + (input.offsetTop + input.offsetHeight) + "px;left:" + input.offsetLeft + "px;width:" + input.clientWidth + "px;"
-        });
-    }
 
     function ajax(request, custParams, queryParams, input, result) {
         if (request) {
@@ -303,14 +295,15 @@ var AutoComplete = (function () {
 
     //Method deported
     function merge(obj1, obj2) {
-        var concat = {};
+        var concat = {},
+            tmp;
         
-        for (var a in obj1) {
-            concat[a] = obj1[a];
+        for (tmp in obj1) {
+            concat[tmp] = obj1[tmp];
         }
 
-        for (var b in obj2) {
-            concat[b] = obj2[b];
+        for (tmp in obj2) {
+            concat[tmp] = obj2[tmp];
         }
 
         return concat;
