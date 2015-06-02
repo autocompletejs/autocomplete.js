@@ -202,53 +202,47 @@ var AutoComplete = (function () {
     AutoComplete.prototype = {
         CustParams: function(input, toDelete) {
             var dataAutocompleteIdLabel = "data-autocomplete-id",
-                self = this;
+                self = this,
+                prefix = "data-autocomplete",
+                params = {
+                    limit:     prefix + "-limit",
+                    method:    prefix + "-method",
+                    noResult:  prefix + "-no-result",
+                    paramName: prefix + "-param-name",
+                    url:       prefix
+                },
+                paramsAttribute = Object.getOwnPropertyNames(params),
+                i;
 
             if (toDelete) {
                 delete self._custArgs[attr(input, dataAutocompleteIdLabel)];
-                return;
-            }
+            } else {
+                if (!input.hasAttribute(dataAutocompleteIdLabel)) {
+                    input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
 
-            if (!input.hasAttribute(dataAutocompleteIdLabel)) {
-                input.setAttribute(dataAutocompleteIdLabel, self._custArgs.length);
-
-                var prefix = "data-autocomplete",
-                    params = {
-                        limit:     prefix + "-limit",
-                        method:    prefix + "-method",
-                        noResult:  prefix + "-no-result",
-                        paramName: prefix + "-param-name",
-                        url:       prefix
-                    },
-                    paramsAttribute = Object.getOwnPropertyNames(params),
-                    i;
-
-                for (i = paramsAttribute.length - 1; i >= 0; i--) {
-                    params[paramsAttribute[i]] = attr(input, params[paramsAttribute[i]]);
-                }
-
-                for (i in params) {
-                    if (params.hasOwnProperty(i) && !params[i]) {
-                        delete params[i];
+                    for (i = paramsAttribute.length - 1; i >= 0; i--) {
+                        params[paramsAttribute[i]] = attr(input, params[paramsAttribute[i]]);
                     }
-                }
 
-                if (params.method && !params.method.match(/^GET|POST$/i)) {
-                    delete params.method;
-                }
-
-                if (params.limit) {
-                    if (isNaN(params.limit)) {
-                        delete params.limit;
-                    } else {
-                        params.limit = parseInt(params.limit);
+                    for (i in params) {
+                        if (params.hasOwnProperty(i) && !params[i]) {
+                            delete params[i];
+                        }
                     }
+
+                    if (params.limit) {
+                        if (isNaN(params.limit)) {
+                            delete params.limit;
+                        } else {
+                            params.limit = parseInt(params.limit);
+                        }
+                    }
+
+                    self._custArgs.push(merge(self._args, params));
                 }
 
-                self._custArgs.push(merge(this._args, params));
+                return self._custArgs[attr(input, dataAutocompleteIdLabel)];
             }
-
-            return self._custArgs[attr(input, dataAutocompleteIdLabel)];
         }
     };
 
