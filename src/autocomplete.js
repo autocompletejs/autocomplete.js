@@ -99,12 +99,7 @@ var AutoComplete = (function () {
             self._custArgs = [];
             self._args     = merge(defaultParams, params || {});
 
-            if (!self._args.method.match(/^GET|POST$/i)) {
-                self._args.method = defaultParams.method;
-            }
-
             selectors = self._args.selector;
-
             if (!Array.isArray(selectors)) {
                 selectors = [selectors];
             }
@@ -148,8 +143,15 @@ var AutoComplete = (function () {
                         input.onblur = closeBox.bind(null, result);
 
                         input.onkeyup = function(e) {
-                            var keyCode = e.keyCode,
-                                input   = e.target,
+                            var first                    = result.querySelector("li:first-child:not(.locked)"),
+                                input                    = e.target,
+                                custParams               = self.CustParams(input),
+                                inputValue               = custParams.pre(input),
+                                dataAutocompleteOldValue = attr(input, oldValueLabel),
+                                keyCode                  = e.keyCode,
+                                currentIndex,
+                                position,
+                                lisCount,
                                 liActive;
 
                             if (keyCode == 13 && attrClass(result).indexOf("open") != -1) {
@@ -162,15 +164,10 @@ var AutoComplete = (function () {
                             
                             if (keyCode == 38 || keyCode == 40) {
                                 liActive = result.querySelector("li.active");
-                                if (liActive === null) {
-                                    var first = result.querySelector("li:first-child:not(.locked)");
-                                    if (first !== null) {
-                                        attrClass(first, "active");
-                                    }
-                                } else {
-                                    var currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive),
-                                        position = currentIndex + (keyCode - 39),
-                                        lisCount = result.getElementsByTagName("li").length;
+                                if (liActive) {
+                                    currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
+                                    position = currentIndex + (keyCode - 39);
+                                    lisCount = result.getElementsByTagName("li").length;
 
                                     attrClass(liActive, "");
 
@@ -181,12 +178,10 @@ var AutoComplete = (function () {
                                     }
 
                                     attrClass(liActive.parentElement.childNodes.item(position), "active");
+                                } else if (first) {
+                                    attrClass(first, "active");
                                 }
                             } else if (keyCode < 35 || keyCode > 40) {
-                                var custParams = self.CustParams(input),
-                                    inputValue = custParams.pre(input),
-                                    dataAutocompleteOldValue = attr(input, oldValueLabel);
-
                                 if (inputValue && custParams.url) {
                                     if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
                                         attrClass(result, "autocomplete open");
@@ -275,7 +270,7 @@ var AutoComplete = (function () {
 
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
-                if (custParams.post(result, request.response, custParams) !== true) {
+                if (!custParams.post(result, request.response, custParams)) {
                     custParams.open(input, result);
                 }
             }
@@ -285,6 +280,7 @@ var AutoComplete = (function () {
 
         return request;
     }
+
     function closeBox(result, closeNow) {
         if (closeNow) {
             attrClass(result, "autocomplete");
@@ -313,24 +309,20 @@ var AutoComplete = (function () {
 }());
 
 function attr(item, attrs, defaultValue) {
-    if (item !== null) {
-        if (typeof attrs == "string") {
+    if (item) {
+        try {
+            for (var key in attrs) {
+                item.setAttribute(key, attrs[key]);
+            }
+        } catch (e) {
             return item.hasAttribute(attrs) ? item.getAttribute(attrs) : defaultValue;
-        }
-
-        for (var key in attrs) {
-            item.setAttribute(key, attrs[key]);
         }
     }
 }
 
 function attrClass(item, value) {
-    if (item !== null) {
-        if (value === undefined) {
-            return attr(item, "class");
-        }
-
-        attr(item, {"class": value});
+    if (item) {
+        return attr(item, !value ? "class" : {"class": value});
     }
 }
 
