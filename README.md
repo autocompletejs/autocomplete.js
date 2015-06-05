@@ -17,20 +17,3 @@ Lite, Open, made by a developer for developers. Help me and contributed :)
 ###Thanks
 
 Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advices.
-
-##Features
-
-###Just added
-
-* Naviguate into results with keyboard.
-* Up, down, left and right key cancel ajax.
-* Apply a new default CSS.
-* Use GruntJS to compile assert.
-* Use GruntJS to apply JSHint validation.
-* Replace "autocomplete:position" event by "position"
-
-###For the v2
-
-* replace from noResult to empty
-* escape keypress event which are not char
-* input conf use only one attribute and take a JSON Object
