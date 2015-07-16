@@ -18,6 +18,9 @@ var AutoComplete = (function () {
                     method:    "GET",
                     noResult:  "No result",
                     paramName: "q",
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded"
+                    },
                     select: function(input, item) {
                         attr(input, {"data-autocomplete-old-value": input.value = attr(item, "data-autocomplete-value", item.innerHTML)});
                     },
@@ -154,7 +157,7 @@ var AutoComplete = (function () {
                                 lisCount,
                                 liActive;
 
-                            if (keyCode == 13 && attrClass(result).indexOf("open") != -1) {
+                            if (keyCode == 13 && attr(result, "class").indexOf("open") != -1) {
                                 liActive = result.querySelector("li.active");
                                 if (liActive !== null) {
                                     self._args.select(input, liActive);
@@ -164,6 +167,7 @@ var AutoComplete = (function () {
                             
                             if (keyCode == 38 || keyCode == 40) {
                                 liActive = result.querySelector("li.active");
+
                                 if (liActive) {
                                     currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
                                     position = currentIndex + (keyCode - 39);
@@ -251,8 +255,11 @@ var AutoComplete = (function () {
             request.abort();
         }
         
-        var method = custParams.method,
-            url    = custParams.url;
+        var headers     = custParams.headers,
+            headersKeys = Object.getOwnPropertyNames(headers),
+            method      = custParams.method,
+            url         = custParams.url,
+            i;
 
         if (method.match(/^GET$/i)) {
             url += "?" + queryParams;
@@ -260,7 +267,10 @@ var AutoComplete = (function () {
 
         request = new XMLHttpRequest();
         request.open(method, url, true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        for (i = headersKeys.length - 1; i >= 0; i--) {
+            request.setRequestHeader(headersKeys[i], headers[headersKeys[i]]);
+        }
 
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
@@ -316,7 +326,7 @@ function attr(item, attrs, defaultValue) {
 
 function attrClass(item, value) {
     if (item) {
-        return attr(item, !value ? "class" : {"class": value});
+        return attr(item, typeof value === undefined ? "class" : {"class": value});
     }
 }
 
