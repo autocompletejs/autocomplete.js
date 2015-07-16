@@ -1,9 +1,11 @@
 *.html
 *.php
+*.yml
 
 composer.json
 composer.lock
 
-vendor
-node_modules
 dist
+docker
+node_modules
+vendor
