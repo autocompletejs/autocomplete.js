@@ -185,7 +185,7 @@ var AutoComplete = (function () {
                                 } else if (first) {
                                     attrClass(first, "active");
                                 }
-                            } else if (keyCode < 35 || keyCode > 40) {
+                            } else if (keyCode != 13 && (keyCode < 35 || keyCode > 40)) {
                                 if (inputValue && custParams.url) {
                                     if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
                                         attrClass(result, "autocomplete open");
