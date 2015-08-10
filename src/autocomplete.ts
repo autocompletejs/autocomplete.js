@@ -28,14 +28,14 @@ interface Params {
     _Method:       any;
     _ParamName:    any;
     _Url:          any;
-    Blur:          any;
-    Focus:         any;
-    OnKeyUp:       any;
-    Open:          any;
-    Position:      any;
-    Post:          any;
-    Pre:           any;
-    Select:        any;
+    _Blur:         any;
+    _Focus:        any;
+    _OnKeyUp:      any;
+    _Open:         any;
+    _Position:     any;
+    _Post:         any;
+    _Pre:          any;
+    _Select:       any;
 }
  
 // Core
@@ -101,7 +101,7 @@ class AutoComplete {
 
             return this.Url;
         },
-        Blur: function(now: boolean = false) {
+        _Blur: function(now: boolean = false) {
             console.log("Blur", "Close results div", this);
     
             if (now) {
@@ -109,11 +109,11 @@ class AutoComplete {
             } else {
                 var params = this;
                 setTimeout(function() {
-                    params.Blur(true);
+                    params._Blur(true);
                 }, 150);
             }
         },
-        Focus: function() {
+        _Focus: function() {
             console.log("Focus", "Open results div", this);
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
             console.log("Old value setted in input attribute", oldValue);
@@ -122,13 +122,13 @@ class AutoComplete {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
-        OnKeyUp: function(event: Event) {
-            console.log("OnKeyUp", this, "Event", event);
+        _OnKeyUp: function(event: KeyboardEvent) {
+            console.log("OnKeyUp", this, "KeyboardEvent", event);
     
             var first                    = this.DOMResults.querySelector("li:first-child:not(.locked)"),
                 input                    = event.target,
                 inputValue               = this.Pre(),
-                dataAutocompleteOldValue = input.getAttribute("data-autocomplete-old-value"),
+                dataAutocompleteOldValue = this.Input.getAttribute("data-autocomplete-old-value"),
                 keyCode                  = event.keyCode,
                 currentIndex,
                 position,
@@ -173,7 +173,7 @@ class AutoComplete {
                 }
             }
         },
-        Open: function() {
+        _Open: function() {
             console.log("Open", this);
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
@@ -182,28 +182,27 @@ class AutoComplete {
                 };
             });
         },
-        Position:function() {
+        _Position:function() {
             console.log("Build results position", this);
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
-        Post: function(response) {
+        _Post: function(response) {
             console.log("Post", this);
             try {
                 response = JSON.parse(response);
-                var createLi = function() {return document.createElement("li");},
-                    autoReverse = function(param, limit) {
+                var autoReverse = function(param, limit) {
                         return (limit < 0) ? param.reverse() : param;
                     },
                     addLi = function(ul, li, response) {
                         li.innerHTML = response;
                         ul.appendChild(li);
-                        return createLi();
+                        return document.createElement("li");
                     },
                     empty,
                     i = 0,
                     length = response.length,
-                    li     = createLi(),
+                    li     = document.createElement("li"),
                     ul     = document.createElement("ul"),
                     limit  = this._Limit(),
                     propertie,
@@ -249,19 +248,19 @@ class AutoComplete {
                 this.DOMResults.innerHTML = response;
             }
         },
-        Pre: function() {
+        _Pre: function(): string {
             console.log("Pre", this);
     
             return this.Input.value;
         },
-        Select: function(item) {
+        _Select: function(item) {
             console.log("Select", this);
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML));
         },
     };
     
     // Constructor
-    constructor(params: Object = {}, selector: any = ["[data-autocomplete]"]) {
+    constructor(params: Object = {}, selector: any = "[data-autocomplete]") {
         if (Array.isArray(selector)) {
             selector.forEach(function(s: string) {
                 new AutoComplete(params, s);
@@ -282,7 +281,7 @@ class AutoComplete {
             console.log("Selector", selector);
 
             AutoComplete.prototype.create(MergeObject(AutoComplete.defaults, params, {
-                "Input": selector,
+                Input: selector,
             }));
         }
     }
@@ -292,13 +291,15 @@ class AutoComplete {
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
             params.Input.setAttribute("autocomplete", "off");
-            params.Position(params);
+            params._Position(params);
             params.Input.parentNode.appendChild(params.DOMResults);
 
-            params.Input.addEventListener("blur", params.Blur.bind(params));
-            params.Input.addEventListener("focus", params.Focus.bind(params));
-            params.Input.addEventListener("keyup", params.OnKeyUp.bind(params));
-            params.Input.addEventListener("position", params.Position.bind(params));
+            params.Input.addEventListener("focus", params._Focus.bind(params));
+            
+            params.Input.addEventListener("keyup", params._OnKeyUp.bind(params));
+
+            params.Input.addEventListener("blur", params._Blur.bind(params));
+            params.Input.addEventListener("position", params._Position.bind(params));
             params.Input.addEventListener("destroy", AutoComplete.prototype.destroy.bind(null, params));
         } else {
             console.log("Element not valid to build a autocomplete");
@@ -314,7 +315,7 @@ class AutoComplete {
         var propertyHeaders = Object.getOwnPropertyNames(params.Headers),
             method      = params._Method(),
             url         = params._Url(),
-            queryParams = params.ParamName + "=" + params.Pre();
+            queryParams = params.ParamName + "=" + params._Pre();
 
         if (method.match(/^GET$/i)) {
             url += "?" + queryParams;
@@ -329,8 +330,8 @@ class AutoComplete {
 
         params.Request.onreadystatechange = function () {
             if (params.Request.readyState == 4 && params.Request.status == 200) {
-                if (!params.Post(params.Request.response)) {
-                    params.Open();
+                if (!params._Post(params.Request.response)) {
+                    params._Open();
                 }
             }
         };
@@ -341,10 +342,10 @@ class AutoComplete {
     destroy(params: Params) {
         console.log("Destroy event received", params);
 
-        params.Input.removeEventListener("position", params.Position);
-        params.Input.removeEventListener("focus", params.Focus);
-        params.Input.removeEventListener("blur", params.Blur);
-        params.Input.removeEventListener("keyup", params.OnKeyUp);
+        params.Input.removeEventListener("position", params._Position);
+        params.Input.removeEventListener("focus", params._Focus);
+        params.Input.removeEventListener("blur", params._Blur);
+        params.Input.removeEventListener("keyup", params._OnKeyUp);
         params.DOMResults.parentNode.removeChild(params.DOMResults);
 
         // delete(params);
