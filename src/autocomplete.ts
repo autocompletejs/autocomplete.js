@@ -23,19 +23,19 @@ interface Params {
     Input:      Element;
 
     // Workflow methods
+    _Blur:         any;
     _EmptyMessage: any;
+    _Focus:        any;
     _Limit:        any;
     _Method:       any;
-    _ParamName:    any;
-    _Url:          any;
-    _Blur:         any;
-    _Focus:        any;
     _OnKeyUp:      any;
     _Open:         any;
+    _ParamName:    any;
     _Position:     any;
     _Post:         any;
     _Pre:          any;
     _Select:       any;
+    _Url:          any;
 }
  
 // Core
@@ -101,7 +101,7 @@ class AutoComplete {
 
             return this.Url;
         },
-        _Blur: function(now: boolean = false) {
+        _Blur: function(now: boolean = false): void {
             console.log("Blur", "Close results div", this);
     
             if (now) {
@@ -113,7 +113,7 @@ class AutoComplete {
                 }, 150);
             }
         },
-        _Focus: function() {
+        _Focus: function(): void {
             console.log("Focus", "Open results div", this);
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
             console.log("Old value setted in input attribute", oldValue);
@@ -122,7 +122,7 @@ class AutoComplete {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
-        _OnKeyUp: function(event: KeyboardEvent) {
+        _OnKeyUp: function(event: KeyboardEvent): void {
             console.log("OnKeyUp", this, "KeyboardEvent", event);
     
             var first                    = this.DOMResults.querySelector("li:first-child:not(.locked)"),
@@ -173,7 +173,7 @@ class AutoComplete {
                 }
             }
         },
-        _Open: function() {
+        _Open: function(): void {
             console.log("Open", this);
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
@@ -182,12 +182,12 @@ class AutoComplete {
                 };
             });
         },
-        _Position:function() {
+        _Position:function(): void {
             console.log("Build results position", this);
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
-        _Post: function(response) {
+        _Post: function(response): void {
             console.log("Post", this);
             try {
                 response = JSON.parse(response);
@@ -253,14 +253,14 @@ class AutoComplete {
     
             return this.Input.value;
         },
-        _Select: function(item) {
+        _Select: function(item): void {
             console.log("Select", this);
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML));
         },
     };
     
     // Constructor
-    constructor(params: Object = {}, selector: any = "[data-autocomplete]") {
+    constructor(params: Object = {}, selector: any = "[data-autocomplete]"): void {
         if (Array.isArray(selector)) {
             selector.forEach(function(s: string) {
                 new AutoComplete(params, s);
@@ -286,7 +286,7 @@ class AutoComplete {
         }
     }
 
-    create(params: Params) {
+    create(params: Params): void {
         console.log("Object", params);
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
@@ -306,7 +306,7 @@ class AutoComplete {
         }
     }
 
-    ajax(params: Params) {
+    ajax(params: Params): void {
         console.log("AJAX", params);
         if (params.Request) {
             params.Request.abort();
@@ -339,7 +339,7 @@ class AutoComplete {
         params.Request.send(queryParams);
     }
 
-    destroy(params: Params) {
+    destroy(params: Params): void {
         console.log("Destroy event received", params);
 
         params.Input.removeEventListener("position", params._Position);
