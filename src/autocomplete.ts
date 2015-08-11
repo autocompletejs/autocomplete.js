@@ -24,6 +24,7 @@ interface Params {
     DOMResults: Element;
     Request:    XMLHttpRequest;
     Input:      Element;
+    Select:     Element;
 
     // Workflow methods
     _Blur:          any;
@@ -175,6 +176,7 @@ class AutoComplete {
         DOMResults: document.createElement("div"),
         Request: null,
         Input: null,
+        Select: null,
         
         _EmptyMessage: function(): string {
             console.log("EmptyMessage", this);
@@ -252,7 +254,7 @@ class AutoComplete {
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
                 li.onclick = function(event) {
-                    params._Select(event.target);
+                    params._Select(li);
                 };
             });
         },
@@ -340,11 +342,24 @@ class AutoComplete {
     
             return this.Input.value;
         },
-        _Select: function(item): void {
+        _Select: function(item: Element): void {
             console.log("Select", this);
 
             this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML);
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
+
+            if (this.Select !== void 0) {
+                var option: Element = document.createElement("option");
+                option.setAttribute("value", this.Input.value);
+                option.setAttribute("selected", "selected");
+                option.innerHTML = item.innerHTML;
+    
+                if (this.Select.hasChildNodes()) {
+                    this.Select.childNodes[0].remove();
+                }
+                
+                this.Select.appendChild(option);
+            }
         },
     };
     
@@ -369,14 +384,33 @@ class AutoComplete {
 
             console.log("Selector", selector);
 
-            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
-                Input: selector,
-            }));
+            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params), selector);
         }
     }
 
-    create(params: Params): void {
+    create(params: Params, element: Element): void {
         console.log("Object", params);
+
+        if (element.nodeName.match(/^SELECT$/i)) {
+            params.Select = element;
+
+            params.Select.setAttribute("style", "display:none;");
+
+            var input = document.createElement("input");
+            input.setAttribute("type", "search");
+            input.setAttribute("autocomplete", "off");
+
+            params.Select.parentNode.appendChild(input);
+
+            var attributes: NamedNodeMap = params.Select.attributes;
+            for (var i = attributes.length - 1; i >= 0; i--) {
+                if (attributes[i].name.match(/^data-autocomplete/i)) {
+                    input.setAttribute(attributes[i].name, attributes[i].value);
+                }
+            }
+
+            params.Input = input;
+        } 
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
             params.Input.setAttribute("autocomplete", "off");
