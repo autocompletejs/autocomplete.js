@@ -11,9 +11,9 @@
 interface Params {
     // Custom params
     EmptyMessage: string;
-    Headers:      Object;
+    HttpHeaders:  Object;
     Limit:        number;
-    Method:       string;
+    HttpMethod:   string;
     QueryArg:     string;
     Url:          string;
 
@@ -30,11 +30,12 @@ interface Params {
     _EmptyMessage:  any;
     _Focus:         any;
     _Limit:         any;
-    _Method:        any;
+    _HttpMethod:        any;
     _Open:          any;
     _QueryArg:      any;
     _Position:      any;
     _Post:          any;
+    _Render:        any;
     _Pre:           any;
     _Select:        any;
     _Url:           any;
@@ -60,6 +61,11 @@ interface MappingEvent {
     Callback: any;
     Operator: ConditionOperator;
 }
+
+interface ResponseItem {
+    Label: string;
+    Value: string;
+}
  
 // Core
 class AutoComplete {
@@ -77,11 +83,11 @@ class AutoComplete {
     };
     static defaults: Params = {
         EmptyMessage: "No result here",
-        Headers: {
+        HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
-        Method: "GET",
+        HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
         
@@ -156,9 +162,8 @@ class AutoComplete {
     
                         AutoComplete.prototype.ajax(this, function() {
                             if (this.Request.readyState == 4 && this.Request.status == 200) {
-                                if (!this._Post(this.Request.response)) {
-                                    this._Open();
-                                }
+                                this._Render(this._Post(this.Request.response));
+                                this._Open();
                             }
                         }.bind(this));
                     }
@@ -191,14 +196,14 @@ class AutoComplete {
 
             return parseInt(limit);
         },
-        _Method: function(): string {
-            console.log("Method", this);
+        _HttpMethod: function(): string {
+            console.log("_HttpMethod", this);
 
             if (this.Input.hasAttribute("data-autocomplete-method")) {
                 return this.Input.getAttribute("data-autocomplete-method");
             }
 
-            return this.Method;
+            return this.HttpMethod;
         },
         _QueryArg: function(): string {
             console.log("QueryArg", this);
@@ -232,7 +237,9 @@ class AutoComplete {
         },
         _Focus: function(): void {
             console.log("Focus", "Open results div", this);
+
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
+
             console.log("Old value setted in input attribute", oldValue);
     
             if (!oldValue || this.Input.value != oldValue) {
@@ -241,6 +248,7 @@ class AutoComplete {
         },
         _Open: function(): void {
             console.log("Open", this);
+
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
                 li.onclick = function(event) {
@@ -250,68 +258,81 @@ class AutoComplete {
         },
         _Position:function(): void {
             console.log("Build results position", this);
+
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
-        _Post: function(response: string): void {
+        _Render: function(response: ResponseItem[]|string): void {
+            console.log("_Render", this, "Response", response);
+
+            var ul: Element = document.createElement("ul"),
+                li: Element = document.createElement("li");
+            
+            if (typeof response == "string") {
+                if (response.length > 0) {
+                    this.DOMResults.innerHTML = response;
+                } else {
+                    li.setAttribute("class", "locked");
+                    ul.appendChild(li);
+                }
+            } else {
+                // Order
+                if (this._Limit() < 0) {
+                    response = response.reverse();
+                }
+
+                for (var item = 0; item < response.length; item++) {
+                    li.innerHTML = response[item].Label;
+                    li.setAttribute("data-autocomplete-value", response[item].Value);
+                    
+                    ul.appendChild(li);
+                    li = document.createElement("li");
+                }
+            }
+    
+            if (this.DOMResults.hasChildNodes()) {
+                this.DOMResults.childNodes[0].remove();
+            }
+            
+            this.DOMResults.appendChild(ul);
+        },
+        _Post: function(response: string): ResponseItem[]|string {
             console.log("Post", this);
+
             try {
-                response = JSON.parse(response);
-                var autoReverse = function(param, limit) {
-                        return (limit < 0) ? param.reverse() : param;
-                    },
-                    addLi = function(ul, li, response) {
-                        li.innerHTML = response;
-                        ul.appendChild(li);
-                        return document.createElement("li");
-                    },
-                    empty,
-                    i = 0,
-                    length = response.length,
-                    li     = document.createElement("li"),
-                    ul     = document.createElement("ul"),
-                    limit  = this._Limit(),
-                    propertie,
-                    properties,
-                    value;
-    
-                if (Array.isArray(response)) {
+                var returnResponse: ResponseItem[] = [];
+                
+                //JSON return
+                var json: string[]|Object = JSON.parse(response);
+
+                
+                if (Object.keys(json).length == 0) {
+                    return "";
+                }
+
+                if (Array.isArray(json)) {
                     console.log("Response is a JSON Array");
-                    if (length) {
-                        response = autoReverse(response, limit);
     
-                        for (; i < length && (i < Math.abs(limit) || !limit); i++) {
-                            li = addLi(ul, li, response[i]);
-                        }
-                    } else {
-                        //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
-                        empty = true;
-                        li.setAttribute("class", "locked");
-                        li = addLi(ul, li, this._EmptyMessage());
+                    for (var i = 0 ; i < Array.prototype.length(json); i++) {
+                        returnResponse[returnResponse.length] = { "Value": json[i], "Label": json[i] };
                     }
                 } else {
                     console.log("Response is a JSON Object");
-                    properties = autoReverse(Object.getOwnPropertyNames(response), limit);
-    
-                    for (propertie in properties) {
-                        value = properties[propertie];
-    
-                        if (parseInt(propertie) < Math.abs(limit) || !limit) {
-                            li.setAttribute("data-autocomplete-value", value);
-                            li = addLi(ul, li, response[value]);
-                        }
+
+                    for (var value in json) {
+                        returnResponse.push({
+                            "Value": value,
+                            "Label": json[value]
+                        });
                     }
                 }
-    
-                if (this.DOMResults.hasChildNodes()) {
-                    this.DOMResults.childNodes[0].remove();
-                }
-                
-                this.DOMResults.appendChild(ul);
-    
-                return empty;
-            } catch (e) {
-                this.DOMResults.innerHTML = response;
+
+                return returnResponse;
+            } catch (event) {
+                //HTML return
+                console.log("Response is a HTML", "Exception", event);
+
+                return response;
             }
         },
         _Pre: function(): string {
@@ -377,7 +398,7 @@ class AutoComplete {
     event(params: Params, event: KeyboardEvent): void {
         console.log("Event", params, "KeyboardEvent", event);
 
-        for (name in params.KeyboardMappings) {
+        for (var name in params.KeyboardMappings) {
             var mapping: MappingEvent = AutoComplete.merge({
                     Operator: ConditionOperator.AND
                 }, params.KeyboardMappings[name]),
@@ -420,8 +441,8 @@ class AutoComplete {
             params.Request.abort();
         }
         
-        var propertyHeaders = Object.getOwnPropertyNames(params.Headers),
-            method      = params._Method(),
+        var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
+            method      = params._HttpMethod(),
             url         = params._Url(),
             queryParams = params.QueryArg + "=" + params._Pre();
 
@@ -432,8 +453,8 @@ class AutoComplete {
         params.Request = new XMLHttpRequest();
         params.Request.open(method, url, true);
 
-        for (var i = propertyHeaders.length - 1; i >= 0; i--) {
-            params.Request.setRequestHeader(propertyHeaders[i], params.Headers[propertyHeaders[i]]);
+        for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
+            params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
         }
 
         params.Request.onreadystatechange = callback;
