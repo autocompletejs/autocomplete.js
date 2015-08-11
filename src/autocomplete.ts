@@ -14,8 +14,11 @@ interface Params {
     Headers:      Object;
     Limit:        number;
     Method:       string;
-    ParamName:    string;
+    QueryArg:     string;
     Url:          string;
+
+    // Keyboard mapping event
+    KeyboardMappings: { [name: string]: MappingEvent; };
 
     // Workable elements
     DOMResults: Element;
@@ -23,23 +26,55 @@ interface Params {
     Input:      Element;
 
     // Workflow methods
-    _Blur:         any;
-    _EmptyMessage: any;
-    _Focus:        any;
-    _Limit:        any;
-    _Method:       any;
-    _OnKeyUp:      any;
-    _Open:         any;
-    _ParamName:    any;
-    _Position:     any;
-    _Post:         any;
-    _Pre:          any;
-    _Select:       any;
-    _Url:          any;
+    _Blur:          any;
+    _EmptyMessage:  any;
+    _Focus:         any;
+    _Limit:         any;
+    _Method:        any;
+    _Open:          any;
+    _QueryArg:      any;
+    _Position:      any;
+    _Post:          any;
+    _Pre:           any;
+    _Select:        any;
+    _Url:           any;
+}
+
+interface MappingCondition {
+    Not: boolean;
+}
+
+interface MappingConditionIs extends MappingCondition {
+    Is: number;
+}
+
+interface MappingConditionRange extends MappingCondition {
+    From: number;
+    To: number;
+}
+
+enum ConditionOperator { AND, OR };
+
+interface MappingEvent {
+    Conditions: MappingCondition[];
+    Callback: any;
+    Operator: ConditionOperator;
 }
  
 // Core
 class AutoComplete {
+    static merge: any = function(): any {
+        var merge: any = {},
+            tmp: any;
+
+        for (var i = 0; i < arguments.length; i++) {
+            for (tmp in arguments[i]) {
+                merge[tmp] = arguments[i][tmp];
+            }
+        }
+
+        return merge;
+    };
     static defaults: Params = {
         EmptyMessage: "No result here",
         Headers: {
@@ -47,8 +82,90 @@ class AutoComplete {
         },
         Limit: 0,
         Method: "GET",
-        ParamName: "q",
+        QueryArg: "q",
         Url: null,
+        
+        KeyboardMappings: {
+            "Enter": {
+                Conditions: [{
+                    Is: 13,
+                    Not: false
+                }],
+                Callback: function(event: KeyboardEvent) {
+                    if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
+                        var liActive = this.DOMResults.querySelector("li.active");
+    
+                        if (liActive !== null) {
+                            this._Select(liActive);
+                            this.DOMResults.setAttribute("class", "autocomplete");
+                        }
+                    }
+                },
+                Operator: ConditionOperator.AND
+            },
+            "KeyUpAndDown": {
+                Conditions: [{
+                    Is: 38,
+                    Not: false
+                },
+                {
+                    Is: 40,
+                    Not: false
+                }],
+                Callback: function(event: KeyboardEvent) {
+                    var first = this.DOMResults.querySelector("li:first-child:not(.locked)"),
+                        active = this.DOMResults.querySelector("li.active");
+        
+                    if (active) {
+                        var currentIndex = Array.prototype.indexOf.call(active.parentNode.children, active),
+                            position = currentIndex + (event.keyCode - 39),
+                            lisCount = this.DOMResults.getElementsByTagName("li").length;
+        
+                        if (position < 0) {
+                            position = lisCount - 1;
+                        } else if (position >= lisCount) {
+                            position = 0;
+                        }
+        
+                        active.setAttribute("class", "");
+                        active.parentElement.childNodes.item(position).setAttribute("class", "active");
+                    } else if (first) {
+                        first.setAttribute("class", "active");
+                    }
+                },
+                Not: false,
+                Operator: ConditionOperator.OR
+            },
+            "AlphaNum": {
+                Conditions: [{
+                    Is: 13,
+                    Not: true
+                }, {
+                    From: 35,
+                    To: 40,
+                    Not: true
+                }],
+                Callback: function(event: KeyboardEvent) {
+                    var oldValue = this.Input.getAttribute("data-autocomplete-old-value"),
+                        currentValue = this._Pre();
+    
+                    if (currentValue !== "") {
+                        if (!oldValue || currentValue != oldValue) {
+                            this.DOMResults.setAttribute("class", "autocomplete open");
+                        }
+    
+                        AutoComplete.prototype.ajax(this, function() {
+                            if (this.Request.readyState == 4 && this.Request.status == 200) {
+                                if (!this._Post(this.Request.response)) {
+                                    this._Open();
+                                }
+                            }
+                        }.bind(this));
+                    }
+                },
+                Operator: ConditionOperator.AND
+            }
+        },
 
         DOMResults: document.createElement("div"),
         Request: null,
@@ -83,14 +200,14 @@ class AutoComplete {
 
             return this.Method;
         },
-        _ParamName: function(): string {
-            console.log("ParamName", this);
+        _QueryArg: function(): string {
+            console.log("QueryArg", this);
 
             if (this.Input.hasAttribute("data-autocomplete-param-name")) {
                 return this.Input.getAttribute("data-autocomplete-param-name");
             }
 
-            return this.ParamName;
+            return this.QueryArg;
         },
         _Url: function(): string {
             console.log("Url", this);
@@ -122,63 +239,12 @@ class AutoComplete {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
-        _OnKeyUp: function(event: KeyboardEvent): void {
-            console.log("OnKeyUp", this, "KeyboardEvent", event);
-    
-            var first                    = this.DOMResults.querySelector("li:first-child:not(.locked)"),
-                input                    = event.target,
-                inputValue               = this.Pre(),
-                dataAutocompleteOldValue = this.Input.getAttribute("data-autocomplete-old-value"),
-                keyCode                  = event.keyCode,
-                currentIndex,
-                position,
-                lisCount,
-                liActive;
-    
-            if (keyCode == 13 && this.DOMResults.getAttribute("class").indexOf("open") != -1) {
-                liActive = this.DOMResults.querySelector("li.active");
-                if (liActive !== null) {
-                    this.Select(liActive);
-                    this.DOMResults.setAttribute("class", "autocomplete");
-                }
-            }
-            
-            if (keyCode == 38 || keyCode == 40) {
-                liActive = this.DOMResults.querySelector("li.active");
-    
-                if (liActive) {
-                    currentIndex = Array.prototype.indexOf.call(liActive.parentNode.children, liActive);
-                    position = currentIndex + (keyCode - 39);
-                    lisCount = this.DOMResults.getElementsByTagName("li").length;
-    
-                    liActive.setAttribute("class", "");
-    
-                    if (position < 0) {
-                        position = lisCount - 1;
-                    } else if (position >= lisCount) {
-                        position = 0;
-                    }
-    
-                    liActive.parentElement.childNodes.item(position).setAttribute("class", "active");
-                } else if (first) {
-                    first.setAttribute("class", "active");
-                }
-            } else if (keyCode != 13 && (keyCode < 35 || keyCode > 40)) {
-                if (inputValue && this._Url()) {
-                    if (!dataAutocompleteOldValue || inputValue != dataAutocompleteOldValue) {
-                        this.DOMResults.setAttribute("class", "autocomplete open");
-                    }
-    
-                    AutoComplete.prototype.ajax(this);
-                }
-            }
-        },
         _Open: function(): void {
             console.log("Open", this);
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
                 li.onclick = function(event) {
-                    params.Select(event.target);
+                    params._Select(event.target);
                 };
             });
         },
@@ -187,7 +253,7 @@ class AutoComplete {
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
-        _Post: function(response): void {
+        _Post: function(response: string): void {
             console.log("Post", this);
             try {
                 response = JSON.parse(response);
@@ -255,12 +321,14 @@ class AutoComplete {
         },
         _Select: function(item): void {
             console.log("Select", this);
-            this.Input.setAttribute("data-autocomplete-old-value", this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML));
+
+            this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML);
+            this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
         },
     };
     
     // Constructor
-    constructor(params: Object = {}, selector: any = "[data-autocomplete]"): void {
+    constructor(params: Object = {}, selector: any = "[data-autocomplete]") {
         if (Array.isArray(selector)) {
             selector.forEach(function(s: string) {
                 new AutoComplete(params, s);
@@ -280,7 +348,7 @@ class AutoComplete {
 
             console.log("Selector", selector);
 
-            AutoComplete.prototype.create(MergeObject(AutoComplete.defaults, params, {
+            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
                 Input: selector,
             }));
         }
@@ -296,7 +364,7 @@ class AutoComplete {
 
             params.Input.addEventListener("focus", params._Focus.bind(params));
             
-            params.Input.addEventListener("keyup", params._OnKeyUp.bind(params));
+            params.Input.addEventListener("keyup", AutoComplete.prototype.event.bind(null, params));
 
             params.Input.addEventListener("blur", params._Blur.bind(params));
             params.Input.addEventListener("position", params._Position.bind(params));
@@ -306,7 +374,47 @@ class AutoComplete {
         }
     }
 
-    ajax(params: Params): void {
+    event(params: Params, event: KeyboardEvent): void {
+        console.log("Event", params, "KeyboardEvent", event);
+
+        for (name in params.KeyboardMappings) {
+            var mapping: MappingEvent = AutoComplete.merge({
+                    Operator: ConditionOperator.AND
+                }, params.KeyboardMappings[name]),
+                match: boolean = ConditionOperator.AND == mapping.Operator;
+
+            mapping.Conditions.forEach(function(condition: MappingCondition) {
+                if ((match == true && mapping.Operator == ConditionOperator.AND) || (match == false && ConditionOperator.OR)) {
+                    condition = AutoComplete.merge({
+                        Not: false
+                    }, condition);
+
+                    // For MappingConditionIs object
+                    if (condition.hasOwnProperty("Is")) {
+                        if (condition.Is == event.keyCode) {
+                            match = !condition.Not;
+                        } else {
+                            match = condition.Not;
+                        }
+                    }
+                    // For MappingConditionRange object
+                    else if (condition.hasOwnProperty("From") && condition.hasOwnProperty("To")) {
+                        if (event.keyCode >= condition.From && event.keyCode <= condition.To) {
+                            match = !condition.Not;
+                        } else {
+                            match = condition.Not;
+                        }
+                    }
+                }
+            });
+
+            if (match == true) {
+                mapping.Callback.bind(params, event)();
+            }
+        };
+    }
+
+    ajax(params: Params, callback: any): void {
         console.log("AJAX", params);
         if (params.Request) {
             params.Request.abort();
@@ -315,7 +423,7 @@ class AutoComplete {
         var propertyHeaders = Object.getOwnPropertyNames(params.Headers),
             method      = params._Method(),
             url         = params._Url(),
-            queryParams = params.ParamName + "=" + params._Pre();
+            queryParams = params.QueryArg + "=" + params._Pre();
 
         if (method.match(/^GET$/i)) {
             url += "?" + queryParams;
@@ -328,13 +436,7 @@ class AutoComplete {
             params.Request.setRequestHeader(propertyHeaders[i], params.Headers[propertyHeaders[i]]);
         }
 
-        params.Request.onreadystatechange = function () {
-            if (params.Request.readyState == 4 && params.Request.status == 200) {
-                if (!params._Post(params.Request.response)) {
-                    params._Open();
-                }
-            }
-        };
+        params.Request.onreadystatechange = callback;
 
         params.Request.send(queryParams);
     }
@@ -345,22 +447,10 @@ class AutoComplete {
         params.Input.removeEventListener("position", params._Position);
         params.Input.removeEventListener("focus", params._Focus);
         params.Input.removeEventListener("blur", params._Blur);
-        params.Input.removeEventListener("keyup", params._OnKeyUp);
+        // params.Input.removeEventListener("keyup", AutoComplete.prototype.event);
         params.DOMResults.parentNode.removeChild(params.DOMResults);
 
         // delete(params);
     }
 }
 
-function MergeObject(): any {
-    var merge: any = {},
-        tmp: any;
-
-    for (var i = 0; i < arguments.length; i++) {
-        for (tmp in arguments[i]) {
-            merge[tmp] = arguments[i][tmp];
-        }
-    }
-
-    return merge;
-}
