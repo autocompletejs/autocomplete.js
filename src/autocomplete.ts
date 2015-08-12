@@ -10,10 +10,11 @@
 
 interface Params {
     // Custom params
+    Delay:        number;
     EmptyMessage: string;
     HttpHeaders:  Object;
-    Limit:        number;
     HttpMethod:   string;
+    Limit:        number;
     QueryArg:     string;
     Url:          string;
 
@@ -31,7 +32,7 @@ interface Params {
     _EmptyMessage:  any;
     _Focus:         any;
     _Limit:         any;
-    _HttpMethod:        any;
+    _HttpMethod:    any;
     _Open:          any;
     _QueryArg:      any;
     _Position:      any;
@@ -40,6 +41,9 @@ interface Params {
     _Pre:           any;
     _Select:        any;
     _Url:           any;
+
+    // Internal item
+    $AjaxTimer:     WindowTimers;
 }
 
 interface MappingCondition {
@@ -83,6 +87,7 @@ class AutoComplete {
         return merge;
     };
     static defaults: Params = {
+        Delay: 150,
         EmptyMessage: "No result here",
         HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded"
@@ -361,6 +366,8 @@ class AutoComplete {
                 this.Select.appendChild(option);
             }
         },
+
+        $AjaxTimer: null,
     };
     
     // Constructor
@@ -469,31 +476,42 @@ class AutoComplete {
         };
     }
 
-    ajax(params: Params, callback: any): void {
-        console.log("AJAX", params);
-        if (params.Request) {
-            params.Request.abort();
-        }
-        
-        var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
-            method      = params._HttpMethod(),
-            url         = params._Url(),
-            queryParams = params.QueryArg + "=" + params._Pre();
-
-        if (method.match(/^GET$/i)) {
-            url += "?" + queryParams;
+    ajax(params: Params, callback: any, timeout: boolean = true): void {
+        if (params.$AjaxTimer) {
+            window.clearTimeout(params.$AjaxTimer);
         }
 
-        params.Request = new XMLHttpRequest();
-        params.Request.open(method, url, true);
+        if (timeout == true) {
+            console.log("AJAX Timeout");
+            
+            params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, callback, false), params.Delay);
+        } else {
+            console.log("AJAX Sended", params);
 
-        for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
-            params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
+            if (params.Request) {
+                params.Request.abort();
+            }
+            
+            var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
+                method      = params._HttpMethod(),
+                url         = params._Url(),
+                queryParams = params.QueryArg + "=" + params._Pre();
+
+            if (method.match(/^GET$/i)) {
+                url += "?" + queryParams;
+            }
+
+            params.Request = new XMLHttpRequest();
+            params.Request.open(method, url, true);
+
+            for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
+                params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
+            }
+
+            params.Request.onreadystatechange = callback;
+
+            params.Request.send(queryParams);
         }
-
-        params.Request.onreadystatechange = callback;
-
-        params.Request.send(queryParams);
     }
 
     destroy(params: Params): void {
