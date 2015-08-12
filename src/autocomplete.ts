@@ -111,6 +111,9 @@ class AutoComplete {
                             this._Select(liActive);
                             this.DOMResults.setAttribute("class", "autocomplete");
                         }
+
+                        // Cancel form send only if results element is open
+                        event.preventDefault();
                     }
                 },
                 Operator: ConditionOperator.AND
@@ -426,7 +429,7 @@ class AutoComplete {
 
             params.Input.addEventListener("focus", params._Focus.bind(params));
             
-            params.Input.addEventListener("keyup", AutoComplete.prototype.event.bind(null, params));
+            params.Input.addEventListener("keydown", AutoComplete.prototype.event.bind(null, params));
 
             params.Input.addEventListener("blur", params._Blur.bind(params));
             params.Input.addEventListener("position", params._Position.bind(params));
