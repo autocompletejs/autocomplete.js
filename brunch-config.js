@@ -19,29 +19,9 @@ exports.config = {
             }
         },
     },
-    overrides: {
-        production: {
-            optimize: true,
-            sourceMaps: false,
-            // plugins: {
-            //     autoReload: {
-            //         enabled: false
-            //     }
-            // }
-        }
-    },
     plugins: {
         uglify: {
-            mangle: {
-                toplevel: true,
-                eval: true,
-                functions: true
-            },
-            compress: {
-                global_defs: {
-                    DEBUG: false
-                }
-            }
+            mangle: true
         }
     }
 };
