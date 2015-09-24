@@ -19,10 +19,10 @@ interface Params {
     Url:          string;
 
     // Keyboard mapping event
-    KeyboardMappings: { [name: string]: MappingEvent; };
+    KeyboardMappings: { [_: string]: MappingEvent; };
 
     // Workable elements
-    DOMResults: Element;
+    DOMResults: HTMLElement;
     Request:    XMLHttpRequest;
     Input:      Element;
     Select:     Element;
@@ -43,7 +43,7 @@ interface Params {
     _Url:           any;
 
     // Internal item
-    $AjaxTimer:     WindowTimers;
+    $AjaxTimer:     number;
 }
 
 interface MappingCondition {
@@ -148,7 +148,6 @@ class AutoComplete {
                         first.setAttribute("class", "active");
                     }
                 },
-                Not: false,
                 Operator: ConditionOperator.OR
             },
             "AlphaNum": {
@@ -275,8 +274,8 @@ class AutoComplete {
         _Render: function(response: ResponseItem[]|string): void {
             console.log("_Render", this, "Response", response);
 
-            var ul: Element = document.createElement("ul"),
-                li: Element = document.createElement("li");
+            var ul: HTMLElement = document.createElement("ul"),
+                li: HTMLElement = document.createElement("li");
             
             if (typeof response == "string") {
                 if (response.length > 0) {
@@ -323,7 +322,7 @@ class AutoComplete {
                 if (Array.isArray(json)) {
                     console.log("Response is a JSON Array");
     
-                    for (var i = 0 ; i < Array.prototype.length(json); i++) {
+                    for (var i = 0 ; i < Object.keys(json).length; i++) {
                         returnResponse[returnResponse.length] = { "Value": json[i], "Label": json[i] };
                     }
                 } else {
@@ -350,14 +349,18 @@ class AutoComplete {
     
             return this.Input.value;
         },
-        _Select: function(item: Element): void {
+        _Select: function(item: HTMLElement): void {
             console.log("Select", this);
 
-            this.Input.value = item.getAttribute("data-autocomplete-value", item.innerHTML);
+            if (item.hasAttribute("data-autocomplete-value")) {
+                this.Input.value = item.getAttribute("data-autocomplete-value");
+            } else {
+                this.Input.value = item.innerHTML;
+            }
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
 
             if (this.Select !== void 0) {
-                var option: Element = document.createElement("option");
+                var option: HTMLElement = document.createElement("option");
                 option.setAttribute("value", this.Input.value);
                 option.setAttribute("selected", "selected");
                 option.innerHTML = item.innerHTML;
@@ -381,7 +384,7 @@ class AutoComplete {
             });
         } else if (typeof selector == "string") {
             var elements: NodeList = document.querySelectorAll(selector);
-            Array.prototype.forEach.call(elements, function(input: Element) {
+            Array.prototype.forEach.call(elements, function(input: HTMLElement) {
                 new AutoComplete(params, input);
             });
         } else {
@@ -398,7 +401,7 @@ class AutoComplete {
         }
     }
 
-    create(params: Params, element: Element): void {
+    create(params: Params, element: HTMLElement): void {
         console.log("Object", params);
 
         if (element.nodeName.match(/^SELECT$/i)) {
@@ -448,7 +451,12 @@ class AutoComplete {
                 }, params.KeyboardMappings[name]),
                 match: boolean = ConditionOperator.AND == mapping.Operator;
 
-            mapping.Conditions.forEach(function(condition: MappingCondition) {
+            mapping.Conditions.forEach(function(condition: {
+                From: number,
+                Is: number,
+                Not: boolean,
+                To: number
+            }) {
                 if ((match == true && mapping.Operator == ConditionOperator.AND) || (match == false && ConditionOperator.OR)) {
                     condition = AutoComplete.merge({
                         Not: false

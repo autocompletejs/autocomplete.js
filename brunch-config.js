@@ -10,12 +10,12 @@ exports.config = {
     files: {
         stylesheets: {
             joinTo: {
-                'autocomplete.css': 'src/autocomplete.less'
+                'autocomplete.css': /^src\/*.{css,less}/
             }
         },
         javascripts: {
             joinTo: {
-                'autocomplete.js': 'src/autocomplete.ts'
+                'autocomplete.js': /^src\/*.ts$/
             }
         },
     },
