@@ -72,7 +72,12 @@ interface ResponseItem {
     Value: string;
 }
  
-// Core
+/**
+ * Core
+ * 
+ * @class
+ * @author Baptiste Donaux <baptiste.donaux@gmail.com> @baptistedonaux
+ */
 class AutoComplete {
     static merge: any = function(): any {
         var merge: any = {},
@@ -185,6 +190,9 @@ class AutoComplete {
         Input: null,
         Select: null,
         
+        /**
+         * Return the message when no result returns
+         */
         _EmptyMessage: function(): string {
             console.log("EmptyMessage", this);
 
@@ -194,6 +202,10 @@ class AutoComplete {
 
             return this.EmptyMessage;
         },
+        
+        /**
+         * Returns the maximum number of results 
+         */
         _Limit: function(): number {
             console.log("Limit", this);
 
@@ -205,6 +217,10 @@ class AutoComplete {
 
             return parseInt(limit);
         },
+        
+        /**
+         * Returns the HHTP method to use 
+         */
         _HttpMethod: function(): string {
             console.log("_HttpMethod", this);
 
@@ -214,6 +230,10 @@ class AutoComplete {
 
             return this.HttpMethod;
         },
+        
+        /**
+         * Returns the query param to use
+         */
         _QueryArg: function(): string {
             console.log("QueryArg", this);
 
@@ -223,6 +243,10 @@ class AutoComplete {
 
             return this.QueryArg;
         },
+        
+        /**
+         * Returns the URL to use for AJAX request
+         */
         _Url: function(): string {
             console.log("Url", this);
 
@@ -232,6 +256,10 @@ class AutoComplete {
 
             return this.Url;
         },
+        
+        /**
+         * Manage the close 
+         */
         _Blur: function(now: boolean = false): void {
             console.log("Blur", "Close results div", this);
     
@@ -244,6 +272,10 @@ class AutoComplete {
                 }, 150);
             }
         },
+        
+        /**
+         * Manage the open 
+         */
         _Focus: function(): void {
             console.log("Focus", "Open results div", this);
 
@@ -255,6 +287,10 @@ class AutoComplete {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
+        
+        /**
+         * Bind all results item if one result is opened
+         */
         _Open: function(): void {
             console.log("Open", this);
 
@@ -265,12 +301,20 @@ class AutoComplete {
                 };
             });
         },
+        
+        /**
+         * Position the results HTML element
+         */
         _Position:function(): void {
             console.log("Build results position", this);
 
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
+        
+        /**
+         * Execute the render of results DOM element
+         */
         _Render: function(response: ResponseItem[]|string): void {
             console.log("_Render", this, "Response", response);
 
@@ -305,6 +349,10 @@ class AutoComplete {
             
             this.DOMResults.appendChild(ul);
         },
+        
+        /**
+         * Deal with request response
+         */
         _Post: function(response: string): ResponseItem[]|string {
             console.log("Post", this);
 
@@ -344,11 +392,19 @@ class AutoComplete {
                 return response;
             }
         },
+        
+        /**
+         * Return the autocomplete value to send (before request)
+         */
         _Pre: function(): string {
             console.log("Pre", this);
     
             return this.Input.value;
         },
+        
+        /**
+         * Choice one result item
+         */
         _Select: function(item: HTMLElement): void {
             console.log("Select", this);
 
