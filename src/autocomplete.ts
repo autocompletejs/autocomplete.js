@@ -44,6 +44,7 @@ interface Params {
 
     // Internal item
     $AjaxTimer:     number;
+    $Listeners:     { [_: string]: any; };
 }
 
 interface MappingCondition {
@@ -430,6 +431,7 @@ class AutoComplete {
         },
 
         $AjaxTimer: null,
+        $Listeners: {},
     };
     
     // Constructor
@@ -486,13 +488,15 @@ class AutoComplete {
             params._Position(params);
             params.Input.parentNode.appendChild(params.DOMResults);
 
-            params.Input.addEventListener("focus", params._Focus.bind(params));
-            
-            params.Input.addEventListener("keydown", AutoComplete.prototype.event.bind(null, params));
+            params.$Listeners["focus"]    = params._Focus.bind(params);
+            params.$Listeners["keydown"]  = AutoComplete.prototype.event.bind(null, params);
+            params.$Listeners["blur"]     = params._Blur.bind(params);
+            params.$Listeners["position"] = params._Position.bind(params);
+            params.$Listeners["destroy"]  = AutoComplete.prototype.destroy.bind(null, params);
 
-            params.Input.addEventListener("blur", params._Blur.bind(params));
-            params.Input.addEventListener("position", params._Position.bind(params));
-            params.Input.addEventListener("destroy", AutoComplete.prototype.destroy.bind(null, params));
+            for (var event in params.$Listeners) {
+                params.Input.addEventListener(event, params.$Listeners[event]);
+            }
         } else {
             console.log("Element not valid to build a autocomplete");
         }
@@ -584,12 +588,10 @@ class AutoComplete {
     destroy(params: Params): void {
         console.log("Destroy event received", params);
 
-        params.Input.removeEventListener("position", params._Position);
-        params.Input.removeEventListener("focus", params._Focus);
-        params.Input.removeEventListener("blur", params._Blur);
-        // params.Input.removeEventListener("keyup", AutoComplete.prototype.event);
-        params.DOMResults.parentNode.removeChild(params.DOMResults);
+        for (var event in params.$Listeners) {
+            params.Input.removeEventListener(event, params.$Listeners[event]);
+        }
 
-        // delete(params);
+        params.DOMResults.parentNode.removeChild(params.DOMResults);
     }
 }
