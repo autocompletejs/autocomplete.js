@@ -297,9 +297,11 @@ class AutoComplete {
 
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
-                li.onclick = function(event) {
-                    params._Select(li);
-                };
+                if (li.getAttribute("class") != "locked") {
+                    li.onclick = function(event) {
+                        params._Select(li);
+                    };
+                }
             });
         },
         
@@ -326,6 +328,7 @@ class AutoComplete {
                 if (response.length > 0) {
                     this.DOMResults.innerHTML = response;
                 } else {
+                    li.innerHTML = this.EmptyMessage;
                     li.setAttribute("class", "locked");
                     ul.appendChild(li);
                 }
@@ -481,7 +484,9 @@ class AutoComplete {
             }
 
             params.Input = input;
-        } 
+        } else {
+            params.Input = element;
+        }
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
             params.Input.setAttribute("autocomplete", "off");
