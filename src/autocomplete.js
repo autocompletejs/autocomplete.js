@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v1.7.0
+ * Autocomplete.js v1.7.1
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  * 
