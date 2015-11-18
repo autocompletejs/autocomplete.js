@@ -186,7 +186,7 @@ class AutoComplete {
             }
         },
 
-        DOMResults: document.createElement("div"),
+        DOMResults: null,
         Request: null,
         Input: null,
         Select: null,
@@ -195,7 +195,7 @@ class AutoComplete {
          * Return the message when no result returns
          */
         _EmptyMessage: function(): string {
-            var emptyMessage: string = "";
+            var emptyMessage: string|boolean = "";
 
             console.log("EmptyMessage", this);
 
@@ -469,12 +469,15 @@ class AutoComplete {
 
             console.log("Selector", selector);
 
-            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params), selector);
+            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
+                DOMResults: document.createElement("div"),
+            }), selector);
         }
     }
 
     create(params: Params, element: HTMLElement): void {
         console.log("Object", params);
+        console.log(element)
 
         if (element.nodeName.match(/^SELECT$/i)) {
             params.Select = element;
