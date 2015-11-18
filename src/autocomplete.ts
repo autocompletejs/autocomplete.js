@@ -195,13 +195,21 @@ class AutoComplete {
          * Return the message when no result returns
          */
         _EmptyMessage: function(): string {
+            var emptyMessage: string = "";
+
             console.log("EmptyMessage", this);
 
             if (this.Input.hasAttribute("data-autocomplete-empty-message")) {
-                return this.Input.getAttribute("data-autocomplete-empty-message");
+                emptyMessage = this.Input.getAttribute("data-autocomplete-empty-message");
+            } else {
+                emptyMessage = this.EmptyMessage;
             }
 
-            return this.EmptyMessage;
+            if (emptyMessage === false) {
+                emptyMessage = "";
+            }
+
+            return emptyMessage;
         },
         
         /**
@@ -328,9 +336,12 @@ class AutoComplete {
                 if (response.length > 0) {
                     this.DOMResults.innerHTML = response;
                 } else {
-                    li.innerHTML = this.EmptyMessage;
-                    li.setAttribute("class", "locked");
-                    ul.appendChild(li);
+                    var emptyMessage: string = this._EmptyMessage();
+                    if (emptyMessage !== "") {
+                        li.innerHTML = emptyMessage;
+                        li.setAttribute("class", "locked");
+                        ul.appendChild(li);
+                    }
                 }
             } else {
                 // Order
