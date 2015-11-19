@@ -6,12 +6,12 @@
     "dependencies": {
         "brunch": "1.8.*",
         "brunch-typescript": "1.6.*",
-        "uglify-js-brunch": "1.7.*",
-        "less-brunch": "1.8.*"
+        "less-brunch": "1.8.*",
+        "uglify-js": "2.6.*"
     },
     "scripts": {
-        "dev": "brunch build",
-        "prod": "brunch build -P",
+        "build": "brunch build",
+        "compress": "uglifyjs --compress --mangle --output dist/autocomplete.min.js -- dist/autocomplete.js",
         "watch": "brunch watch"
     }
 }

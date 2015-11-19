@@ -10,18 +10,18 @@ exports.config = {
     files: {
         stylesheets: {
             joinTo: {
-                'autocomplete.css': /^src\/*.{css,less}/
+                'autocomplete.css': /^src/
             }
         },
         javascripts: {
             joinTo: {
-                'autocomplete.js': /^src\/*.ts$/
+                'autocomplete.js': /^src/
             }
-        },
+        }
     },
     plugins: {
-        uglify: {
-            mangle: true
+        brunchTypescript: {
+            tscOption: "--removeComments"
         }
     }
 };
