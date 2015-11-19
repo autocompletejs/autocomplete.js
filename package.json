@@ -8,5 +8,10 @@
         "brunch-typescript": "1.6.*",
         "uglify-js-brunch": "1.7.*",
         "less-brunch": "1.8.*"
+    },
+    "scripts": {
+        "dev": "brunch build",
+        "prod": "brunch build -P",
+        "watch": "brunch watch"
     }
 }

@@ -25,7 +25,6 @@ interface Params {
     DOMResults: HTMLElement;
     Request:    XMLHttpRequest;
     Input:      Element;
-    Select:     Element;
 
     // Workflow methods
     _Blur:          any;
@@ -189,7 +188,6 @@ class AutoComplete {
         DOMResults: null,
         Request: null,
         Input: null,
-        Select: null,
         
         /**
          * Return the message when no result returns
@@ -429,19 +427,6 @@ class AutoComplete {
                 this.Input.value = item.innerHTML;
             }
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
-
-            if (this.Select !== void 0) {
-                var option: HTMLElement = document.createElement("option");
-                option.setAttribute("value", this.Input.value);
-                option.setAttribute("selected", "selected");
-                option.innerHTML = item.innerHTML;
-    
-                if (this.Select.hasChildNodes()) {
-                    this.Select.childNodes[0].remove();
-                }
-                
-                this.Select.appendChild(option);
-            }
         },
 
         $AjaxTimer: null,
@@ -479,28 +464,7 @@ class AutoComplete {
         console.log("Object", params);
         console.log(element)
 
-        if (element.nodeName.match(/^SELECT$/i)) {
-            params.Select = element;
-
-            params.Select.setAttribute("style", "display:none;");
-
-            var input = document.createElement("input");
-            input.setAttribute("type", "search");
-            input.setAttribute("autocomplete", "off");
-
-            params.Select.parentNode.appendChild(input);
-
-            var attributes: NamedNodeMap = params.Select.attributes;
-            for (var i = attributes.length - 1; i >= 0; i--) {
-                if (attributes[i].name.match(/^data-autocomplete/i)) {
-                    input.setAttribute(attributes[i].name, attributes[i].value);
-                }
-            }
-
-            params.Input = input;
-        } else {
-            params.Input = element;
-        }
+        params.Input = element;
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
             params.Input.setAttribute("autocomplete", "off");
