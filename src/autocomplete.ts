@@ -195,8 +195,6 @@ class AutoComplete {
         _EmptyMessage: function(): string {
             var emptyMessage: string|boolean = "";
 
-            console.log("EmptyMessage", this);
-
             if (this.Input.hasAttribute("data-autocomplete-empty-message")) {
                 emptyMessage = this.Input.getAttribute("data-autocomplete-empty-message");
             } else {
@@ -214,8 +212,6 @@ class AutoComplete {
          * Returns the maximum number of results 
          */
         _Limit: function(): number {
-            console.log("Limit", this);
-
             var limit = this.Input.getAttribute("data-autocomplete-limit");
             
             if (isNaN(limit)) {
@@ -229,8 +225,6 @@ class AutoComplete {
          * Returns the HHTP method to use 
          */
         _HttpMethod: function(): string {
-            console.log("_HttpMethod", this);
-
             if (this.Input.hasAttribute("data-autocomplete-method")) {
                 return this.Input.getAttribute("data-autocomplete-method");
             }
@@ -242,8 +236,6 @@ class AutoComplete {
          * Returns the query param to use
          */
         _QueryArg: function(): string {
-            console.log("QueryArg", this);
-
             if (this.Input.hasAttribute("data-autocomplete-param-name")) {
                 return this.Input.getAttribute("data-autocomplete-param-name");
             }
@@ -255,8 +247,6 @@ class AutoComplete {
          * Returns the URL to use for AJAX request
          */
         _Url: function(): string {
-            console.log("Url", this);
-
             if (this.Input.hasAttribute("data-autocomplete")) {
                 return this.Input.getAttribute("data-autocomplete");
             }
@@ -268,8 +258,6 @@ class AutoComplete {
          * Manage the close 
          */
         _Blur: function(now: boolean = false): void {
-            console.log("Blur", "Close results div", this);
-    
             if (now) {
                 this.DOMResults.setAttribute("class", "autocomplete");
             } else {
@@ -284,12 +272,8 @@ class AutoComplete {
          * Manage the open 
          */
         _Focus: function(): void {
-            console.log("Focus", "Open results div", this);
-
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
 
-            console.log("Old value setted in input attribute", oldValue);
-    
             if (!oldValue || this.Input.value != oldValue) {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
@@ -299,8 +283,6 @@ class AutoComplete {
          * Bind all results item if one result is opened
          */
         _Open: function(): void {
-            console.log("Open", this);
-
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
                 if (li.getAttribute("class") != "locked") {
@@ -315,8 +297,6 @@ class AutoComplete {
          * Position the results HTML element
          */
         _Position:function(): void {
-            console.log("Build results position", this);
-
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
@@ -325,8 +305,6 @@ class AutoComplete {
          * Execute the render of results DOM element
          */
         _Render: function(response: ResponseItem[]|string): void {
-            console.log("_Render", this, "Response", response);
-
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
             
@@ -367,8 +345,6 @@ class AutoComplete {
          * Deal with request response
          */
         _Post: function(response: string): ResponseItem[]|string {
-            console.log("Post", this);
-
             try {
                 var returnResponse: ResponseItem[] = [];
                 
@@ -381,14 +357,10 @@ class AutoComplete {
                 }
 
                 if (Array.isArray(json)) {
-                    console.log("Response is a JSON Array");
-    
                     for (var i = 0 ; i < Object.keys(json).length; i++) {
                         returnResponse[returnResponse.length] = { "Value": json[i], "Label": json[i] };
                     }
                 } else {
-                    console.log("Response is a JSON Object");
-
                     for (var value in json) {
                         returnResponse.push({
                             "Value": value,
@@ -400,8 +372,6 @@ class AutoComplete {
                 return returnResponse;
             } catch (event) {
                 //HTML return
-                console.log("Response is a HTML", "Exception", event);
-
                 return response;
             }
         },
@@ -410,8 +380,6 @@ class AutoComplete {
          * Return the autocomplete value to send (before request)
          */
         _Pre: function(): string {
-            console.log("Pre", this);
-    
             return this.Input.value;
         },
         
@@ -419,8 +387,6 @@ class AutoComplete {
          * Choice one result item
          */
         _Select: function(item: HTMLElement): void {
-            console.log("Select", this);
-
             if (item.hasAttribute("data-autocomplete-value")) {
                 this.Input.value = item.getAttribute("data-autocomplete-value");
             } else {
@@ -445,15 +411,6 @@ class AutoComplete {
                 new AutoComplete(params, input);
             });
         } else {
-            console.log("AutoComplete declaration");
-
-            // Custom params
-            console.log("Custom params", params);
-            // Default params
-            console.log("Default params", AutoComplete.defaults);
-
-            console.log("Selector", selector);
-
             AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
                 DOMResults: document.createElement("div"),
             }), selector);
@@ -461,9 +418,6 @@ class AutoComplete {
     }
 
     create(params: Params, element: HTMLElement): void {
-        console.log("Object", params);
-        console.log(element)
-
         params.Input = element;
 
         if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
@@ -480,14 +434,10 @@ class AutoComplete {
             for (var event in params.$Listeners) {
                 params.Input.addEventListener(event, params.$Listeners[event]);
             }
-        } else {
-            console.log("Element not valid to build a autocomplete");
         }
     }
 
     event(params: Params, event: KeyboardEvent): void {
-        console.log("Event", params, "KeyboardEvent", event);
-
         for (var name in params.KeyboardMappings) {
             var mapping: MappingEvent = AutoComplete.merge({
                     Operator: ConditionOperator.AND
@@ -536,12 +486,8 @@ class AutoComplete {
         }
 
         if (timeout == true) {
-            console.log("AJAX Timeout");
-            
             params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, callback, false), params.Delay);
         } else {
-            console.log("AJAX Sended", params);
-
             if (params.Request) {
                 params.Request.abort();
             }
@@ -569,8 +515,6 @@ class AutoComplete {
     }
 
     destroy(params: Params): void {
-        console.log("Destroy event received", params);
-
         for (var event in params.$Listeners) {
             params.Input.removeEventListener(event, params.$Listeners[event]);
         }
