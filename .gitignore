@@ -5,7 +5,6 @@
 composer.json
 composer.lock
 
-dist
 docker
 node_modules
 vendor

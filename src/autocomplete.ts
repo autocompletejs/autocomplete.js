@@ -450,7 +450,7 @@ class AutoComplete {
                 Not: boolean,
                 To: number
             }) {
-                if ((match == true && mapping.Operator == ConditionOperator.AND) || (match == false && ConditionOperator.OR)) {
+                if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
                     condition = AutoComplete.merge({
                         Not: false
                     }, condition);
@@ -474,7 +474,7 @@ class AutoComplete {
                 }
             });
 
-            if (match == true) {
+            if (match === true) {
                 mapping.Callback.bind(params, event)();
             }
         };
@@ -485,7 +485,7 @@ class AutoComplete {
             window.clearTimeout(params.$AjaxTimer);
         }
 
-        if (timeout == true) {
+        if (timeout === true) {
             params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, callback, false), params.Delay);
         } else {
             if (params.Request) {
