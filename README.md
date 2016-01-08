@@ -4,7 +4,7 @@
 ![JSHint test](http://autocomplete-js.com/images/JSHint-0-error-brightgreen.png)
 ![License MIT](http://autocomplete-js.com/images/license-mit.png)
 
-autocomplete.js is a Javascript project with purpose to propose an autocomplete, fast, lite and without dependency.
+autocomplete.js is a fast and lightweight (< 4kb) autocomplete library, without any dependencies.
 
 ###Documentation
 
@@ -12,8 +12,8 @@ The documentation is available [here](http://autocomplete-js.com).
 
 ###Slogan
 
-Lite, Open, made by a developer for developers. Help me and contributed :)
+Lite, Open, made by a developer for developers. Help me and contribute :)
 
 ###Thanks
 
-Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advices.
+Thank you to [Demonixis](https://github.com/demonixis) for the Javascript advice.
