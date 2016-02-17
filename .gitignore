@@ -1,10 +1,2 @@
-*.html
-*.php
-*.yml
-
-composer.json
-composer.lock
-
-docker
+dist
 node_modules
-vendor

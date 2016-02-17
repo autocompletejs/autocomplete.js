@@ -1,10 +1,10 @@
 /*
- * Autocomplete.js v2.0.0-RC1
+ * Autocomplete.js v2.0.0
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  * 
  * Under MIT Licence
- * (c) 2015, Baptiste Donaux
+ * (c) 2016, Baptiste Donaux
  */
 "use strict";
 

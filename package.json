@@ -1,17 +1,16 @@
 {
     "name": "autocomplete.js",
-    "version": "2.0.0-RC1",
+    "version": "2.0.0",
     "author": "support@autocomplete-js.com",
     "license": "MIT",
     "dependencies": {
-        "less": "2.5.*",
-        "typescript": "1.6.*",
-        "uglify-js": "2.6.*"
+        "brunch": "2.2.*",
+        "brunch-typescript": "1.7.*",
+        "less-brunch": "2.0.*",
+        "uglify-js-brunch": "2.0.*"
     },
     "scripts": {
-        "cssDev": "lessc src/autocomplete.less dist/autocomplete.css",
-        "cssProd": "lessc -x src/autocomplete.less dist/autocomplete.min.css",
-        "jsDev": "./node_modules/.bin/tsc --out dist/autocomplete.js src/autocomplete.ts",
-        "jsProd": "uglifyjs --compress --mangle --preamble='// autocomplete.js v2.0.0-RC1 - http://autocomplete-js.com - Developed by Baptiste Donaux - MIT Licence' --output dist/autocomplete.min.js -- dist/autocomplete.js"
+        "dev": "brunch build",
+        "prod": "brunch build --production"
     }
 }
