@@ -19,9 +19,8 @@ exports.config = {
             }
         }
     },
-    plugins: {
-        brunchTypescript: {
-            tscOption: "--removeComments"
-        }
+    modules: {
+        definition: false,
+        wrapper: false
     }
 };

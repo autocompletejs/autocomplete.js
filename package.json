@@ -10,7 +10,8 @@
         "uglify-js-brunch": "2.0.*"
     },
     "scripts": {
-        "dev": "brunch build",
-        "prod": "brunch build --production"
+        "dev": "mkdir -p dist/development && rm -f dist/*.{js,css,map} && brunch build && mv -f dist\/*.js dist/development && mv -f dist\/*.css dist/development && mv -f dist\/*.map dist/development",
+        "prod": "mkdir -p dist/production && rm -f dist/*.{js,css,map} && brunch build --production && mv -f dist\/*.js dist/production && mv -f dist\/*.css dist/production",
+        "start": "npm run dev && npm run prod"
     }
 }
