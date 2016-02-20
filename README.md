@@ -4,7 +4,7 @@
 ![JSHint test](http://autocomplete-js.com/images/JSHint-0-error-brightgreen.png)
 ![License MIT](http://autocomplete-js.com/images/license-mit.png)
 
-autocomplete.js is a fast and lightweight (< 4kb) autocomplete library, without any dependencies.
+autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.
 
 ###Documentation
 
