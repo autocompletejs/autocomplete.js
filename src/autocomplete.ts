@@ -420,7 +420,9 @@ class AutoComplete {
     create(params: Params, element: HTMLElement): void {
         params.Input = element;
 
-        if (params.Input.nodeName.match(/^INPUT$/i) && params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)) {
+        if (params.Input.nodeName.match(/^INPUT$/i)
+            && (params.Input.hasAttribute("type") === false || params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)))
+        {
             params.Input.setAttribute("autocomplete", "off");
             params._Position(params);
             params.Input.parentNode.appendChild(params.DOMResults);
