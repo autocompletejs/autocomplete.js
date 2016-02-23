@@ -1,6 +1,6 @@
 'use strict';
 
-exports.config = {
+module.exports = {
     paths: {
         'public': 'dist',
         'watched': [
@@ -19,8 +19,5 @@ exports.config = {
             }
         }
     },
-    modules: {
-        definition: false,
-        wrapper: false
-    }
+    modules: false
 };
