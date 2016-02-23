@@ -404,7 +404,7 @@ var AutoComplete = (function () {
         $Listeners: {},
     };
     return AutoComplete;
-})();
+}());
 //# sourceMappingURL=autocomplete.js.map
 ;
 //# sourceMappingURL=autocomplete.js.map

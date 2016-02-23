@@ -5,7 +5,7 @@
     "license": "MIT",
     "dependencies": {
         "brunch": "2.4.*",
-        "brunch-typescript": "1.7.*",
+        "brunch-typescript": "1.8.*",
         "less-brunch": "2.0.*",
         "uglify-js-brunch": "2.0.*"
     },
