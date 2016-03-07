@@ -335,7 +335,7 @@ class AutoComplete {
             }
     
             if (this.DOMResults.hasChildNodes()) {
-                this.DOMResults.childNodes[0].remove();
+		this.DOMResults.removeChild(this.DOMResults.childNodes[0]);
             }
             
             this.DOMResults.appendChild(ul);
