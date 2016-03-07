@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v2.0.1
+ * Autocomplete.js v2.0.2
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -347,7 +347,7 @@ var AutoComplete = (function () {
                 }
             }
             if (this.DOMResults.hasChildNodes()) {
-                this.DOMResults.childNodes[0].remove();
+                this.DOMResults.removeChild(this.DOMResults.childNodes[0]);
             }
             this.DOMResults.appendChild(ul);
         },
