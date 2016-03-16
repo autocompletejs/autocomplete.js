@@ -4,7 +4,7 @@
     "author": "support@autocomplete-js.com",
     "license": "MIT",
     "dependencies": {
-        "brunch": "2.4.*",
+        "brunch": "2.5.*",
         "brunch-typescript": "1.8.*",
         "less-brunch": "2.0.*",
         "uglify-js-brunch": "2.0.*"
