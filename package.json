@@ -4,6 +4,7 @@
     "author": "support@autocomplete-js.com",
     "license": "MIT",
     "description": "autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.",
+    "main": "./dist/production/autocomplete.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/autocompletejs/autocomplete.js.git"
