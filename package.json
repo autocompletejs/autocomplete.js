@@ -3,7 +3,19 @@
     "version": "2.0.2",
     "author": "support@autocomplete-js.com",
     "license": "MIT",
-    "dependencies": {
+    "description": "autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/autocompletejs/autocomplete.js.git"
+    },
+    "homepage": "https://autocomplete-js.com",
+    "keywords": [
+        "autocomplete"
+    ],
+    "bugs": {
+        "url": "https://github.com/autocompletejs/autocomplete.js/issues"
+    },
+    "devDependencies": {
         "brunch": "2.5.*",
         "brunch-typescript": "1.8.*",
         "less-brunch": "2.0.*",
