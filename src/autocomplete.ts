@@ -497,7 +497,7 @@ class AutoComplete {
             var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
                 method      = params._HttpMethod(),
                 url         = params._Url(),
-                queryParams = params.QueryArg + "=" + params._Pre();
+                queryParams = params._QueryArg() + "=" + params._Pre();
 
             if (method.match(/^GET$/i)) {
                 url += "?" + queryParams;
