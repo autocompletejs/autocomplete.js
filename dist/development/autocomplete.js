@@ -1,5 +1,5 @@
 /*
- * Autocomplete.js v2.0.2
+ * Autocomplete.js v2.0.3
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -37,7 +37,7 @@ var AutoComplete = (function () {
         }
         else {
             AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
-                DOMResults: document.createElement("div"),
+                DOMResults: document.createElement("div")
             }), selector);
         }
     }
@@ -105,7 +105,7 @@ var AutoComplete = (function () {
             if (params.Request) {
                 params.Request.abort();
             }
-            var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), method = params._HttpMethod(), url = params._Url(), queryParams = params.QueryArg + "=" + params._Pre();
+            var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), method = params._HttpMethod(), url = params._Url(), queryParams = params._QueryArg() + "=" + params._Pre();
             if (method.match(/^GET$/i)) {
                 url += "?" + queryParams;
             }
@@ -401,10 +401,8 @@ var AutoComplete = (function () {
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
         },
         $AjaxTimer: null,
-        $Listeners: {},
+        $Listeners: {}
     };
     return AutoComplete;
 }());
-//# sourceMappingURL=autocomplete.js.map
-;
 //# sourceMappingURL=autocomplete.js.map
