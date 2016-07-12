@@ -222,7 +222,12 @@ class AutoComplete {
          * Apply transformation on labels response
          */
         _Highlight: function(label): string {
-            return label;
+            return label.replace(
+                new RegExp(this._Pre(), "ig"),
+                function(selected) {
+                    return "<strong>" + selected + "</strong>";
+                }
+            );
         },
         
         /**
@@ -385,7 +390,7 @@ class AutoComplete {
 
                 if (Array.isArray(json)) {
                     for (var i = 0 ; i < Object.keys(json).length; i++) {
-                        returnResponse[returnResponse.length] = { "Value": json[i], "Label": json[i] };
+                        returnResponse[returnResponse.length] = { "Value": json[i], "Label": this._Highlight(json[i]) };
                     }
                 } else {
                     for (var value in json) {
