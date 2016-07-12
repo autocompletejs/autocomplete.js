@@ -316,6 +316,9 @@ class AutoComplete {
             this.DOMResults.appendChild(ul);
         },
         
+        /**
+         * ResponseItems[] rendering
+         */
         _RenderResponseItems: function(response: ResponseItem[]): HTMLElement {
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
@@ -336,6 +339,9 @@ class AutoComplete {
             return ul;
         },
         
+        /**
+         * string response rendering (RAW HTML)
+         */
         _RenderRaw: function(response: string): HTMLElement {
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
