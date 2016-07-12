@@ -1,0 +1,14 @@
+{
+	"bitwise": true,
+	"browserify": true,
+	"camelcase": true,
+	"esversion": 5,
+	"freeze": true,
+	"maxerr": 0,
+	"maxparams": 3,
+	"module": true,
+	"node": false,
+	"undef": true,
+	"unused": true,
+	"varstmt": false
+}

@@ -19,6 +19,7 @@
   "devDependencies": {
     "browserify": "^13.0.1",
     "clean-css": "^3.4.18",
+    "jshint": "^2.9.2",
     "less": "^2.7.1",
     "tsify": "^1.0.0",
     "typescript": "^1.8.10",
@@ -31,6 +32,7 @@
     "js-prod": "browserify src/autocomplete.ts --standalone=AutoComplete -p [ tsify ] > dist/autocomplete.min.js && uglifyjs --compress --output ./dist/autocomplete.min.js -- ./dist/autocomplete.min.js",
     "build-dev": "mkdir -p dist && npm run css-dev && npm run js-dev",
     "build-prod": "mkdir -p dist && npm run css-prod && npm run js-prod",
-    "build": "rm -rf dist && npm run build-dev && npm run build-prod"
+    "build": "rm -rf dist && npm run build-dev && npm run build-prod",
+    "test": "jshint dist/autocomplete.js"
   }
 }
