@@ -1,7 +1,7 @@
 {
   "name": "autocomplete.js",
   "description": "autocomplete.js is JavaScript library, lite, fast, stable, using the JavaScript Strict Mode and validated by JSHint.",
-  "main": "production/autocomplete.js",
+  "main": "dist/autocomplete.js",
   "authors": [
     "support@autocomplete-js.com"
   ],
