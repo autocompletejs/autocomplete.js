@@ -18,15 +18,17 @@
   },
   "devDependencies": {
     "browserify": "^13.0.1",
+    "clean-css": "^3.4.18",
     "less": "^2.7.1",
     "tsify": "^1.0.0",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
     "css-dev": "lessc src/autocomplete.less dist/autocomplete.css",
-    "css-prod": "lessc src/autocomplete.less dist/autocomplete.min.css",
+    "css-prod": "lessc src/autocomplete.less dist/autocomplete.min.css && cleancss -o dist/autocomplete.min.css dist/autocomplete.min.css",
     "js-dev": "browserify src/autocomplete.ts --standalone=AutoComplete -p [ tsify ] > dist/autocomplete.js",
-    "js-prod": "browserify src/autocomplete.ts --standalone=AutoComplete -p [ tsify ] > dist/autocomplete.min.js",
+    "js-prod": "browserify src/autocomplete.ts --standalone=AutoComplete -p [ tsify ] > dist/autocomplete.min.js && uglifyjs --compress --output ./dist/autocomplete.min.js -- ./dist/autocomplete.min.js",
     "build-dev": "mkdir -p dist && npm run css-dev && npm run js-dev",
     "build-prod": "mkdir -p dist && npm run css-prod && npm run js-prod",
     "build": "rm -rf dist && npm run build-dev && npm run build-prod"
