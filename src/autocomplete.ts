@@ -10,43 +10,43 @@
 
 interface Params {
     // Custom params
-    Delay:        number;
-    EmptyMessage: string;
-    HttpHeaders:  Object;
-    HttpMethod:   string;
-    Limit:        number;
-    QueryArg:     string;
-    Url:          string;
+    Delay:                number;
+    EmptyMessage:         string;
+    HttpHeaders:          Object;
+    HttpMethod:           string;
+    Limit:                number;
+    QueryArg:             string;
+    Url:                  string;
 
     // Keyboard mapping event
-    KeyboardMappings: { [_: string]: MappingEvent; };
+    KeyboardMappings:     { [_: string]: MappingEvent };
 
     // Workable elements
-    DOMResults: HTMLElement;
-    Request:    XMLHttpRequest;
-    Input:      Element;
+    DOMResults:           HTMLElement;
+    Input:                Element;
+    Request:              XMLHttpRequest;
 
     // Workflow methods
-    _Blur:          any;
-    _EmptyMessage:  any;
-    _Focus:         any;
-    _Limit:         any;
-    _Highlight:     any;
-    _HttpMethod:    any;
-    _Open:          any;
-    _QueryArg:      any;
-    _Position:      any;
-    _Post:          any;
-    _Render:        any;
-    _RenderRaw:     any;
+    _Blur:                any;
+    _EmptyMessage:        any;
+    _Focus:               any;
+    _Highlight:           any;
+    _HttpMethod:          any;
+    _Limit:               any;
+    _Open:                any;
+    _Position:            any;
+    _Post:                any;
+    _Pre:                 any;
+    _QueryArg:            any;
+    _Render:              any;
+    _RenderRaw:           any;
     _RenderResponseItems: any;
-    _Pre:           any;
-    _Select:        any;
-    _Url:           any;
+    _Select:              any;
+    _Url:                 any;
 
     // Internal item
-    $AjaxTimer:     number;
-    $Listeners:     { [_: string]: any; };
+    $AjaxTimer:           number;
+    $Listeners:           { [_: string]: any; };
 }
 
 interface MappingCondition {
