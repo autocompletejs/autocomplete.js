@@ -31,6 +31,7 @@ interface Params {
     _EmptyMessage:  any;
     _Focus:         any;
     _Limit:         any;
+    _Highlight:     any;
     _HttpMethod:    any;
     _Open:          any;
     _QueryArg:      any;
@@ -216,6 +217,13 @@ class AutoComplete {
 
             return parseInt(limit);
         },
+
+        /**
+         * Apply transformation on labels response
+         */
+        _Highlight: function(label): string {
+            return label;
+        },
         
         /**
          * Returns the HHTP method to use 
@@ -383,7 +391,7 @@ class AutoComplete {
                     for (var value in json) {
                         returnResponse.push({
                             "Value": value,
-                            "Label": json[value]
+                            "Label": this._Highlight(json[value])
                         });
                     }
                 }
