@@ -1,4 +1,6 @@
 *.tgz
 bower.json
 brunch-config.js
+index.html
+index.json
 src

@@ -1,4 +1,6 @@
 *.tgz
 docker-compose.yml
+index.html
+index.json
 node_modules
 npm-debug.log
