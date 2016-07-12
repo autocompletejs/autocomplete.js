@@ -37,6 +37,8 @@ interface Params {
     _Position:      any;
     _Post:          any;
     _Render:        any;
+    _RenderRaw:     any;
+    _RenderResponseItems: any;
     _Pre:           any;
     _Select:        any;
     _Url:           any;
@@ -48,15 +50,11 @@ interface Params {
 
 interface MappingCondition {
     Not: boolean;
-}
-
-interface MappingConditionIs extends MappingCondition {
-    Is: number;
-}
-
-interface MappingConditionRange extends MappingCondition {
-    From: number;
-    To: number;
+    
+    Is?: number;
+    
+    From?: number;
+    To?: number;
 }
 
 enum ConditionOperator { AND, OR };
@@ -193,15 +191,13 @@ class AutoComplete {
          * Return the message when no result returns
          */
         _EmptyMessage: function(): string {
-            var emptyMessage: string|boolean = "";
+            var emptyMessage: string = "";
 
             if (this.Input.hasAttribute("data-autocomplete-empty-message")) {
                 emptyMessage = this.Input.getAttribute("data-autocomplete-empty-message");
-            } else {
+            } else if (this.EmptyMessage !== false) {
                 emptyMessage = this.EmptyMessage;
-            }
-
-            if (emptyMessage === false) {
+            } else {
                 emptyMessage = "";
             }
 
@@ -305,33 +301,12 @@ class AutoComplete {
          * Execute the render of results DOM element
          */
         _Render: function(response: ResponseItem[]|string): void {
-            var ul: HTMLElement = document.createElement("ul"),
-                li: HTMLElement = document.createElement("li");
+            var ul: HTMLElement;
             
             if (typeof response == "string") {
-                if (response.length > 0) {
-                    this.DOMResults.innerHTML = response;
-                } else {
-                    var emptyMessage: string = this._EmptyMessage();
-                    if (emptyMessage !== "") {
-                        li.innerHTML = emptyMessage;
-                        li.setAttribute("class", "locked");
-                        ul.appendChild(li);
-                    }
-                }
+                ul = this._RenderRaw(response);
             } else {
-                // Order
-                if (this._Limit() < 0) {
-                    response = response.reverse();
-                }
-
-                for (var item = 0; item < response.length; item++) {
-                    li.innerHTML = response[item].Label;
-                    li.setAttribute("data-autocomplete-value", response[item].Value);
-                    
-                    ul.appendChild(li);
-                    li = document.createElement("li");
-                }
+                ul = this._RenderResponseItems(response);
             }
     
             if (this.DOMResults.hasChildNodes()) {
@@ -339,6 +314,44 @@ class AutoComplete {
             }
             
             this.DOMResults.appendChild(ul);
+        },
+        
+        _RenderResponseItems: function(response: ResponseItem[]): HTMLElement {
+            var ul: HTMLElement = document.createElement("ul"),
+                li: HTMLElement = document.createElement("li");
+            
+            // Order
+            if (this._Limit() < 0) {
+                response = response.reverse();
+            }
+
+            for (var item = 0; item < response.length; item++) {
+                li.innerHTML = response[item].Label;
+                li.setAttribute("data-autocomplete-value", response[item].Value);
+                
+                ul.appendChild(li);
+                li = document.createElement("li");
+            }
+            
+            return ul;
+        },
+        
+        _RenderRaw: function(response: string): HTMLElement {
+            var ul: HTMLElement = document.createElement("ul"),
+                li: HTMLElement = document.createElement("li");
+            
+            if (response.length > 0) {
+                this.DOMResults.innerHTML = response;
+            } else {
+                var emptyMessage: string = this._EmptyMessage();
+                if (emptyMessage !== "") {
+                    li.innerHTML = emptyMessage;
+                    li.setAttribute("class", "locked");
+                    ul.appendChild(li);
+                }
+            }
+            
+            return ul;
         },
         
         /**
@@ -457,16 +470,13 @@ class AutoComplete {
                         Not: false
                     }, condition);
 
-                    // For MappingConditionIs object
                     if (condition.hasOwnProperty("Is")) {
                         if (condition.Is == event.keyCode) {
                             match = !condition.Not;
                         } else {
                             match = condition.Not;
                         }
-                    }
-                    // For MappingConditionRange object
-                    else if (condition.hasOwnProperty("From") && condition.hasOwnProperty("To")) {
+                    } else if (condition.hasOwnProperty("From") && condition.hasOwnProperty("To")) {
                         if (event.keyCode >= condition.From && event.keyCode <= condition.To) {
                             match = !condition.Not;
                         } else {
@@ -524,3 +534,6 @@ class AutoComplete {
         params.DOMResults.parentNode.removeChild(params.DOMResults);
     }
 }
+
+declare var module: any;
+module.exports = AutoComplete;
