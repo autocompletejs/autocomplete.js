@@ -58,7 +58,10 @@ interface MappingCondition {
     To?: number;
 }
 
-enum ConditionOperator { AND, OR };
+enum ConditionOperator {
+    AND,
+    OR
+}
 
 interface MappingEvent {
     Conditions: MappingCondition[];
@@ -107,7 +110,7 @@ class AutoComplete {
                     Is: 13,
                     Not: false
                 }],
-                Callback: function(event: KeyboardEvent) {
+                Callback: function() {
                     if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
                         var liActive = this.DOMResults.querySelector("li.active");
     
@@ -115,9 +118,6 @@ class AutoComplete {
                             this._Select(liActive);
                             this.DOMResults.setAttribute("class", "autocomplete");
                         }
-
-                        // Cancel form send only if results element is open
-                        event.preventDefault();
                     }
                 },
                 Operator: ConditionOperator.AND
@@ -163,7 +163,7 @@ class AutoComplete {
                     To: 40,
                     Not: true
                 }],
-                Callback: function(event: KeyboardEvent) {
+                Callback: function() {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"),
                         currentValue = this._Pre();
     
@@ -295,7 +295,7 @@ class AutoComplete {
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function(li) {
                 if (li.getAttribute("class") != "locked") {
-                    li.onclick = function(event) {
+                    li.onclick = function() {
                         params._Select(li);
                     };
                 }
@@ -384,7 +384,7 @@ class AutoComplete {
                 var json: string[]|Object = JSON.parse(response);
 
                 
-                if (Object.keys(json).length == 0) {
+                if (Object.keys(json).length === 0) {
                     return "";
                 }
 
@@ -452,18 +452,19 @@ class AutoComplete {
     create(params: Params, element: HTMLElement): void {
         params.Input = element;
 
-        if (params.Input.nodeName.match(/^INPUT$/i)
-            && (params.Input.hasAttribute("type") === false || params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)))
+        if (params.Input.nodeName.match(/^INPUT$/i) && (params.Input.hasAttribute("type") === false || params.Input.getAttribute("type").match(/^TEXT|SEARCH$/i)))
         {
             params.Input.setAttribute("autocomplete", "off");
             params._Position(params);
             params.Input.parentNode.appendChild(params.DOMResults);
 
-            params.$Listeners["focus"]    = params._Focus.bind(params);
-            params.$Listeners["keydown"]  = AutoComplete.prototype.event.bind(null, params);
-            params.$Listeners["blur"]     = params._Blur.bind(params);
-            params.$Listeners["position"] = params._Position.bind(params);
-            params.$Listeners["destroy"]  = AutoComplete.prototype.destroy.bind(null, params);
+            params.$Listeners = {
+                blur:     params._Blur.bind(params),
+                destroy:  AutoComplete.prototype.destroy.bind(null, params),
+                focus:    params._Focus.bind(params),
+                keydown:  AutoComplete.prototype.event.bind(null, params),
+                position: params._Position.bind(params)
+            };
 
             for (var event in params.$Listeners) {
                 params.Input.addEventListener(event, params.$Listeners[event]);
@@ -472,43 +473,40 @@ class AutoComplete {
     }
 
     event(params: Params, event: KeyboardEvent): void {
+        var eventIdentifier = function(condition: {From: number, Is: number, Not: boolean, To: number}) {
+            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
+                condition = AutoComplete.merge({
+                    Not: false
+                }, condition);
+
+                if (condition.hasOwnProperty("Is")) {
+                    if (condition.Is == event.keyCode) {
+                        match = !condition.Not;
+                    } else {
+                        match = condition.Not;
+                    }
+                } else if (condition.hasOwnProperty("From") && condition.hasOwnProperty("To")) {
+                    if (event.keyCode >= condition.From && event.keyCode <= condition.To) {
+                        match = !condition.Not;
+                    } else {
+                        match = condition.Not;
+                    }
+                }
+            }
+        };
+
         for (var name in params.KeyboardMappings) {
             var mapping: MappingEvent = AutoComplete.merge({
                     Operator: ConditionOperator.AND
                 }, params.KeyboardMappings[name]),
                 match: boolean = ConditionOperator.AND == mapping.Operator;
 
-            mapping.Conditions.forEach(function(condition: {
-                From: number,
-                Is: number,
-                Not: boolean,
-                To: number
-            }) {
-                if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
-                    condition = AutoComplete.merge({
-                        Not: false
-                    }, condition);
-
-                    if (condition.hasOwnProperty("Is")) {
-                        if (condition.Is == event.keyCode) {
-                            match = !condition.Not;
-                        } else {
-                            match = condition.Not;
-                        }
-                    } else if (condition.hasOwnProperty("From") && condition.hasOwnProperty("To")) {
-                        if (event.keyCode >= condition.From && event.keyCode <= condition.To) {
-                            match = !condition.Not;
-                        } else {
-                            match = condition.Not;
-                        }
-                    }
-                }
-            });
+            mapping.Conditions.forEach(eventIdentifier);
 
             if (match === true) {
                 mapping.Callback.bind(params, event)();
             }
-        };
+        }
     }
 
     ajax(params: Params, callback: any, timeout: boolean = true): void {
