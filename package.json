@@ -33,6 +33,6 @@
     "build-dev": "mkdir -p dist && npm run css-dev && npm run js-dev",
     "build-prod": "mkdir -p dist && npm run css-prod && npm run js-prod",
     "build": "rm -rf dist && npm run build-dev && npm run build-prod",
-    "test": "tsc --outFile test.js src/autocomplete.ts && jshint test.js ; rm test.js"
+    "test": "tsc --outFile test.js src/autocomplete.ts && jshint test.js"
   }
 }

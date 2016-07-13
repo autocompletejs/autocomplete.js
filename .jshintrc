@@ -11,5 +11,6 @@
 	"node": true,
 	"undef": true,
 	"unused": true,
-	"varstmt": false
+	"varstmt": false,
+	"sub": true
 }
