@@ -4,7 +4,6 @@
 	"camelcase": true,
 	"esversion": 6,
 	"freeze": true,
-	"ignore": ["start", "end"],
 	"maxerr": 0,
 	"maxparams": 3,
 	"module": true,
