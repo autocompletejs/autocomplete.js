@@ -13,6 +13,7 @@ interface Params {
     // Custom params
     Delay:                number;
     EmptyMessage:         string;
+    Highlight:            Object;
     HttpHeaders:          Object;
     HttpMethod:           string;
     Limit:                number;
@@ -97,6 +98,14 @@ class AutoComplete {
     static defaults: Params = {
         Delay: 150,
         EmptyMessage: "No result here",
+        Highlight: {
+            getRegex: function (value) {
+                return new RegExp(value, "ig");
+            },
+            transform: function(value) {
+                return "<strong>" + value + "</strong>";
+            }
+        },
         HttpHeaders: {
             "Content-type": "application/x-www-form-urlencoded"
         },
@@ -224,10 +233,8 @@ class AutoComplete {
          */
         _Highlight: function(label): string {
             return label.replace(
-                new RegExp(this._Pre(), "ig"),
-                function(selected) {
-                    return "<strong>" + selected + "</strong>";
-                }
+                this.Highlight.getRegex(this._Pre()),
+                this.Highlight.transform
             );
         },
         
