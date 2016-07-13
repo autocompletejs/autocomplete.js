@@ -1,4 +1,5 @@
 *.tgz
+.travis.yml
 bower.json
 brunch-config.js
 index.html
