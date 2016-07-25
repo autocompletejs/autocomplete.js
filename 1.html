@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <!-- meta -->
+        <meta charset="utf-8">
+        <meta name="description" content="autocomplete.js is a remote autocomplete. This JavaScript library is lite, fast and stable. It is validate by JSHint and use the JavaScript Strict Mode." />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="google" content="translate" />
+
+	<meta name="google-site-verification" content="PWkFjmwCmfDaBrGL5J-vmxE8re17ha_fko-klxXqqts" />
+
+        <meta property="og:description" content="autocomplete.js is a remote autocomplete. This JavaScript library is lite, fast and stable. It is validate by JSHint and use the JavaScript Strict Mode." />
+        <meta property="og:locale" content="en" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="autocomplete.js | Remote AutoComplete" />
+        <meta property="og:url" content="http://autocomplete-js.com/" />
+        <meta property="og:site_name" content="autocomplete.js" />
+
+        <meta property="twitter:description" content="autocomplete.js is JavaScript library, lite, fast, stable, using the JavaScript Strict Mode and validated by JSHint." />
+
+        <link rel="author" href="https://plus.google.com/+BaptisteDonaux"/>
+        <link rel="publisher" href="https://plus.google.com/+BaptisteDonaux"/>
+
+        <meta itemprop="url" content="http://autocomplete-js.com">
+        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+            <meta itemprop="name" content="Baptiste Donaux">
+        </span>
+        <meta itemprop="softwareVersion" content="1.7">
+        <meta itemprop="downloadUrl" content="https://github.com/autocompletejs/autocomplete.js/archive/v1.7.1.zip">
+        <meta itemprop="image" content="http://autocomplete-js.com/1/autocomplete-js.png">
+        <meta itemprop="applicationCategory" content="JavaScript Library">
+        <meta itemprop="datePublished" content="2015-06-05">
+        <meta itemprop="requirements" content="ECMAScript Edition 5">
+        <meta itemprop="operatingSystem" content="Depend on the browser">
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=yes, initial-scale=1.0, min-scale=1.0, max-scale=1.0">
+
+        <!-- end meta -->
+
+        <link rel="canonical" href="https://autocomplete-js.com/" />
+        
+        <title>autocomplete.js | Remote AutoComplete Lite, Fast and Stable | v1.7</title>
+    </head>
+
+    <body class="content">
+        <a href="https://github.com/autocompletejs/autocomplete.js" itemprop="downloadUrl" target="_blank">
+            <img class="fork-me" src="/images/fork-me-right.png" height="149" width="149">
+        </a>
+
+        <div itemscope itemtype="http://schema.org/SoftwareApplication">
+            <div>
+                <nav class="navbar navbar-default" id="menu" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-content">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse" id="menu-content">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Version <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/">v2</a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="/1/">v1 <i>legacy</i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#installation">Installation</a>
+                                </li>
+                                <li>
+                                    <a href="#declaration">Declaration</a>
+                                </li>
+                                <li>
+                                    <a href="#documentation">Documentation</a>
+                                </li>
+                                <li>
+                                    <a href="#logs">Log</a>
+                                </li>
+                                <li>
+                                    <a href="#news">News</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <h1 class="center" itemprop="name">autocomplete.js</h1>
+
+            <p class="center">
+                JavaScript project with purpose to propose an fast and lite autocomplete. And there is without dependency.
+            </p>
+
+            <div class="center">   
+                <img src="/images/dependencies-none-brightgreen.png" height="20" width="126"/>
+                <img src="/images/Javascript-Strict-Mode-brightgreen.png" height="20" width="141"/>
+                <img src="/images/JSHint-0-error-brightgreen.png" height="20" width="95"/>
+                <img src="/images/license-mit.png" height="20" width="80"/>
+
+                <hr/>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="points">
+            <div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 no-padding-left">
+                    <div class="jumbotron point">
+                        <h3>Lite<i class="fa fa-compress"></i></h3>
+                        <p>
+                            Very lite.<br/>
+                            <i class="fa fa-thumbs-up"></i> &lt; 4KB
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="jumbotron point">
+                        <h3>So Fast<i class="fa fa-bolt"></i></h3>
+                        <p>
+                            Only Native JavaScript Function<br/>
+                            <i class="fa fa-lightbulb-o"></i>Great !
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 no-padding-right">
+                    <div class="jumbotron point">
+                        <h3>Remote Power<i class="fa fa-globe"></i></h3>
+                        <p>
+                            No data pre-loaded.<br/>
+                            <i class="fa fa-sitemap"></i>Only easy AJAX.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div>
+            <div class="center">
+                <div class="jumbotron point">
+                    <h4></h4>
+                    <input class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-control" data-autocomplete="//api.autocomplete-js.com" placeholder="Try autocomplete search in country list" data-autocomplete-no-result="Nope nope ! Try again !"/>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div id="installation">
+            <hr/>
+            <!-- <h2>Installation</h2> -->
+            <div class="points">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding">
+                    <div class="jumbotron point">
+                        <p>
+                            Download the last stable version <a href="https://github.com/autocompletejs/autocomplete.js/releases/download/v1.7.1/autocomplete-js.zip"><i class="fa fa-cloud-download"></i></a> <a href="https://github.com/autocompletejs/autocomplete.js/releases/tag/v1.7.1" target="_blank"><i class="fa fa-github"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div id="declaration">
+            <hr/>
+            <!-- <h2>Declaration</h2> -->
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no-padding-left">
+                <pre><code class="javascript">//Simple declaration with default parameters
+AutoComplete();
+
+//Call with custom parameters
+AutoComplete({
+    paramName: "query",
+    method:    "POST",
+    noResult:  "No item like this",
+});
+</code></pre>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                <pre><code class="xml">&lt;!--HTML declaration --&gt;
+&lt;input type="text"
+    data-autocomplete="http://…"
+    data-autocomplete-method="POST"
+    data-autocomplete-type="HTML"
+    data-autocomplete-param-name="query2"
+    data-autocomplete-no-result="Regex no matched"
+    data-autocomplete-limit="10" /&gt;
+
+&lt;!-- data-autocomplete (url)         is required
+    data-autocomplete-method (GET|POST|PUT|DELETE or all others method) is optional
+    data-autocomplete-type (JSON|HTML)  is optional
+    data-autocomplete-param-name        is optional
+    data-autocomplete-no-result         is optional
+    data-autocomplete-limit             is optional
+--&gt;</code></pre>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div id="documentation">
+            <hr/>
+            <!-- <h2>Documentation</h2> -->
+            <div class="api">
+                <div class="list-group col-lg-3 hidden-md hidden-sm hidden-xs">
+                    <a data-api="url" class="list-group-item active">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#url"></i>
+                        <label class="label label-primary pull-right">v1.0</label>
+                        <h4 class="list-group-item-heading">URL <span class="type">(string)</span></h4>
+                        <p class="list-group-item-text">
+                            URL is required. This parameter is only customizable in DOM.
+                        </p>
+                    </a>
+
+                    <a data-api="limit" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#limit"></i>
+                        <label class="label label-primary pull-right">v1.4</label>
+                        <h4 class="list-group-item-heading">Limit <span class="type">(integer)</span></h4>
+                        <p class="list-group-item-text">
+                            You can choice if you want display only <strong>X</strong> firsts or lasts items.
+                        </p>
+                    </a>
+
+                    <a data-api="method" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#method"></i>
+                        <label class="label label-primary pull-right">v1.6</label>
+                        <h4 class="list-group-item-heading">HTTP Method <span class="type">(string)</span></h4>
+                        <p class="list-group-item-text">
+                            We choice a HTTP method to send request.
+                        </p>
+                    </a>
+
+                    <a data-api="headers" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#headers"></i>
+                        <label class="label label-success pull-right">v1.7</label>
+                        <h4 class="list-group-item-heading">HTTP Headers <span class="type">(object)</span></h4>
+                        <p class="list-group-item-text">
+                            You can custom the HTTP headers.
+                        </p>
+                    </a>
+                    
+                    <a data-api="noResult" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#noResult"></i>
+                        <label class="label label-primary pull-right">v1.2</label>
+                        <h4 class="list-group-item-heading">Empty message <span class="type">(string)</span></h4>
+                        <p class="list-group-item-text">
+                            Custom the message when there isn't results.
+                        </p>
+                    </a>
+
+                    <a data-api="open" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#open"></i>
+                        <label class="label label-primary pull-right">v1.4</label>
+                        <h4 class="list-group-item-heading">Open results <span class="type">(function)</span></h4>
+                        <p class="list-group-item-text">
+                            Method overridable to bind the items results generated.
+                        </p>
+                    </a>
+
+                    <a data-api="paramName" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#paramName"></i>
+                        <label class="label label-primary pull-right">v1.0</label>
+                        <h4 class="list-group-item-heading">Param request <span class="type">(string)</span></h4>
+                        <p class="list-group-item-text">
+                            Contains the request name value sent into the request.
+                        </p>
+                    </a>
+
+                    <a data-api="post" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#post"></i>
+                        <label class="label label-primary pull-right">v1.4</label>
+                        <h4 class="list-group-item-heading">Post request <span class="type">(function)</span></h4>
+                        <p class="list-group-item-text">
+                            Workflow executed after the request to create the DOM with results.
+                        </p>
+                    </a>
+
+                    <a data-api="pre" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#pre"></i>
+                        <label class="label label-primary pull-right">v1.4</label>
+                        <h4 class="list-group-item-heading">Pre request <span class="type">(function)</span></h4>
+                        <p class="list-group-item-text">
+                            Override the value to send in AJAX.
+                        </p>
+                    </a>
+
+                    <a data-api="select" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#select"></i>
+                        <label class="label label-primary pull-right">v1.5</label>
+                        <h4 class="list-group-item-heading">Select result value <span class="type">(function)</span></h4>
+                        <p class="list-group-item-text">
+                            Override the value to insert in input
+                        </p>
+                    </a>
+
+                    <a data-api="selector" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#selector"></i>
+                        <label class="label label-primary pull-right">v1.0</label>
+                        <h4 class="list-group-item-heading">DOM selector <span class="type">(array)</span></h4>
+                        <p class="list-group-item-text">
+                            Allows to choice items binded by autocomplete.js
+                        </p>
+                    </a>
+
+                    <a data-api="refresh" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#refresh"></i>
+                        <label class="label label-primary pull-right">v1.5</label>
+                        <h4 class="list-group-item-heading">Refresh position <span class="type">(event)</span></h4>
+                        <p class="list-group-item-text">
+                            You can refresh the results div position.
+                        </p>
+                    </a>
+
+                    <a data-api="destroy" class="list-group-item">
+                        <i class="glyphicon glyphicon-link pull-left" data-api-href="#destroy"></i>
+                        <label class="label label-primary pull-right">v1.6</label>
+                        <h4 class="list-group-item-heading">Destroy <span class="type">(event)</span></h4>
+                        <p class="list-group-item-text">
+                            You can unbind and destroy events on specific input.
+                        </p>
+                    </a>
+                </div>
+
+                <div class="api-item col-lg-9 col-md-12 col-sm-12 col-xs-12 no-padding-right">
+                    <div class="active" id="url">
+                        <h3 class="hidden-lg">URL <span class="type">(string)</span></h3>
+                        <p>
+                            It's the main argument. Without it, no autocomplete possible. This argument is string type and is indicate only in HTML. Unlike other autocomplete, autocomplete.js doesn't take argument in JavaScript. This information is exclusively in the input attribute "<strong>data-autocomplete</strong>". It's for this reason that the <a data-api="selector">selector default value</a> is <strong>input[data-autocomplete]</strong>.
+
+                            <pre><code class="xml">&lt;!-- HTML declaration --&gt;
+&lt;input type="text" data-autocomplete="http://…"&gt;</code></pre>
+                        </p>
+                    </div>
+                    
+                    <div id="limit">
+                        <h3 class="hidden-lg">Limit <span class="type">(integer)</span></h3>
+                        <p>
+                            <strong>limit</strong> is a argument added to 1.4 version. It give the possibility to add two conditions easily. The default value is 0.<br/>
+
+                            This is the two features.
+
+                            <ul>
+                                <li>
+                                    Limit the number of entity to display. Show only the firsts entities. If this value is equal at 0 (default value), all entities will display.
+                                </li>
+
+                                <li>
+                                    Inverse results. If the value is positive, results will set in the same order. Whereas if the value is negative, all entities are inversed.<br/>
+                                    <strong>CAUTON: inversed doesn't sort !</strong>
+                                </li>
+                            </ul>
+
+                            This value can be set to two places. Into the JavaScript declaration like the code's example. But you can too set with the DOM. This HTML attribute is « data-autocomplete-limit » and the value is only sent for the current input.
+                        </p>
+
+                        <pre><code class="javascript">//Show all results
+AutoComplete({limit: 0});
+
+//Show the 5 firsts results
+AutoComplete({limit: 5}); 
+
+//Show the 10 lasts results
+AutoComplete({limit: -10});
+</code></pre>
+
+                        <pre><code class="xml">&lt;!-- HTML declaration --&gt;
+&lt;input type="text"
+    data-autocomplete="http://…"
+    data-autocomplete-limit="5" /&gt;</code></pre>
+                    </div>
+                    
+                    <div id="selector">
+                        <h3 class="hidden-lg">DOM selector <span class="type">(array)</span></h3>
+                        <p>
+                            <strong>selector</strong> is array type. This option is a primary information because these are the data which identify inputs to select.
+                            <br><br>The default array is :
+
+                            <pre><code class="javascript">//Default selector
+{
+    selector: [
+        "input[data-autocomplete]"
+        //input[data-autocomplete] must  to select all inputs with one URL.
+    ]
+} 
+
+//If you use many ID selector
+{
+    selector: [
+        "#myFirstIDSelector",
+        "#mySecondIDSelector",     
+        ...
+    ]
+}</code></pre>
+
+                            The rules to select an input text type are the same that CSS (#id, .class, tag, [attr], …). You can read the <a href="https://developer.mozilla.org/en/docs/Web/API/Document.querySelectorAll" target="_blank">MDN Documentation</a> for most information.
+                        </p>
+                    </div>
+                    
+                    <div id="method">
+                        <h3 class="hidden-lg">HTTP Method <span class="type">(string)</span></h3>
+                        <p>
+                            <strong>method</strong> is string type. This option is available since the v1.0. The default value is <strong>GET</strong>.<br>
+                            This option define the method to send the XMLHttpRequest. All methods are defined in the RFC2616 which explain the <a target="_blank" href="http://pretty-rfc.herokuapp.com/RFC2616">HTTP1.1 protocol</a>. <br>
+                            This option is a string and the parameter isn't sensible case. <br><br>
+                            There are two possibilities to set a custom value.
+                            <ul>
+                                <li>In JavaScript with the key <strong>limit</strong> ;</li>
+                                <li>Into the HTML with the DOM attribute <strong>data-autocomplete-method</strong>.</li>
+                            </ul>
+                        </p>
+
+                        <h4>Caution</h4>
+
+                        <p>
+                            Before <strong>1.6</strong> version (1.0 to 1.5), this parameter took only two values (<strong>GET</strong> and <strong>POST</strong>). Since, <label class="label label-success">1.6</label>, the method use it depends developper fully. No check applies, only XMLHttpRequest must throw an exception.
+                        </p>
+
+
+                        <pre><code class="javascript">//Send GET request with default value
+AutoComplete();
+
+//Send GET request in define value
+AutoComplete({method: "GET"});
+
+//Send a POST request
+AutoComplete({method: "POST"}); 
+
+//Send a PUT request
+AutoComplete({method: "PUT"}); 
+
+//Send a DELETE request
+AutoComplete({method: "DELETE"}); </code></pre>
+
+                        <pre><code class="xml">&lt;!-- HTML declaration for a POST request --&gt;
+&lt;input type="text"
+    data-autocomplete="http://…"
+    data-autocomplete-method="POST" /&gt;</code></pre>
+                    </div>
+                    
+                    <div id="headers">
+                        <h3 class="hidden-lg">HTTP Headers <span class="type">(object)</span></h3>
+                        <p>
+                            <strong>headers</strong> is object type only declarable in javascript. This option is available since the v1.7. The default value is <strong>{"Content-Type": "application/x-www-form-urlencoded"}</strong>.<br>
+                        </p>
+
+                        <pre><code class="javascript">//Send request with specific headers
+AutoComplete({
+    headers: {
+        'apikey': "myApiKey",
+        "secretKey": "mySecretKey" 
+    }
+}); </code></pre>
+                    </div>
+
+                    <div id="paramName">
+                        <h3 class="hidden-lg">Param request <span class="type">(string)</span></h3>
+                        <p>
+                            <strong>paramName</strong> is string type. This option is available since the v1.0. The default value is <strong>q</strong>. <br>
+                            It allows define the parameter name which contains the value when the request is send. <br>
+                            This option is settable with two attributes, DOM and/or JavaScript.
+                            <ul>
+                                <li>JavaScript with the attribute <strong>paramName</strong> ;</li>
+                                <li>HTML with the keyword <strong>data-autocomplete-param-name</strong></li>
+                            </ul>
+                        </p>
+
+                        <pre><code class="javascript">//How custom the parameter name to send request
+AutoComplete({paramName: "query_to_search"});</code></pre>
+
+                        <pre><code class="xml">&lt;!-- HTML declaration --&gt;
+&lt;input type="text"
+    data-autocomplete="http://…"
+    data-autocomplete-param-name="query_to_search" /&gt;</code></pre>
+                    </div>
+
+                    <div id="noResult">
+                        <h3 class="hidden-lg">Empty message <span class="type">(string)</span></h3>
+                        <p>
+                            <strong>noResult</strong> is string type. This option is available since the v1.2. The default value is <strong>No result</strong>. <br>
+                            This option allows given a custom message when there isn't results after one search. The message is usable into the <a data-api="post">post</a>.
+                            <strong>CAUTION:</strong> If you override the post method, think at given this value when the response is empty. <br><br>
+                            This option is settable with two attributes, DOM and/or JavaScript.
+                            <ul>
+                                <li>JavaScript with the attribute <strong>noResult</strong> ;</li>
+                                <li>DOM with the attribute <strong>data-autocomplete-no-result</strong></li>
+                            </ul>
+                        </p>
+
+                        <pre><code class="javascript">//How set the message for a empty response
+AutoComplete({noResult: "There isn't results for this search"}); </code></pre>
+
+                        <pre><code class="xml">&lt;!-- HTML declaration --&gt;
+&lt;input type="text"
+    data-autocomplete="http://…"
+    data-autocomplete-no-result="Nope Nope Nope… Bad entry" /&gt;</code></pre>
+                    </div>
+
+                    <div id="open">
+                        <h3 class="hidden-lg">Open results <span class="type">(function)</span></h3>
+                        <p>
+                            open is function type. Its purpose is to bind the LI items responses generate by the post method.<br><br>
+                            To override the method <strong>open</strong>, you must respect the prototype.
+
+                            <pre><code class="javascript">//Prototype: open method
+void function(input, result);</code></pre>
+
+                            <ul>
+                                <li>First parameter is the HTML input object</li>
+                                <li>Second parameter is the HTML div object who are display the results.<br></li>
+                                <li>open doesn't return</li>
+                            </ul>
+                            <br>
+                            The default method is detail here.
+                        </p>
+
+                        <pre><code class="javascript">//Default open function
+{
+    open: function(input, result) {
+        //lambda is an anonymous function which take one argument. This argument is an HTML li object
+        var lambda = function(li) {
+            //We add a event tracker. When we click on this HTML li object
+            li.addEventListener("click", function(e) {
+                var li = e.currentTarget,
+                dataAutocompleteValueLabel = "data-autocomplete-value";
+
+                //We push the li value into the input, except if li own a alternative value.
+                input.value = li.hasAttribute(dataAutocompleteValueLabel) ? attr(li, dataAutocompleteValueLabel) : li.innerHTML;
+
+                //I push the input value in a input's attribute for stop the results show, while the input value doesn't change.
+                attr(input, {"data-autocomplete-old-value": input.value});
+            });
+        };
+
+        //We search all li items
+        var liS = result.getElementsByTagName("li");
+
+        //We bind all items
+        for (var i = liS.length - 1; i >= 0; i--) {
+            lambda(liS[i]);
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div id="post">
+                        <h3 class="hidden-lg">Post request <span class="type">(function)</span></h3>
+                        <p>
+                            <strong>post</strong> is function type. Its purpose is the method which insert results in the DOM. It creates the result menu. You can override this method in respect the prototype.
+
+                            <pre><code class="javascript">//Prototype: post method
+boolean function(result, response, custParams);</code></pre>
+
+                            <ul>
+                                <li>First parameter is the DOM item result to insert the results</li>
+                                <li>Second parameter is the data response</li>
+                                <li>Third parameter is the data structure which manage the input</li>
+                                <li>post returns boolean type. The return is equal at <strong>true</strong> if there isn't results. <strong>false</strong> if there is results.</li>
+                            </ul><br>
+                            The default method is detail here.
+
+                            <pre><code class="javascript">{
+    //Default post function
+    post: function(result, response, custParams) {
+        //If an exception is throws, the result isn't JSON data.
+        try {
+            //Try parse like JSON data
+            response = JSON.parse(response);
+            var empty,
+                length = response.length,
+                li = domCreate("li"),
+                ul = domCreate("ul");
+               
+            //If the response is a JSON array
+            if (Array.isArray(response)) {
+                //If there is results
+                if (length) {
+                    //We reverse results if parameter is custom
+                    if (custParams.limit &lt; 0) {
+                        response.reverse();
+                    }
+
+                    //While there is results, we show in inserting in DOM ul element
+                    for (var i = 0; i &lt; length &amp;&amp; (i &lt; Math.abs(custParams.limit) || !custParams.limit); i++) {
+                        li.innerHTML = response[i];
+                        ul.appendChild(li);
+                        li = domCreate("li");
+                    }
+                //If there isn't results, we give the parameters « noResult »
+                } else {
+                    //If the response is an object or an array and that the response is empty, so this script is here, for the message no response.
+                    empty = true;
+                    //The class « locked » on a li element stop the click event
+                    attr(li, {"class": "locked"});
+                    li.innerHTML = custParams.noResult;
+                    ul.appendChild(li);
+                }
+            }
+            //If the result is JSON Object
+            else {
+                var properties = Object.getOwnPropertyNames(response);
+
+                //Reverse result if limit parameter is custom
+                if (custParams.limit &lt; 0) {
+                    properties.reverse();
+                }
+
+                for (var propertie in properties) {
+                    if (parseInt(propertie) &lt; Math.abs(custParams.limit) || !custParams.limit) {
+                        li.innerHTML = response[properties[propertie]];
+                        attr(li, {"data-autocomplete-value": properties[propertie]});
+                        ul.appendChild(li);
+                        li = domCreate("li");
+                    }
+                }
+            }
+
+            if (result.hasChildNodes()) {
+                result.childNodes[0].remove();
+            }
+            
+            result.appendChild(ul);
+
+            return empty;
+        } catch (e) {
+            result.innerHTML = response;
+        }
+    }
+}</code></pre>
+                        </p>
+                    </div>
+
+                    <div id="pre">
+                        <h3 class="hidden-lg">Pre request <span class="type">(function)</span></h3>
+                        <p>
+                            <strong>pre</strong> is a function with purpose to modify id necessary the value before it send. <br>
+                            The default function is it : <br>
+
+                            <pre><code class="javascript">{
+    pre: function(input) {
+        return input.value;
+    }
+}
+
+//Prototype
+string function(input);</code></pre>
+
+                            <ul>
+                                <li>pre function take one argument which is the input.</li>
+                                <li>
+                                    pre function return the value for the request. If you want cancel the request in custom case, it's easy. You return an empty string and the request doesn't send it.
+
+                                    <pre><code class="javascript">{
+    pre: function(input) {
+        //If the string length is &lt; 2 chars
+        if (input.value.length &lt; 2) {
+            //We cancel the request
+            return "";
+        }
+        return input.value;
+    }
+}</code></pre>
+                                </li>
+                            </ul>
+                        </p>
+                    </div>
+
+                    <div id="select">
+                        <h3 class="hidden-lg">Select result value <span class="type">(function)</span></h3>
+                        <p>
+                            The method <strong>select</strong> give possibility to custom the value to insert in your autocomplete input. Default, The method insert the li's value selected, and insert the same value in the input attribute <strong>data-autocomplete-old-value</strong>. This attribute allows to stop search when a value has been selected (without that it changes).
+
+                            <h4>Default value</h4>
+                            <pre><code class="javascript">select: function(input, item) {
+    input.value = attr(item, "data-autocomplete-value", item.innerHTML);
+    attr(input, {"data-autocomplete-old-value": input.value});
+}</code></pre>
+
+                            If you want override this method, this is the parameters descriptions :
+                            <ol>
+                                <li>
+                                    <strong>input</strong> is the autocomplete input
+                                </li>
+                                <li>
+                                    <strong>item</strong> is the li selected.
+                                </li>
+                            </ol>
+
+                            The two fields are DOM element.
+                        </p>
+                    </div>
+
+                    <div id="refresh">
+                        <h3 class="hidden-lg">Refresh position <span class="type">(event)</span></h3>
+                        <p>
+                            This feature isn't a argument to initialize your autocomplete but an event to send to reposition the results. This feature can be util if your DOM before your autocomplete input change. With this event, you can easily reposition the div.
+
+                            <pre><code class="javascript">var event = new Event('position');
+document.querySelector("[data-autocomplete]").dispatchEvent(event);</code></pre>
+
+                            <h4>Caution !</h4>
+                            This feature has been added into 1.4 release. The event had like name <strong>autocomplete:position</strong> and not <strong>position</strong>. Since 1.5, you can use <strong>position</strong>.
+                        </p>
+                    </div>
+
+                    <div id="destroy">
+                        <h3 class="hidden-lg">Destroy <span class="type">(event)</span></h3>
+                        <p>
+                            With it, you can unbind and destroy all events applies on  specific input. DOM element to puth results is deleted. All events are deleted.
+
+                            <pre><code class="javascript">var event = new Event('destroy');
+document.querySelector("[data-autocomplete]").dispatchEvent(event);</code></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="points">
+            <hr/>
+            <!-- <h2>Others</h2> -->
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no-padding-left" id="customer">
+                <div class="jumbotron point">
+                    <h3>Easy custom<i class="fa fa-magic"></i></h3>
+                    <p>
+                        You can easily implement a CSS for autocomplete.js. A snippet is available here on <a href="http://codepen.io/baptistedonaux/pen/azjPKp" target="_blank">CodePen</a>. 
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                <div class="jumbotron point">
+                    <h3>So sure<i class="fa fa-trophy"></i></h3>
+                    <p>
+                        The version 1.7 has been validate by <a href="http://www.jshint.com/about/" target="_blank">JSHint</a>.<br/>
+                        This <img src="/images/JSHint-0-error-brightgreen.png" height="20" width="95"> is quality assurance.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding">
+                <div class="jumbotron point">
+                    <h3 id="logs">Logs <i class="fa fa-terminal"></i></h3>
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <p>
+                            <h3>News <i class="fa fa-newspaper-o"></i></h3>
+                            <ul style="text-align: left;" id="news">
+                                <li>HTTP Headers can be customize</li>
+                            </ul>
+                        </p>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <p>
+                            <h3>Fix <i class="fa fa-bug"></i></h3>
+                            A bug ? <a href="https://github.com/autocompletejs/autocomplete.js/issues" target="_blank">Open an issue on GitHub</a>
+                        </p>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <p>
+                            <h3>How upgrade ? <i class="fa fa-level-up"></i></h3>
+                            <p>
+                                Download, move, and take a beer <i class="fa fa-beer"></i> (or a tea <i class="fa fa-coffee"></i> ?)
+                            </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="credit">
+            <p class="center">Created, developed, designed proposed by <a href="http://me.baptiste-donaux.fr" target="_blank">
+                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                    <span itemprop="name">Baptiste Donaux</span>
+                </span></a>
+                <br/>
+                <a href="https://twitter.com/baptistedonaux" target="_blank"><i class="fa fa-twitter"></i></a>
+                <a href="https://github.com/baptistedonaux" target="_blank"><i class="fa fa-github"></i></a>
+                <a href="https://plus.google.com/+BaptisteDonaux" target="_blank"><i class="fa fa-google-plus"></i></a>
+                <a href="http://stackoverflow.com/users/2182996/baptiste-donaux" target="_blank"><i class="fa fa-stack-overflow"></i></a>
+                <a href="maito:support@autocomplete-js.com"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+
+        <!-- Async content -->
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/obsidian.min.css">
+        <link rel="stylesheet" href="/css/autocomplete_1.css">
+        <link rel="stylesheet" type="text/css" href="/css/1.css">
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+        <script type="text/javascript" src="/js/analytics.js"></script>
+        <script type="text/javascript" src="/js/1.js"></script>
+    </body>
+</html>
+
+
