@@ -470,7 +470,7 @@ class AutoComplete {
                 blur:     params._Blur.bind(params),
                 destroy:  AutoComplete.prototype.destroy.bind(null, params),
                 focus:    params._Focus.bind(params),
-                keydown:  AutoComplete.prototype.event.bind(null, params),
+                keyup:    AutoComplete.prototype.event.bind(null, params),
                 position: params._Position.bind(params)
             };
 
