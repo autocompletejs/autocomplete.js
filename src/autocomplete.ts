@@ -143,6 +143,7 @@ class AutoComplete {
                 }],
                 Callback: function(event: KeyboardEvent) {
                     var first = this.DOMResults.querySelector("li:first-child:not(.locked)"),
+                        last = this.DOMResults.querySelector("li:last-child:not(.locked)"),
                         active = this.DOMResults.querySelector("li.active");
         
                     if (active) {
@@ -158,6 +159,8 @@ class AutoComplete {
         
                         active.setAttribute("class", "");
                         active.parentElement.childNodes.item(position).setAttribute("class", "active");
+                    } else if (last && event.keyCode == 38) {
+                        last.setAttribute("class", "active");
                     } else if (first) {
                         first.setAttribute("class", "active");
                     }
