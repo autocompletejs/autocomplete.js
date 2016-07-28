@@ -142,6 +142,8 @@ class AutoComplete {
                     Not: false
                 }],
                 Callback: function(event: KeyboardEvent) {
+                    event.preventDefault();
+
                     var first = this.DOMResults.querySelector("li:first-child:not(.locked)"),
                         last = this.DOMResults.querySelector("li:last-child:not(.locked)"),
                         active = this.DOMResults.querySelector("li.active");
@@ -474,6 +476,11 @@ class AutoComplete {
                 destroy:  AutoComplete.prototype.destroy.bind(null, params),
                 focus:    params._Focus.bind(params),
                 keyup:    AutoComplete.prototype.event.bind(null, params),
+                keydown:  function(event: KeyboardEvent) {
+                    if (event.keyCode == 38 || event.keyCode == 40) {
+                        event.preventDefault();
+                    }
+                },
                 position: params._Position.bind(params)
             };
 
