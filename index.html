@@ -1,1069 +1,1445 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <!-- meta -->
-        <meta charset="utf-8">
+	<head>
+    <!-- meta -->
+    <meta charset="utf-8">
 
-        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=yes, initial-scale=1.0, min-scale=1.0, max-scale=1.0">
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=yes, initial-scale=1.0, min-scale=1.0, max-scale=1.0">
 
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow" />
-        
-        <meta name="description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
-        <meta name="google" content="translate" />
-        <meta name="google-site-verification" content="PWkFjmwCmfDaBrGL5J-vmxE8re17ha_fko-klxXqqts" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    
+    <meta name="description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
+    <meta name="google" content="translate" />
+    <meta name="google-site-verification" content="PWkFjmwCmfDaBrGL5J-vmxE8re17ha_fko-klxXqqts" />
 
-        <meta property="og:description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
-        <meta property="og:locale" content="en" />
-        <meta property="og:site_name" content="autocomplete.js" />
-        <meta property="og:title" content="autocomplete.js | Remote AutoComplete" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="http://autocomplete-js.com/" />
-        <meta property="twitter:description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
-        
-        <meta itemprop="applicationCategory" content="JavaScript Library">
-        <meta itemprop="datePublished" content="2016-07-28">
-        <meta itemprop="downloadUrl" content="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.0.zip">
-        <meta itemprop="image" content="http://autocomplete-js.com/autocomplete-js.png">
-        <meta itemprop="operatingSystem" content="Depend on the browser">
-        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-            <meta itemprop="name" content="Baptiste Donaux">
-        </span>
-        <meta itemprop="requirements" content="ECMAScript Edition 5">
-        <meta itemprop="softwareVersion" content="2.1">
-        <meta itemprop="url" content="http://autocomplete-js.com">
+    <meta property="og:description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
+    <meta property="og:locale" content="en" />
+    <meta property="og:site_name" content="autocomplete.js" />
+    <meta property="og:title" content="autocomplete.js | Remote AutoComplete" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://autocomplete-js.com/" />
+    <meta property="twitter:description" content="autocomplete.js is a fast and lightweight autocomplete library, without any dependencies." />
+    
+    <meta itemprop="applicationCategory" content="JavaScript Library">
+    <meta itemprop="datePublished" content="2016-07-28">
+    <meta itemprop="downloadUrl" content="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.0.zip">
+    <meta itemprop="image" content="http://autocomplete-js.com/autocomplete-js.png">
+    <meta itemprop="operatingSystem" content="Depend on the browser">
+    <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop="name" content="Baptiste Donaux">
+    </span>
+    <meta itemprop="requirements" content="ECMAScript Edition 5">
+    <meta itemprop="softwareVersion" content="2.1">
+    <meta itemprop="url" content="http://autocomplete-js.com">
 
-        <link rel="author" href="https://plus.google.com/+BaptisteDonaux"/>
-        <link rel="canonical" href="http://autocomplete-js.com/" />
-        <link rel="publisher" href="https://plus.google.com/+BaptisteDonaux"/>
-        <!-- end meta -->
-        
-        <title>autocomplete.js | Remote AutoComplete Lite, Fast and Stable | v2</title>
-    </head>
+    <link rel="author" href="https://plus.google.com/+BaptisteDonaux"/>
+    <link rel="canonical" href="http://autocomplete-js.com/" />
+    <link rel="publisher" href="https://plus.google.com/+BaptisteDonaux"/>
+    <!-- end meta -->
+    
+    <title>autocomplete.js | Remote AutoComplete Lite, Fast and Stable | v2.1</title>
+</head>
 
-    <body class="content">
-        <a href="https://github.com/autocompletejs/autocomplete.js" itemprop="downloadUrl" target="_blank">
-            <img class="fork-me" src="/images/fork-me-right.png" height="149" width="149">
-        </a>
 
-        <div itemscope itemtype="http://schema.org/SoftwareApplication">
-            <div>
-                <nav class="navbar navbar-default" id="menu" role="navigation">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-content">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
+	<body class="content">
+		<a href="https://github.com/autocompletejs/autocomplete.js" itemprop="downloadUrl" target="_blank">
+    <img class="fork-me" src="/images/fork-me-right.png" height="149" width="149">
+</a>
 
-                        <div class="collapse navbar-collapse" id="menu-content">
-                            <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Version <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="active">
-                                            <a href="/">v2</a>
-                                        </li>
-                                        <li>
-                                            <a href="/1/">v1 <i>legacy</i></a>
-                                        </li>
-                                    </ul>
+<div itemscope itemtype="http://schema.org/SoftwareApplication">
+    <div>
+        <nav class="navbar navbar-default" id="menu" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-content">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="menu-content">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Version <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="active">
+                                    <a href="/">v2</a>
                                 </li>
                                 <li>
-                                    <a href="#installation">Installation</a>
-                                </li>
-                                <li>
-                                    <a href="#declaration">Declaration</a>
-                                </li>
-                                <li>
-                                    <a href="#documentation">Documentation</a>
-                                </li>
-                                <li>
-                                    <a href="#contributed">Contributed</a>
+                                    <a href="/1.html">v1 <i>legacy</i></a>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-                </nav>
+                        </li>
+                        <li>
+                            <a href="#installation">Installation</a>
+                        </li>
+                        <li>
+                            <a href="#declaration">Declaration</a>
+                        </li>
+                        <li>
+                            <a href="#documentation">Documentation</a>
+                        </li>
+                        <li>
+                            <a href="#contributed">Contributed</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </nav>
+    </div>
 
-            <h1 class="center" itemprop="name">autocomplete.js</h1>
+    <h1 class="center" itemprop="name">autocomplete.js</h1>
 
-            <p class="center">
-                autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.
-            </p>
+    <p class="center">
+        autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.
+    </p>
 
-            <div class="center">   
-                <img src="/images/dependencies-none-brightgreen.png" height="20" width="126"/>
-                <img src="/images/Javascript-Strict-Mode-brightgreen.png" height="20" width="141"/>
-                <img src="/images/JSHint-0-error-brightgreen.png" height="20" width="95"/>
-                <img src="/images/license-mit.png" height="20" width="80"/>
+    <div class="center">   
+        <img src="/images/dependencies-none-brightgreen.png" height="20" width="126"/>
+        <img src="/images/Javascript-Strict-Mode-brightgreen.png" height="20" width="141"/>
+        <img src="/images/JSHint-0-error-brightgreen.png" height="20" width="95"/>
+        <img src="/images/license-mit.png" height="20" width="80"/>
 
-                <hr/>
+        <hr/>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<div class="points">
+    <div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding-left">
+            <div class="jumbotron point">
+                <h3>Lite</h3>
+                <p>
+                    8 KB<br/>
+                    <i class="fa fa-thumbs-up"></i>
+                </p>
             </div>
-
-            <div class="clearfix"></div>
         </div>
-
-        <div class="points">
-            <div>
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding-left">
-                    <div class="jumbotron point">
-                        <h3>Lite</h3>
-                        <p>
-                            8 KB<br/>
-                            <i class="fa fa-thumbs-up"></i>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                    <div class="jumbotron point">
-                        <h3>Fast</h3>
-                        <p>
-                            Native JavaScript<br/>
-                            <i class="fa fa-bolt"></i>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                    <div class="jumbotron point">
-                        <h3>Remote Power</h3>
-                        <p>
-                            No data pre-loaded.<br/>
-                            Only AJAX.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding-right">
-                    <div class="jumbotron point">
-                        <h3>Hackable</h3>
-                        <p>
-                            Functions overridable<br/>
-                            <i class="fa fa-unlock-alt"></i>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="points">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                    <div class="jumbotron point">
-                        <input class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-control" data-autocomplete="//api.autocomplete-js.com" placeholder="Try autocomplete search in country list" data-autocomplete-no-result="Nope nope ! Try again !" style="font-size: 20px; height: 60px;"/ type="text">
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="jumbotron point">
+                <h3>Fast</h3>
+                <p>
+                    Native JavaScript<br/>
+                    <i class="fa fa-bolt"></i>
+                </p>
             </div>
         </div>
 
-        <div class="points">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="jumbotron point" style="height: 170px; line-height: 170px; padding: 0;">
-                        <div class="row">
-                            <div class="col-xs-offset-3 col-xs-6" style="height: 75px;">
-                                <a href="http://www.typescriptlang.org/" target="_blank">
-                                    <img src="/images/typescript.png" style="max-width: 200px; padding-top: 13px;">
-                                </a>
-                            </div>
-                        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="jumbotron point">
+                <h3>Remote Power</h3>
+                <p>
+                    No data pre-loaded.<br/>
+                    Only AJAX.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding-right">
+            <div class="jumbotron point">
+                <h3>Hackable</h3>
+                <p>
+                    Functions overridable<br/>
+                    <i class="fa fa-unlock-alt"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<div class="points">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="jumbotron point">
+                <input class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-control" data-autocomplete="//api.autocomplete-js.com" placeholder="Try autocomplete search in country list" data-autocomplete-no-result="Nope nope ! Try again !" style="font-size: 20px; height: 60px;"/ type="text">
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="points">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="jumbotron point" style="height: 170px; line-height: 170px; padding: 0;">
+                <div class="row">
+                    <div class="col-xs-offset-3 col-xs-6" style="height: 75px;">
+                        <a href="http://www.typescriptlang.org/" target="_blank">
+                            <img src="/images/typescript.png" style="max-width: 200px; padding-top: 13px;">
+                        </a>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="installation">
-                    <div class="jumbotron point" style="height: 170px; line-height: 170px; padding: 0;">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" id="installation">
+            <div class="jumbotron point" style="height: 170px; line-height: 170px; padding: 0;">
 
-                        <div class="btn-group pull-right" role="group" aria-label="installation-methods">
-                            <button type="button" class="btn btn-primary" id="installation-npm">NPM</button>
-                            <button type="button" class="btn btn-default" id="installation-bower">Bower</button>
-                            <button type="button" class="btn btn-default" id="installation-scratch">From scratch</button>
-                        </div>
+                <div class="btn-group pull-right" role="group" aria-label="installation-methods">
+                    <button type="button" class="btn btn-primary" id="installation-npm">NPM</button>
+                    <button type="button" class="btn btn-default" id="installation-bower">Bower</button>
+                    <button type="button" class="btn btn-default" id="installation-scratch">From scratch</button>
+                </div>
 
-                        <div data-id="installation-npm">
-                            <div class="col-lg-8">
-                                <pre style="line-height:1.5; text-align: left;"><code class="javascript">npm install autocomplete-js@2.1.* --save
+                <div data-id="installation-npm">
+                    <div class="col-lg-8">
+                        <pre style="line-height:1.5; text-align: left;"><code class="bash">npm install autocomplete-js@2.1.* --save
 </code></pre>
-                            </div>
+                    </div>
 
-                            <div class="col-lg-4">
-                                <svg viewBox="0 0 18 7">
-                                    <path fill="#CB3837" d="M0,0v6h5v1h4v-1h9v-6"></path>
-                                    <path fill="#FFF" d="M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4"></path>
-                                </svg>
-                            </div>
-                        </div>
+                    <div class="col-lg-4">
+                        <svg viewBox="0 0 18 7">
+                            <path fill="#CB3837" d="M0,0v6h5v1h4v-1h9v-6"></path>
+                            <path fill="#FFF" d="M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4"></path>
+                        </svg>
+                    </div>
+                </div>
 
-                        <div data-id="installation-bower" class="hide">
-                            <div class="col-lg-8">
-                                <pre style="line-height:1.5; text-align: left;"><code class="javascript">// bower.json
+                <div data-id="installation-bower" class="hide">
+                    <div class="col-lg-8">
+                        <pre style="line-height:1.5; text-align: left;"><code class="javascript">// bower.json
 {
-  "dependencies": {
-    "autocomplete.js": "2.1.*"
-  }
+    "dependencies": {
+        "autocomplete.js": "2.1.*"
+    }
 }
 </code></pre>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <img src="/images/bower.png" width="100px;">
-                            </div>
-                        </div>
-
-                        <div data-id="installation-scratch" class="hide">
-                            <p>
-                                Download the last stable version <a href="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.0.zip"><i class="fa fa-cloud-download"></i></a> <a href="https://github.com/autocompletejs/autocomplete.js/tree/v2.1.0" target="_blank"><i class="fa fa-github"></i></a>
-                            </p>
-                        </div>
                     </div>
+
+                    <div class="col-lg-4">
+                        <img src="/images/bower.png" width="100px;">
+                    </div>
+                </div>
+
+                <div data-id="installation-scratch" class="hide">
+                    <p>
+                        Download the last stable version <a href="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.0.zip"><i class="fa fa-cloud-download"></i></a> <a href="https://github.com/autocompletejs/autocomplete.js/tree/v2.1.0" target="_blank"><i class="fa fa-github"></i></a>
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div id="declaration">
-            <hr/>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 no-padding-left">
-                <h2>Simple example</h2>
-                <pre><code class="html">&lt;input data-autocomplete="example.php" /&gt;
+<div id="declaration">
+    <hr>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <h2>Client integration</h2>
+
+        <pre><code class="html">&lt;input data-autocomplete="example.php" /&gt;
+
 &lt;script type="text/javascript"&gt;
     AutoComplete();
 &lt;/script&gt;
-</code></pre>
-            </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <h2>Advance example</h2>
-                <pre><code class="html">&lt;input id="autocomplete-example" /&gt;
+&lt;!-- OR --&gt;
+
+&lt;input id="autocomplete-example" /&gt;
+
 &lt;script type="text/javascript"&gt;
     AutoComplete({
         EmptyMessage: "No item found",
-        Url: "example.php",
     }, "#autocomplete-example");
-&lt;/script&gt;
-</code></pre>
-            </div>
+&lt;/script&gt;</code></pre>
+    </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 no-padding-right">
-                <h2>Server response</h2>
-                <pre><code class="json">[
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <h2>Server response</h2>
+        
+        <pre><code class="json">// JSON array
+[
     "France",
     "United States",
     "Germany"
 ]
-</code></pre>
 
-                <pre><code class="json">
+// OR JSON object
 {
     "FR": "France",
     "USA": "United States",
     "DE": "Germany"
 }
 </code></pre>
-            </div>
+    </div>
+</div>
 
-            <div class="clearfix"></div>
-        </div>
+<div style="text-align: center;">
+    <!-- Documentation Top -->
+    <ins class="adsbygoogle"
+        style="display:inline-block;width:728px;height:90px"
+        data-ad-client="ca-pub-5600852277504389"
+        data-ad-slot="8309154358"></ins>
+</div>
 
-        <div style="text-align: center;">
-            <!-- Documentation Top -->
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:728px;height:90px"
-                data-ad-client="ca-pub-5600852277504389"
-                data-ad-slot="8309154358"></ins>
-        </div>
+<div id="documentation">
+    <hr/>
+    <h2>Documentation</h2>
 
-        <div id="documentation">
-            <hr/>
-            <h2>Documentation</h2>
+    <h3>Value arguments</h3>
 
-            <h3>Value arguments</h3>
-            <table class="table table-hover table-striped">
-                <thead>
-                    <th>Param name</th>
-                    <th>Default value</th>
-                    <th>Definition</th>
-                    <th>Override JS declaration</th>
-                    <th>Override HTML declaration</th>
-                </thead>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Definition</th>
+                <th>Snippets</th>
+            </tr>
+        </thead>
 
-                <tbody>
-                    <tr>
-                        <td>
-                            <a href="#Delay" id="Delay">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            Delay
-                        </td>
+        <tbody>
+            
+            <tr>
+                <td>
+                    <a href="#Delay" id="Delay">
+                        Delay
+                    </a>
+                </td>
 
-                        <td>
-                            150
-                        </td>
+                <td>
+                    <strong>Integer</strong> value.<br/> Must be a <strong>positive</strong> value.<br/> Time between the keyboard event and request sent.
 
-                        <td>
-                            <strong>Integer</strong> value.<br/>
-                            Mut be a <strong>positive</strong> value.<br/>
+                </td>
 
-                            Time between the keyboard event and request sent.
-                        </td>
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#Delay_default" aria-controls="Delay_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
 
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    Delay: 300,
-});</code></pre>
-                        </td>
+                            <li>
+                                <a href="#Delay_js" aria-controls="Delay_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
 
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#EmptyMessage" id="EmptyMessage">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            EmptyMessage
-                        </td>
+                            
+                        </ul>
 
-                        <td>
-                            <strong>No result here</strong>
-                        </td>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="Delay_default">
+                                
+                                    
+                                    <pre><code class="plain">150</code></pre>
+                                    
+                                
+                            </div>
 
-                        <td>
-                            <strong>String</strong> value.<br/>
-                            Message displayed when no result found.
-                        </td>
+                            <div role="tabpanel" class="tab-pane" id="Delay_js">
+                                <pre><code class="javascript">AutoComplete({
+  Delay: 300,
+});
+</code></pre>
+                            </div>
 
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    EmptyMessage: "Oh Sh*t ! No results !",
-});</code></pre>
-                        </td>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#EmptyMessage" id="EmptyMessage">
+                        EmptyMessage
+                    </a>
+                </td>
 
-                        <td>
-                            <pre><code class="html">&lt;input
-data-autocomplete-empty-message="My message"
-/&gt;</code></pre>
-                        </td>
-                    </tr>
+                <td>
+                    <strong>String</strong> value.<br/> Message displayed when no result found.
 
-                    <!-- Highlight -->
-                    <tr>
-                        <td>
-                            <a href="#Highlight" id="Highlight">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            Highlight
-                        </td>
+                </td>
 
-                        <td>
-                            <pre><code class="javascript">{
-getRegex: function (value) {
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#EmptyMessage_default" aria-controls="EmptyMessage_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#EmptyMessage_js" aria-controls="EmptyMessage_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                            <li>
+                                <a href="#EmptyMessage_html" aria-controls="EmptyMessage_html" role="tab" data-toggle="tab">HTML</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="EmptyMessage_default">
+                                
+                                    
+                                    <pre><code class="plain">No result here</code></pre>
+                                    
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="EmptyMessage_js">
+                                <pre><code class="javascript">AutoComplete({
+  EmptyMessage: "Oh Sh*t ! No results !",
+});
+</code></pre>
+                            </div>
+
+                            
+                            <div role="tabpanel" class="tab-pane" id="EmptyMessage_html">
+                                <pre><code class="html">&lt;input
+  data-autocomplete-empty-message="My message"
+/&gt;
+</code></pre>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#Highlight" id="Highlight">
+                        Highlight
+                    </a>
+                </td>
+
+                <td>
+                    <strong>Object</strong> value.<br/> Contains an object with two keys : <strong>getRegex</strong> and <strong>transform</strong>. Both are functions. First returns a RegExp to identify part of result which must be highlighted. Second transforms part which must be highlighted.
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#Highlight_default" aria-controls="Highlight_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#Highlight_js" aria-controls="Highlight_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="Highlight_default">
+                                
+                                    
+                                    <pre><code class="javascript">{
+  getRegex: function (value) {
     return new RegExp(value, "ig");
-},
-transform: function(value) {
+  },
+  transform: function(value) {
     return "&lt;strong&gt;" + value + "&lt;/strong&gt;";
+  }
 }
-}</code></pre>
-                        </td>
+</code></pre>
+                                    
+                                
+                            </div>
 
-                        <td>
-                            <strong>Object</strong> value.<br/>
-                            Contains an object with two keys : <strong>getRegex</strong> and <strong>transform</strong>. Both are functions. First returns a RegExp to identify part of result which must be highlighted. Second transforms part which must be highlighted.
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-Highlight: {
+                            <div role="tabpanel" class="tab-pane" id="Highlight_js">
+                                <pre><code class="javascript">AutoComplete({
+  Highlight: {
     getRegex: function (value) {
-        return new RegExp(value, "ig");
+      return new RegExp(value, "ig");
     },
     transform: function(value) {
-        return "&lt;strong&gt;" + value + "&lt;/strong&gt;";
+      return "&lt;strong&gt;" + value + "&lt;/strong&gt;";
     }
-},
-});</code></pre>
-                        </td>
+  },
+});
+</code></pre>
+                            </div>
 
-                        <td style="text-align:center;">n/a</td>
-                    </tr>
-                    <!-- End Highlight -->
-
-                    <tr>
-                        <td>
-                            <a href="#HttpHeaders" id="HttpHeaders">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            HttpHeaders
-                        </td>
-
-                        <td>
-                            <pre><code class="json">{
-"Content-type":
-"application/x-www-form-urlencoded"
-}</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>JSON</strong> value.<br/>
-                            HTTP headers sent in request.
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    HttpHeaders: {
-        "token": "sakjfh97325437hskfsdfd",
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align:center;">n/a</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#HttpMethod" id="HttpMethod">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            HttpMethod
-                        </td>
-
-                        <td>
-                            GET
-                        </td>
-
-                        <td>
-                            <strong>String</strong> value.<br/>
-                            Contains HTTP method used to send request.
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    HttpMethod: "POST",
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <pre><code class="html">&lt;input
-data-autocomplete-method="POST"
-/&gt;</code></pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#Limit" id="Limit">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            Limit
-                        </td>
-
-                        <td>
-                            0
-                        </td>
-
-                        <td>
-                            <strong>Integer</strong> value.<br/>
-                            When <strong><i>value</i> == 0</strong>, no limit applied.<br/>
-                            When <strong><i>value</i> &gt; 0</strong>, display only X items.<br/>
-                            When <strong><i>value</i> &lt; 0</strong>, display only <strong>last</strong> X items.<br/>
-
-
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    Limit: 10,
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <pre><code class="html">&lt;input
-data-autocomplete-limit="10"
-/&gt;</code></pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#QueryArg" id="QueryArg">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            QueryArg
-                        </td>
-
-                        <td>
-                            q
-                        </td>
-
-                        <td>
-                            <strong>String</strong> value.<br/>
-                            Parameter name used to send value into the request.
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    QueryArg: "query_search",
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <pre><code class="html">&lt;input
-data-autocomplete-param-name="query_search"
-/&gt;</code></pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#Url" id="Url">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            Url
-                        </td>
-
-                        <td>
-                            <i>no default value</i>
-                        </td>
-
-                        <td>
-                            <strong>String</strong> value.
-                            Contains URL to call.
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    Url: "/my/url",
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <pre><code class="html">&lt;input
-data-autocomplete="/my/url"
-/&gt;</code></pre>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <hr/>
-            <h3>Method arguments</h3>
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <th>Method name</th>
-                    <th>Default value</th>
-                    <th>Definition</th>
-                    <th>Override declaration</th>
-                    <th>Function arguments</th>
-                    <th>Function return</th>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>
-                            <a href="#_Blur" id="_Blur">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Blur
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L282" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Method to hide results
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Blur: function(now) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>now</strong> argument is a boolean value. The default value is <strong>false</strong>.
-                        </td>
-
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <a href="#_EmptyMessage" id="_EmptyMessage">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _EmptyMessage
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L209" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Return the message when no result returns
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _EmptyMessage: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-
-                        <td>
-                            The value returned is a <strong>string</strong>.<br/>
-                            Empty message to display when no results found.
-                        </td>
-                    </tr>
-
-                    <!-- _Focus -->
-                    <tr>
-                        <td>
-                            <a href="#_Focus" id="_Focus">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Focus
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L296" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Manage the display of results (only to display - Hide results, see the method _Blur)
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Focus: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">n/a</td>
-                        <td style="text-align: center;">n/a</td>
-                    </tr>
-                    <!-- End _Focus -->
-                    
-                    <!-- _Highlight -->
-                    <tr>
-                        <td>
-                            <a href="#_Highlight" id="_Highlight">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Highlight
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L239" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Highlight part of results which match with query search.
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Highlight: function(label) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>label</strong> argument is the item result.
-                        </td>
-                        <td>
-                            Must return a string value. <strong>label</strong> argument highlighted.
-                        </td>
-                    </tr>
-                    <!-- End _Highlight -->
-
-                    <tr>
-                        <td>
-                            <a href="#_Limit" id="_Limit">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Limit
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L226" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Returns the maximum number of results
-                        </td>
-                        
-                        <td>
-                            Return integer value.<br/>
-                            <pre><code class="javascript">AutoComplete({
-    _Limit: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">n/a</td>
-                        <td>
-                            Must return an <strong>integer</strong> value.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_HttpMethod" id="_HttpMethod">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _HttpMethod
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L249" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Returns the HTTP method to use 
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _HttpMethod: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">n/a</td>
-                        <td>
-                            Return <strong>string</strong> value.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Open" id="_Open">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Open
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L307" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-
-                        <td>
-                            Bind all results item if one result is opened
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Open: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">n/a</td>
-                        <td style="text-align: center;">n/a</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_QueryArg" id="_QueryArg">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _QueryArg
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L260" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Returns the query param to use
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _QueryArg: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-                        
-                        <td>
-                            Return <strong>string</strong> value.<br/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Position" id="_Position">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Position
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L321" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Calculate results position
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Position: function(...) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Post" id="_Post">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Post
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L392" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Deal with request response
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Post: function(response) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>response</strong> argument is a <strong>string</strong> value.
-                        </td>
-
-                        <td>
-                            Value returned must be a <strong>string</strong> or an <strong>array of <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L74" target="_blank">ResponseItem</a></strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Render" id="_Render">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Render
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L329" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Execute the render of results DOM element
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Render: function(response) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>response</strong> argument must be a <strong>string</strong> or an <strong>array of <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L74" target="_blank">ResponseItem</a></strong>.
-                        </td>
-                        <td style="text-align: center;">n/a</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Pre" id="_Pre">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Pre
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L427" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Return the autocomplete value to send (before request)
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Pre: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">n/a</td>
-
-                        <td>
-                            Returns a <strong>string</strong> value.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Select" id="_Select">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Select
-                        </td>
-                        
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L434" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-                        
-                        <td>
-                            Choice one result item
-                        </td>
-                        
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Select: function(item) {
-    },
-});</code></pre>
-                        </td>
-
-                        <td>
-                            <strong>item</strong> argument must be a <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" target="_blank">HTMLElement</a>.
-                        </td>
-                        <td style="text-align: center;">n/a</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#_Url" id="_Url">
-                                <i class="glyphicon glyphicon-link"></i>
-                            </a>
-                            _Url
-                        </td>
-
-                        <td>
-                            <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L271" target="_blank">
-                                Show default
-                            </a>
-                        </td>
-
-                        <td>
-                            Returns the URL to use for AJAX request
-                        </td>
-
-                        <td>
-                            <pre><code class="javascript">AutoComplete({
-    _Url: function() {
-    },
-});</code></pre>
-                        </td>
-
-                        <td style="text-align: center;">
-                            n/a
-                        </td>
-
-                        <td>
-                            Value returned must be a <strong>string</strong>.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
             
-            <hr/>
+            <tr>
+                <td>
+                    <a href="#HttpHeaders" id="HttpHeaders">
+                        HttpHeaders
+                    </a>
+                </td>
+
+                <td>
+                    <strong>JSON</strong> value.<br/> HTTP headers sent in request.
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#HttpHeaders_default" aria-controls="HttpHeaders_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#HttpHeaders_js" aria-controls="HttpHeaders_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="HttpHeaders_default">
+                                
+                                    
+                                    <pre><code class="json">{
+  "Content-type": "application/x-www-form-urlencoded"
+}
+</code></pre>
+                                    
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="HttpHeaders_js">
+                                <pre><code class="javascript">AutoComplete({
+  HttpHeaders: {
+    "token": "sakjfh97325437hskfsdfd"
+  }
+});
+</code></pre>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#HttpMethod" id="HttpMethod">
+                        HttpMethod
+                    </a>
+                </td>
+
+                <td>
+                    <strong>String</strong> value.<br/> Contains HTTP method used to send request.
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#HttpMethod_default" aria-controls="HttpMethod_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#HttpMethod_js" aria-controls="HttpMethod_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                            <li>
+                                <a href="#HttpMethod_html" aria-controls="HttpMethod_html" role="tab" data-toggle="tab">HTML</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="HttpMethod_default">
+                                
+                                    
+                                    <pre><code class="plain">GET</code></pre>
+                                    
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="HttpMethod_js">
+                                <pre><code class="javascript">AutoComplete({
+  HttpMethod: "POST"
+});
+</code></pre>
+                            </div>
+
+                            
+                            <div role="tabpanel" class="tab-pane" id="HttpMethod_html">
+                                <pre><code class="html">&lt;input
+  data-autocomplete-method="POST"
+/&gt;
+</code></pre>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#Limit" id="Limit">
+                        Limit
+                    </a>
+                </td>
+
+                <td>
+                    <strong>Integer</strong> value.<br/> When <strong><i>value</i> == 0</strong>, no limit applied.<br/> When <strong><i>value</i> &gt; 0</strong>, display only X items.<br/> When <strong><i>value</i> &lt; 0</strong>, display only <strong>last</strong> X items.<br/>
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#Limit_default" aria-controls="Limit_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#Limit_js" aria-controls="Limit_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                            <li>
+                                <a href="#Limit_html" aria-controls="Limit_html" role="tab" data-toggle="tab">HTML</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="Limit_default">
+                                
+                                    
+                                    <pre><code class="plain">0</code></pre>
+                                    
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="Limit_js">
+                                <pre><code class="javascript">AutoComplete({
+  Limit: 10
+});
+</code></pre>
+                            </div>
+
+                            
+                            <div role="tabpanel" class="tab-pane" id="Limit_html">
+                                <pre><code class="html">&lt;input
+  data-autocomplete-limit="10"
+/&gt;
+</code></pre>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#QueryArg" id="QueryArg">
+                        QueryArg
+                    </a>
+                </td>
+
+                <td>
+                    <strong>String</strong> value.<br/> Parameter name used to send value into the request.
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#QueryArg_default" aria-controls="QueryArg_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#QueryArg_js" aria-controls="QueryArg_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                            <li>
+                                <a href="#QueryArg_html" aria-controls="QueryArg_html" role="tab" data-toggle="tab">HTML</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="QueryArg_default">
+                                
+                                    
+                                    <pre><code class="plain">q</code></pre>
+                                    
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="QueryArg_js">
+                                <pre><code class="javascript">AutoComplete({
+  QueryArg: "query_search"
+});
+</code></pre>
+                            </div>
+
+                            
+                            <div role="tabpanel" class="tab-pane" id="QueryArg_html">
+                                <pre><code class="html">&lt;input
+  data-autocomplete-param-name="query_search"
+/&gt;
+</code></pre>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#Url" id="Url">
+                        Url
+                    </a>
+                </td>
+
+                <td>
+                    <strong>String</strong> value.<br/> Parameter name used to send value into the request.
+
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#Url_default" aria-controls="Url_default" role="tab" data-toggle="tab">
+                                    Default
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#Url_js" aria-controls="Url_js" role="tab" data-toggle="tab">JS</a>
+                            </li>
+
+                            
+                            <li>
+                                <a href="#Url_html" aria-controls="Url_html" role="tab" data-toggle="tab">HTML</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="Url_default">
+                                
+                                <pre><code class="raw">No default value</code></pre>
+                                
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="Url_js">
+                                <pre><code class="javascript">AutoComplete({
+  Url: "/my/url"
+});
+</code></pre>
+                            </div>
+
+                            
+                            <div role="tabpanel" class="tab-pane" id="Url_html">
+                                <pre><code class="html">&lt;input
+  data-autocomplete="/my/url"
+/&gt;
+</code></pre>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <hr/>
+    <h3>Method arguments</h3>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Definition</th>
+                <th>Snippets</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            
+            <tr>
+                <td>
+                    <a href="#_Blur" id="_Blur">
+                        _Blur
+                    </a>
+                </td>
+
+                <td>
+                    Method to hide results
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Blur_prototype" aria-controls="_Blur_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L282" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Blur_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Blur: function(now) {
+  }
+});
+</code></pre>
+
+                                <strong>now</strong> argument is a boolean value. The default value is <strong>false</strong>.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_EmptyMessage" id="_EmptyMessage">
+                        _EmptyMessage
+                    </a>
+                </td>
+
+                <td>
+                    Return the message when no result returns
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_EmptyMessage_prototype" aria-controls="_EmptyMessage_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L209" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_EmptyMessage_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _EmptyMessage: function() {
+  }
+});
+</code></pre>
+
+                                The value returned is a <strong>string</strong>.<br/> Empty message to display when no results found.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Focus" id="_Focus">
+                        _Focus
+                    </a>
+                </td>
+
+                <td>
+                    Manage the display of results (only to display - Hide results, see the method _Blur)
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Focus_prototype" aria-controls="_Focus_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L296" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Focus_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Focus: function() {
+  }
+});
+</code></pre>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Highlight" id="_Highlight">
+                        _Highlight
+                    </a>
+                </td>
+
+                <td>
+                    Highlight part of results which match with query search.
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Highlight_prototype" aria-controls="_Highlight_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L239" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Highlight_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Highlight: function(label) {
+  }
+});
+</code></pre>
+
+                                <strong>label</strong> argument is the item result. Must return a string value. <strong>label</strong> argument highlighted.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Limit" id="_Limit">
+                        _Limit
+                    </a>
+                </td>
+
+                <td>
+                    Returns the maximum number of results
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Limit_prototype" aria-controls="_Limit_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L226" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Limit_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Limit: function() {
+  }
+});
+</code></pre>
+
+                                Must return an <strong>integer</strong> value.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_HttpMethod" id="_HttpMethod">
+                        _HttpMethod
+                    </a>
+                </td>
+
+                <td>
+                    Returns the HTTP method to use
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_HttpMethod_prototype" aria-controls="_HttpMethod_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L249" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_HttpMethod_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _HttpMethod: function() {
+  }
+});
+</code></pre>
+
+                                Return <strong>string</strong> value.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Open" id="_Open">
+                        _Open
+                    </a>
+                </td>
+
+                <td>
+                    Bind all results item if one result is opened
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Open_prototype" aria-controls="_Open_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L307" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Open_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Open: function() {
+  }
+});
+</code></pre>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_QueryArg" id="_QueryArg">
+                        _QueryArg
+                    </a>
+                </td>
+
+                <td>
+                    Returns the query param to use
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_QueryArg_prototype" aria-controls="_QueryArg_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L260" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_QueryArg_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _QueryArg: function() {
+  }
+});
+</code></pre>
+
+                                Return <strong>string</strong> value.<br/>
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Position" id="_Position">
+                        _Position
+                    </a>
+                </td>
+
+                <td>
+                    Calculate results position
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Position_prototype" aria-controls="_Position_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L321" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Position_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Position: function() {
+  }
+});
+</code></pre>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Post" id="_Post">
+                        _Post
+                    </a>
+                </td>
+
+                <td>
+                    Deal with request response
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Post_prototype" aria-controls="_Post_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L392" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Post_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Post: function(response) {
+  }
+});
+</code></pre>
+
+                                <strong>response</strong> argument is a <strong>string</strong> value. Value returned must be a <strong>string</strong> or an <strong>array of <a href="https://github.com/autocompletejs/autocomplete.js/blob/v{{ page.autocompletejs.version }}/src/autocomplete.ts#L74" target="_blank">ResponseItem</a></strong>
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Render" id="_Render">
+                        _Render
+                    </a>
+                </td>
+
+                <td>
+                    Execute the render of results DOM element
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Render_prototype" aria-controls="_Render_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L329" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Render_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Render: function(response) {
+  }
+});
+</code></pre>
+
+                                <strong>response</strong> argument must be a <strong>string</strong> or an <strong>array of <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L74" target="_blank">ResponseItem</a></strong>.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Pre" id="_Pre">
+                        _Pre
+                    </a>
+                </td>
+
+                <td>
+                    Return the autocomplete value to send (before request)
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Pre_prototype" aria-controls="_Pre_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L427" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Pre_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Pre: function() {
+  }
+});
+</code></pre>
+
+                                Returns a <strong>string</strong> value.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Select" id="_Select">
+                        _Select
+                    </a>
+                </td>
+
+                <td>
+                    Choice one result item
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Select_prototype" aria-controls="_Select_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L434" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Select_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Select: function(item) {
+  }
+});
+</code></pre>
+
+                                <strong>item</strong> argument must be a <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" target="_blank">HTMLElement</a>.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_Url" id="_Url">
+                        _Url
+                    </a>
+                </td>
+
+                <td>
+                    Returns the URL to use for AJAX request
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_Url_prototype" aria-controls="_Url_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L271" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_Url_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _Url: function() {
+  }
+});
+</code></pre>
+
+                                Value returned must be a <strong>string</strong>.
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+    
+    <hr/>
+    <div class="clearfix"></div>
+</div>
+
+<div class="points" id="contributed">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding">
+        <div class="jumbotron point">
+            <h3>Contributed <i class="fa fa-bug"></i></h3>
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <p>
+                    A bug ? <a href="https://github.com/autocompletejs/autocomplete.js/issues" target="_blank">Open an issue on GitHub</a>
+                </p>
+            </div>
+
             <div class="clearfix"></div>
         </div>
+    </div>
+</div>
 
-        <div class="points" id="contributed">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                <div class="jumbotron point">
-                    <h3>Contributed <i class="fa fa-bug"></i></h3>
-                    
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <p>
-                            A bug ? <a href="https://github.com/autocompletejs/autocomplete.js/issues" target="_blank">Open an issue on GitHub</a>
-                        </p>
-                    </div>
+<div class="credit">
+    <p class="center">Created, developed, designed proposed by <a href="https://me.baptiste-donaux.fr" target="_blank">
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">Baptiste Donaux</span>
+        </span></a>
+        <br/>
+        <a href="https://twitter.com/baptistedonaux" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="https://github.com/baptistedonaux" target="_blank"><i class="fa fa-github"></i></a>
+        <a href="https://plus.google.com/+BaptisteDonaux" target="_blank"><i class="fa fa-google-plus"></i></a>
+        <a href="http://stackoverflow.com/users/2182996/baptiste-donaux" target="_blank"><i class="fa fa-stack-overflow"></i></a>
+        <a href="maito:support@autocomplete-js.com"><i class="fa fa-envelope"></i></a>
+    </p>
+</div>
 
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
+<link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/obsidian.min.css">
+<link rel="stylesheet" href="/css/autocomplete.css">
 
-        <div class="credit">
-            <p class="center">Created, developed, designed proposed by <a href="https://me.baptiste-donaux.fr" target="_blank">
-                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-                    <span itemprop="name">Baptiste Donaux</span>
-                </span></a>
-                <br/>
-                <a href="https://twitter.com/baptistedonaux" target="_blank"><i class="fa fa-twitter"></i></a>
-                <a href="https://github.com/baptistedonaux" target="_blank"><i class="fa fa-github"></i></a>
-                <a href="https://plus.google.com/+BaptisteDonaux" target="_blank"><i class="fa fa-google-plus"></i></a>
-                <a href="http://stackoverflow.com/users/2182996/baptiste-donaux" target="_blank"><i class="fa fa-stack-overflow"></i></a>
-                <a href="maito:support@autocomplete-js.com"><i class="fa fa-envelope"></i></a>
-            </p>
-        </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://raw.githubusercontent.com/autocompletejs/autocomplete.js/v2.1.0/dist/autocomplete.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script type="text/javascript" src="/js/analytics.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="/css/main.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/obsidian.min.css">
-        <link rel="stylesheet" href="/css/autocomplete.css">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://raw.githubusercontent.com/autocompletejs/autocomplete.js/v2.1.0/dist/autocomplete.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
-        <script type="text/javascript" src="/js/analytics.js"></script>
-        <script type="text/javascript" src="/js/main.js"></script>
-
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </body>
+	</body>
 </html>
-
-

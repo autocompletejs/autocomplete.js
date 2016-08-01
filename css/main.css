@@ -6707,3 +6707,19 @@ input[data-autocomplete] {
     padding-left: 0; }
   .no-padding-right {
     padding-right: 0; }
+
+.hljs {
+  margin-top: 0; }
+
+.nav-tabs > li > a, .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+  background-color: #d7d7d7;
+  border: 1px solid #d7d7d7; }
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  color: #e0e2e4;
+  background-color: #282B2E;
+  border: 1px solid #282B2E; }
+
+table td:first-child {
+  width: 250px; }
+table td:last-child {
+  width: 450px; }
