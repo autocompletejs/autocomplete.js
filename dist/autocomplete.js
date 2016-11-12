@@ -256,7 +256,7 @@ var AutoComplete = (function () {
          */
         _Limit: function () {
             var limit = this.Input.getAttribute("data-autocomplete-limit");
-            if (isNaN(limit)) {
+            if (isNaN(limit) || limit === null) {
                 return this.Limit;
             }
             return parseInt(limit);
