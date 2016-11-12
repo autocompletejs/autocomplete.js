@@ -349,12 +349,14 @@ class AutoComplete {
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
 
+            var limit = this._Limit();
+
             // Order
-            if (this._Limit() < 0) {
+            if (limit < 0) {
                 response = response.reverse();
             }
 
-            for (var item = 0; item < response.length; item++) {
+            for (var item = 0; item < limit; item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
 
