@@ -67,7 +67,7 @@ var AutoComplete = (function () {
     };
     AutoComplete.prototype.event = function (params, event) {
         var eventIdentifier = function (condition) {
-            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
+            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && mapping.Operator == ConditionOperator.OR)) {
                 condition = AutoComplete.merge({
                     Not: false
                 }, condition);

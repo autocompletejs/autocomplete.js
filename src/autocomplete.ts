@@ -492,7 +492,7 @@ class AutoComplete {
 
     event(params: Params, event: KeyboardEvent): void {
         var eventIdentifier = function(condition: {From: number, Is: number, Not: boolean, To: number}) {
-            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
+            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && mapping.Operator == ConditionOperator.OR)) {
                 condition = AutoComplete.merge({
                     Not: false
                 }, condition);
