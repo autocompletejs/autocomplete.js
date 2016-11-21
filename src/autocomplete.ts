@@ -160,7 +160,7 @@ class AutoComplete {
                         }
 
                         active.classList.remove("active");
-                        active.parentElement.childNodes.item(position).classList.add("active");
+                        active.parentElement.children.item(position).classList.add("active");
                     } else if (last && event.keyCode == 38) {
                         last.classList.add("active");
                     } else if (first) {
