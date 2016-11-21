@@ -159,12 +159,12 @@ class AutoComplete {
                             position = 0;
                         }
 
-                        active.setAttribute("class", "");
-                        active.parentElement.childNodes.item(position).setAttribute("class", "active");
+                        active.classList.remove("active");
+                        active.parentElement.childNodes.item(position).classList.add("active");
                     } else if (last && event.keyCode == 38) {
-                        last.setAttribute("class", "active");
+                        last.classList.add("active");
                     } else if (first) {
-                        first.setAttribute("class", "active");
+                        first.classList.add("active");
                     }
                 },
                 Operator: ConditionOperator.OR
