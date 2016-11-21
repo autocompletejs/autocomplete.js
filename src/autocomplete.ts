@@ -1,6 +1,6 @@
 /*
- * @license MIT 
- * 
+ * @license MIT
+ *
  * Autocomplete.js v2.1.0
  * Developed by Baptiste Donaux
  * https://autocomplete-js.com
@@ -53,9 +53,9 @@ interface Params {
 
 interface MappingCondition {
     Not: boolean;
-    
+
     Is?: number;
-    
+
     From?: number;
     To?: number;
 }
@@ -75,10 +75,10 @@ interface ResponseItem {
     Label: string;
     Value: string;
 }
- 
+
 /**
  * Core
- * 
+ *
  * @class
  * @author Baptiste Donaux <baptiste.donaux@gmail.com> @baptistedonaux
  */
@@ -113,7 +113,7 @@ class AutoComplete {
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
-        
+
         KeyboardMappings: {
             "Enter": {
                 Conditions: [{
@@ -123,7 +123,7 @@ class AutoComplete {
                 Callback: function() {
                     if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
                         var liActive = this.DOMResults.querySelector("li.active");
-    
+
                         if (liActive !== null) {
                             this._Select(liActive);
                             this.DOMResults.setAttribute("class", "autocomplete");
@@ -147,18 +147,18 @@ class AutoComplete {
                     var first = this.DOMResults.querySelector("li:first-child:not(.locked)"),
                         last = this.DOMResults.querySelector("li:last-child:not(.locked)"),
                         active = this.DOMResults.querySelector("li.active");
-        
+
                     if (active) {
                         var currentIndex = Array.prototype.indexOf.call(active.parentNode.children, active),
                             position = currentIndex + (event.keyCode - 39),
                             lisCount = this.DOMResults.getElementsByTagName("li").length;
-        
+
                         if (position < 0) {
                             position = lisCount - 1;
                         } else if (position >= lisCount) {
                             position = 0;
                         }
-        
+
                         active.setAttribute("class", "");
                         active.parentElement.childNodes.item(position).setAttribute("class", "active");
                     } else if (last && event.keyCode == 38) {
@@ -181,12 +181,12 @@ class AutoComplete {
                 Callback: function() {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"),
                         currentValue = this._Pre();
-    
+
                     if (currentValue !== "") {
                         if (!oldValue || currentValue != oldValue) {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
-    
+
                         AutoComplete.prototype.ajax(this, function() {
                             if (this.Request.readyState == 4 && this.Request.status == 200) {
                                 this._Render(this._Post(this.Request.response));
@@ -202,7 +202,7 @@ class AutoComplete {
         DOMResults: null,
         Request: null,
         Input: null,
-        
+
         /**
          * Return the message when no result returns
          */
@@ -219,13 +219,13 @@ class AutoComplete {
 
             return emptyMessage;
         },
-        
+
         /**
-         * Returns the maximum number of results 
+         * Returns the maximum number of results
          */
         _Limit: function(): number {
             var limit = this.Input.getAttribute("data-autocomplete-limit");
-            
+
             if (isNaN(limit)||limit===null) {
                 return this.Limit;
             }
@@ -242,9 +242,9 @@ class AutoComplete {
                 this.Highlight.transform
             );
         },
-        
+
         /**
-         * Returns the HHTP method to use 
+         * Returns the HHTP method to use
          */
         _HttpMethod: function(): string {
             if (this.Input.hasAttribute("data-autocomplete-method")) {
@@ -253,7 +253,7 @@ class AutoComplete {
 
             return this.HttpMethod;
         },
-        
+
         /**
          * Returns the query param to use
          */
@@ -264,7 +264,7 @@ class AutoComplete {
 
             return this.QueryArg;
         },
-        
+
         /**
          * Returns the URL to use for AJAX request
          */
@@ -275,9 +275,9 @@ class AutoComplete {
 
             return this.Url;
         },
-        
+
         /**
-         * Manage the close 
+         * Manage the close
          */
         _Blur: function(now: boolean = false): void {
             if (now) {
@@ -289,9 +289,9 @@ class AutoComplete {
                 }, 150);
             }
         },
-        
+
         /**
-         * Manage the open 
+         * Manage the open
          */
         _Focus: function(): void {
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
@@ -300,7 +300,7 @@ class AutoComplete {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
-        
+
         /**
          * Bind all results item if one result is opened
          */
@@ -314,7 +314,7 @@ class AutoComplete {
                 }
             });
         },
-        
+
         /**
          * Position the results HTML element
          */
@@ -322,33 +322,33 @@ class AutoComplete {
             this.DOMResults.setAttribute("class", "autocomplete");
             this.DOMResults.setAttribute("style", "top:" + (this.Input.offsetTop + this.Input.offsetHeight) + "px;left:" + this.Input.offsetLeft + "px;width:" + this.Input.clientWidth + "px;");
         },
-        
+
         /**
          * Execute the render of results DOM element
          */
         _Render: function(response: ResponseItem[]|string): void {
             var ul: HTMLElement;
-            
+
             if (typeof response == "string") {
                 ul = this._RenderRaw(response);
             } else {
                 ul = this._RenderResponseItems(response);
             }
-    
+
             if (this.DOMResults.hasChildNodes()) {
                 this.DOMResults.removeChild(this.DOMResults.childNodes[0]);
             }
-            
+
             this.DOMResults.appendChild(ul);
         },
-        
+
         /**
          * ResponseItems[] rendering
          */
         _RenderResponseItems: function(response: ResponseItem[]): HTMLElement {
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
-            
+
             // Order
             if (this._Limit() < 0) {
                 response = response.reverse();
@@ -357,21 +357,21 @@ class AutoComplete {
             for (var item = 0; item < response.length; item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
-                
+
                 ul.appendChild(li);
                 li = document.createElement("li");
             }
-            
+
             return ul;
         },
-        
+
         /**
          * string response rendering (RAW HTML)
          */
         _RenderRaw: function(response: string): HTMLElement {
             var ul: HTMLElement = document.createElement("ul"),
                 li: HTMLElement = document.createElement("li");
-            
+
             if (response.length > 0) {
                 this.DOMResults.innerHTML = response;
             } else {
@@ -382,21 +382,21 @@ class AutoComplete {
                     ul.appendChild(li);
                 }
             }
-            
+
             return ul;
         },
-        
+
         /**
          * Deal with request response
          */
         _Post: function(response: string): ResponseItem[]|string {
             try {
                 var returnResponse: ResponseItem[] = [];
-                
+
                 //JSON return
                 var json: string[]|Object = JSON.parse(response);
 
-                
+
                 if (Object.keys(json).length === 0) {
                     return "";
                 }
@@ -420,14 +420,14 @@ class AutoComplete {
                 return response;
             }
         },
-        
+
         /**
          * Return the autocomplete value to send (before request)
          */
         _Pre: function(): string {
             return this.Input.value;
         },
-        
+
         /**
          * Choice one result item
          */
@@ -443,7 +443,7 @@ class AutoComplete {
         $AjaxTimer: null,
         $Listeners: {},
     };
-    
+
     // Constructor
     constructor(params: Object = {}, selector: any = "[data-autocomplete]") {
         if (Array.isArray(selector)) {
@@ -538,14 +538,18 @@ class AutoComplete {
             if (params.Request) {
                 params.Request.abort();
             }
-            
+
             var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
                 method      = params._HttpMethod(),
                 url         = params._Url(),
                 queryParams = params._QueryArg() + "=" + params._Pre();
 
             if (method.match(/^GET$/i)) {
-                url += "?" + queryParams;
+                if (url.indexOf("?") !== -1) {
+                    url += "&" + queryParams;
+                } else {
+                    url += "?" + queryParams;
+                }
             }
 
             params.Request = new XMLHttpRequest();
