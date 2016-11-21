@@ -113,7 +113,12 @@ var AutoComplete = (function () {
             }
             var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), method = params._HttpMethod(), url = params._Url(), queryParams = params._QueryArg() + "=" + params._Pre();
             if (method.match(/^GET$/i)) {
-                url += "?" + queryParams;
+                if (url.indexOf("?") !== -1) {
+                    url += "&" + queryParams;
+                }
+                else {
+                    url += "?" + queryParams;
+                }
             }
             params.Request = new XMLHttpRequest();
             params.Request.open(method, url, true);
