@@ -347,9 +347,8 @@ class AutoComplete {
          */
         _RenderResponseItems: function(response: ResponseItem[]): HTMLElement {
             var ul: HTMLElement = document.createElement("ul"),
-                li: HTMLElement = document.createElement("li");
-
-            var limit = this._Limit();
+                li: HTMLElement = document.createElement("li"),
+                limit = this._Limit();
 
             // Order
             if (limit < 0) {
