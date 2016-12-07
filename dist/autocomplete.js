@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.1.0
+ * Autocomplete.js v2.1.4
  * Developed by Baptiste Donaux
  * https://autocomplete-js.com
  *
@@ -363,12 +363,12 @@ var AutoComplete = (function () {
          * ResponseItems[] rendering
          */
         _RenderResponseItems: function (response) {
-            var ul = document.createElement("ul"), li = document.createElement("li");
+            var ul = document.createElement("ul"), li = document.createElement("li"), limit = this._Limit();
             // Order
-            if (this._Limit() < 0) {
+            if (limit < 0) {
                 response = response.reverse();
             }
-            for (var item = 0; item < response.length; item++) {
+            for (var item = 0; item < Math.min(limit, response.length); item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
                 ul.appendChild(li);
