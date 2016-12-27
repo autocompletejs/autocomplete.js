@@ -159,6 +159,7 @@ var AutoComplete = (function () {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
+        MinChars: 3,
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
@@ -222,7 +223,7 @@ var AutoComplete = (function () {
                     }],
                 Callback: function () {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"), currentValue = this._Pre();
-                    if (currentValue !== "") {
+                    if (currentValue !== "" && currentValue.length >= this._MinChars()) {
                         if (!oldValue || currentValue != oldValue) {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
@@ -265,6 +266,16 @@ var AutoComplete = (function () {
                 return this.Limit;
             }
             return parseInt(limit);
+        },
+        /**
+         * Returns the minimum number of characters entered before firing ajax
+         */
+        _MinChars: function () {
+            var minchars = this.Input.getAttribute("data-autocomplete-minchars");
+            if (isNaN(minchars) || minchars === null) {
+                return this.MinChars;
+            }
+            return parseInt(minchars);
         },
         /**
          * Apply transformation on labels response
@@ -319,7 +330,7 @@ var AutoComplete = (function () {
          */
         _Focus: function () {
             var oldValue = this.Input.getAttribute("data-autocomplete-old-value");
-            if (!oldValue || this.Input.value != oldValue) {
+            if ((!oldValue || this.Input.value != oldValue) && this._MinChars() <= this.Input.value.length) {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
@@ -363,12 +374,12 @@ var AutoComplete = (function () {
          * ResponseItems[] rendering
          */
         _RenderResponseItems: function (response) {
-            var ul = document.createElement("ul"), li = document.createElement("li");
+            var ul = document.createElement("ul"), li = document.createElement("li"), limit = this._Limit();
             // Order
-            if (this._Limit() < 0) {
+            if (limit < 0) {
                 response = response.reverse();
             }
-            for (var item = 0; item < response.length; item++) {
+            for (var item = 0; item < Math.min(limit, response.length); item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
                 ul.appendChild(li);

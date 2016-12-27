@@ -17,6 +17,7 @@ interface Params {
     HttpHeaders:          Object;
     HttpMethod:           string;
     Limit:                number;
+    MinChars:             number;
     QueryArg:             string;
     Url:                  string;
 
@@ -35,6 +36,7 @@ interface Params {
     _Highlight:           any;
     _HttpMethod:          any;
     _Limit:               any;
+    _MinChars:            any;
     _Open:                any;
     _Position:            any;
     _Post:                any;
@@ -110,6 +112,7 @@ class AutoComplete {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
+        MinChars: 3,
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
@@ -181,8 +184,8 @@ class AutoComplete {
                 Callback: function() {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"),
                         currentValue = this._Pre();
-
-                    if (currentValue !== "") {
+    
+                    if (currentValue !== "" && currentValue.length >= this._MinChars()) {
                         if (!oldValue || currentValue != oldValue) {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
@@ -231,6 +234,19 @@ class AutoComplete {
             }
 
             return parseInt(limit);
+        },
+
+        /**
+         * Returns the minimum number of characters entered before firing ajax
+         */
+        _MinChars: function(): number {
+            var minchars = this.Input.getAttribute("data-autocomplete-minchars");
+
+          if (isNaN(minchars)||minchars===null) {
+                return this.MinChars;
+            }
+
+            return parseInt(minchars);  
         },
 
         /**
@@ -296,7 +312,7 @@ class AutoComplete {
         _Focus: function(): void {
             var oldValue: string = this.Input.getAttribute("data-autocomplete-old-value");
 
-            if (!oldValue || this.Input.value != oldValue) {
+            if ((!oldValue || this.Input.value != oldValue) && this._MinChars() <= this.Input.value.length){
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
