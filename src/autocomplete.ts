@@ -357,7 +357,7 @@ class AutoComplete {
                 limit = response.length;
             }
 
-            for (var item = 0; item < Math.min(limit, response.length); item++) {
+            for (var item = 0; item < Math.min(Math.abs(limit), response.length); item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
 
