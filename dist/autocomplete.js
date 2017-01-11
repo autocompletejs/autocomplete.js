@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.1.4
+ * Autocomplete.js v2.1.5
  * Developed by Baptiste Donaux
  * https://autocomplete-js.com
  *
@@ -368,7 +368,10 @@ var AutoComplete = (function () {
             if (limit < 0) {
                 response = response.reverse();
             }
-            for (var item = 0; item < Math.min(limit, response.length); item++) {
+            else if (limit === 0) {
+                limit = response.length;
+            }
+            for (var item = 0; item < Math.min(Math.abs(limit), response.length); item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
                 ul.appendChild(li);

@@ -1,7 +1,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.1.4
+ * Autocomplete.js v2.1.5
  * Developed by Baptiste Donaux
  * https://autocomplete-js.com
  *
