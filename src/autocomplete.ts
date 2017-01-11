@@ -353,6 +353,8 @@ class AutoComplete {
             // Order
             if (limit < 0) {
                 response = response.reverse();
+            } else if (limit === 0) {
+                limit = response.length;
             }
 
             for (var item = 0; item < Math.min(limit, response.length); item++) {
