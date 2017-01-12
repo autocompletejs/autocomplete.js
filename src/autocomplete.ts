@@ -139,7 +139,22 @@ class AutoComplete {
                 Operator: ConditionOperator.AND,
                 Event: EventType.KEYUP
             },
-            "KeyUpAndDown": {
+            "KeyUpAndDown_down": {
+                Conditions: [{
+                    Is: 38,
+                    Not: false
+                },
+                {
+                    Is: 40,
+                    Not: false
+                }],
+                Callback: function(event: KeyboardEvent) {
+                    event.preventDefault();
+                },
+                Operator: ConditionOperator.OR,
+                Event: EventType.KEYDOWN
+            },
+            "KeyUpAndDown_up": {
                 Conditions: [{
                     Is: 38,
                     Not: false
@@ -487,12 +502,8 @@ class AutoComplete {
                 blur:     params._Blur.bind(params),
                 destroy:  AutoComplete.prototype.destroy.bind(null, params),
                 focus:    params._Focus.bind(params),
-                keyup:    AutoComplete.prototype.event.bind(null, params),
-                keydown:  function(event: KeyboardEvent) {
-                    if (event.keyCode == 38 || event.keyCode == 40) {
-                        event.preventDefault();
-                    }
-                },
+                keyup:    AutoComplete.prototype.event.bind(null, params, EventType.KEYUP),
+                keydown:  AutoComplete.prototype.event.bind(null, params, EventType.KEYDOWN),
                 position: params._Position.bind(params)
             };
 
@@ -502,7 +513,21 @@ class AutoComplete {
         }
     }
 
-    event(params: Params, event: KeyboardEvent): void {
+    getEventsByType(params: Params, type: EventType) : Object {
+        var mappings = {};
+
+        for (var key in params.KeyboardMappings) {
+            var event = params.KeyboardMappings[key].Event || EventType.KEYUP;
+
+            if (event == type) {
+                mappings[key] = params.KeyboardMappings[key];
+            }
+        }
+
+        return mappings;
+    }
+
+    event(params: Params, type: EventType, event: KeyboardEvent): void {
         var eventIdentifier = function(condition: {From: number, Is: number, Not: boolean, To: number}) {
             if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && mapping.Operator == ConditionOperator.OR)) {
                 condition = AutoComplete.merge({
@@ -525,10 +550,9 @@ class AutoComplete {
             }
         };
 
-        for (var name in params.KeyboardMappings) {
+        for (var name in AutoComplete.prototype.getEventsByType(params, type)) {
             var mapping: MappingEvent = AutoComplete.merge({
-                    Operator: ConditionOperator.AND,
-                    Event: EventType.KEYUP
+                    Operator: ConditionOperator.AND
                 }, params.KeyboardMappings[name]),
                 match: boolean = ConditionOperator.AND == mapping.Operator;
 
