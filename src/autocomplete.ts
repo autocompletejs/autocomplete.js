@@ -233,7 +233,7 @@ class AutoComplete {
                 return this.Limit;
             }
 
-            return parseInt(limit);
+            return parseInt(limit, 10);
         },
 
         /**
@@ -246,7 +246,7 @@ class AutoComplete {
                 return this.MinChars;
             }
 
-            return parseInt(minchars);  
+            return parseInt(minchars, 10);  
         },
 
         /**
