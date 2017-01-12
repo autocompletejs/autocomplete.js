@@ -2,11 +2,11 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.1.0
+ * Autocomplete.js v2.2.0
  * Developed by Baptiste Donaux
- * https://autocomplete-js.com
+ * http://autocomplete-js.com
  *
- * (c) 2016, Baptiste Donaux
+ * (c) 2017, Baptiste Donaux
  */
 "use strict";
 var ConditionOperator;
@@ -14,6 +14,11 @@ var ConditionOperator;
     ConditionOperator[ConditionOperator["AND"] = 0] = "AND";
     ConditionOperator[ConditionOperator["OR"] = 1] = "OR";
 })(ConditionOperator || (ConditionOperator = {}));
+var EventType;
+(function (EventType) {
+    EventType[EventType["KEYDOWN"] = 0] = "KEYDOWN";
+    EventType[EventType["KEYUP"] = 1] = "KEYUP";
+})(EventType || (EventType = {}));
 /**
  * Core
  *
@@ -52,12 +57,8 @@ var AutoComplete = (function () {
                 blur: params._Blur.bind(params),
                 destroy: AutoComplete.prototype.destroy.bind(null, params),
                 focus: params._Focus.bind(params),
-                keyup: AutoComplete.prototype.event.bind(null, params),
-                keydown: function (event) {
-                    if (event.keyCode == 38 || event.keyCode == 40) {
-                        event.preventDefault();
-                    }
-                },
+                keyup: AutoComplete.prototype.event.bind(null, params, EventType.KEYUP),
+                keydown: AutoComplete.prototype.event.bind(null, params, EventType.KEYDOWN),
                 position: params._Position.bind(params)
             };
             for (var event in params.$Listeners) {
@@ -65,9 +66,22 @@ var AutoComplete = (function () {
             }
         }
     };
-    AutoComplete.prototype.event = function (params, event) {
+    AutoComplete.prototype.getEventsByType = function (params, type) {
+        var mappings = {};
+        for (var key in params.KeyboardMappings) {
+            var event = EventType.KEYUP;
+            if (params.KeyboardMappings[key].Event !== undefined) {
+                event = params.KeyboardMappings[key].Event;
+            }
+            if (event == type) {
+                mappings[key] = params.KeyboardMappings[key];
+            }
+        }
+        return mappings;
+    };
+    AutoComplete.prototype.event = function (params, type, event) {
         var eventIdentifier = function (condition) {
-            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && ConditionOperator.OR)) {
+            if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && mapping.Operator == ConditionOperator.OR)) {
                 condition = AutoComplete.merge({
                     Not: false
                 }, condition);
@@ -89,13 +103,13 @@ var AutoComplete = (function () {
                 }
             }
         };
-        for (var name in params.KeyboardMappings) {
+        for (var name in AutoComplete.prototype.getEventsByType(params, type)) {
             var mapping = AutoComplete.merge({
                 Operator: ConditionOperator.AND
             }, params.KeyboardMappings[name]), match = ConditionOperator.AND == mapping.Operator;
             mapping.Conditions.forEach(eventIdentifier);
             if (match === true) {
-                mapping.Callback.bind(params, event)();
+                mapping.Callback.call(params, event);
             }
         }
     };
@@ -178,9 +192,25 @@ var AutoComplete = (function () {
                         }
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: EventType.KEYUP
             },
-            "KeyUpAndDown": {
+            "KeyUpAndDown_down": {
+                Conditions: [{
+                        Is: 38,
+                        Not: false
+                    },
+                    {
+                        Is: 40,
+                        Not: false
+                    }],
+                Callback: function (event) {
+                    event.preventDefault();
+                },
+                Operator: ConditionOperator.OR,
+                Event: EventType.KEYDOWN
+            },
+            "KeyUpAndDown_up": {
                 Conditions: [{
                         Is: 38,
                         Not: false
@@ -200,17 +230,18 @@ var AutoComplete = (function () {
                         else if (position >= lisCount) {
                             position = 0;
                         }
-                        active.setAttribute("class", "");
-                        active.parentElement.childNodes.item(position).setAttribute("class", "active");
+                        active.classList.remove("active");
+                        active.parentElement.children.item(position).classList.add("active");
                     }
                     else if (last && event.keyCode == 38) {
-                        last.setAttribute("class", "active");
+                        last.classList.add("active");
                     }
                     else if (first) {
-                        first.setAttribute("class", "active");
+                        first.classList.add("active");
                     }
                 },
-                Operator: ConditionOperator.OR
+                Operator: ConditionOperator.OR,
+                Event: EventType.KEYUP
             },
             "AlphaNum": {
                 Conditions: [{
@@ -235,7 +266,8 @@ var AutoComplete = (function () {
                         }.bind(this));
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: EventType.KEYUP
             }
         },
         DOMResults: null,
@@ -379,7 +411,10 @@ var AutoComplete = (function () {
             if (limit < 0) {
                 response = response.reverse();
             }
-            for (var item = 0; item < Math.min(limit, response.length); item++) {
+            else if (limit === 0) {
+                limit = response.length;
+            }
+            for (var item = 0; item < Math.min(Math.abs(limit), response.length); item++) {
                 li.innerHTML = response[item].Label;
                 li.setAttribute("data-autocomplete-value", response[item].Value);
                 ul.appendChild(li);
