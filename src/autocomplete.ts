@@ -66,9 +66,9 @@ enum ConditionOperator {
 }
 
 interface MappingEvent {
-    Event: string;
-    Conditions: MappingCondition[];
     Callback: any;
+    Conditions: MappingCondition[];
+    Event: string;
     Operator: ConditionOperator;
 }
 
@@ -530,7 +530,7 @@ class AutoComplete {
             mapping.Conditions.forEach(eventIdentifier);
 
             if (match === true) {
-                mapping.Callback.bind(params, event)();
+                mapping.Callback.call(params, event);
             }
         }
     }
