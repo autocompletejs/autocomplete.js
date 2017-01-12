@@ -112,7 +112,7 @@ class AutoComplete {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
-        MinChars: 3,
+        MinChars: 0,
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
@@ -229,7 +229,7 @@ class AutoComplete {
         _Limit: function(): number {
             var limit = this.Input.getAttribute("data-autocomplete-limit");
 
-            if (isNaN(limit)||limit===null) {
+            if (isNaN(limit) || limit === null) {
                 return this.Limit;
             }
 
@@ -242,7 +242,7 @@ class AutoComplete {
         _MinChars: function(): number {
             var minchars = this.Input.getAttribute("data-autocomplete-minchars");
 
-          if (isNaN(minchars)||minchars===null) {
+          if (isNaN(minchars) || minchars === null) {
                 return this.MinChars;
             }
 
