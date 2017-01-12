@@ -24,14 +24,14 @@
     
     <meta itemprop="applicationCategory" content="JavaScript Library">
     <meta itemprop="datePublished" content="2017-01-11">
-    <meta itemprop="downloadUrl" content="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.5.zip">
+    <meta itemprop="downloadUrl" content="https://github.com/autocompletejs/autocomplete.js/archive/v2.2.0.zip">
     <meta itemprop="image" content="http://autocomplete-js.com/autocomplete-js.png">
     <meta itemprop="operatingSystem" content="Depend on the browser">
     <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
         <meta itemprop="name" content="Baptiste Donaux">
     </span>
     <meta itemprop="requirements" content="ECMAScript Edition 5">
-    <meta itemprop="softwareVersion" content="2.1">
+    <meta itemprop="softwareVersion" content="2.2">
     <meta itemprop="url" content="http://autocomplete-js.com">
 
     <link rel="author" href="https://plus.google.com/+BaptisteDonaux"/>
@@ -39,7 +39,7 @@
     <link rel="publisher" href="https://plus.google.com/+BaptisteDonaux"/>
     <!-- end meta -->
     
-    <title>autocomplete.js | Remote AutoComplete Lite, Fast and Stable | v2.1</title>
+    <title>autocomplete.js | Remote AutoComplete Lite, Fast and Stable | v2.2</title>
 </head>
 
 
@@ -205,7 +205,7 @@
                     <div class="col-lg-12">
                         <div data-id="installation-npm">
                             <pre style="line-height:1.5; text-align: left;"><code class="bash"># Install autocomplete-js
-$ npm install autocomplete-js@2.1.* --save</code></pre>
+$ npm install autocomplete-js@2.2.* --save</code></pre>
                             <pre style="line-height:1.5; text-align: left;"><code class="javascript">// In your file
 var AutoComplete = require("autocomplete-js");
 AutoComplete();
@@ -214,13 +214,13 @@ AutoComplete();
 
                         <div data-id="installation-bower" class="hide">
                             <pre style="line-height:1.5; text-align: left;"><code class="bash"># Install
-$ bower install autocomplete.js#2.1.* --save
+$ bower install autocomplete.js#2.2.* --save
 </code></pre>
                         </div>
 
                         <div data-id="installation-scratch" class="hide">
                             <p>
-                                Download the last stable version <a href="https://github.com/autocompletejs/autocomplete.js/archive/v2.1.5.zip"><i class="fa fa-cloud-download"></i></a> <a href="https://github.com/autocompletejs/autocomplete.js/tree/v2.1.5" target="_blank"><i class="fa fa-github"></i></a>
+                                Download the last stable version <a href="https://github.com/autocompletejs/autocomplete.js/archive/v2.2.0.zip"><i class="fa fa-cloud-download"></i></a> <a href="https://github.com/autocompletejs/autocomplete.js/tree/v2.2.0" target="_blank"><i class="fa fa-github"></i></a>
                             </p>
                         </div>
                     </div>
@@ -820,9 +820,11 @@ $ bower install autocomplete.js#2.1.* --save
                 }
             }
         },
-        Operator: ConditionOperator.AND
+        Operator: ConditionOperator.AND,
+        Event: EventType.KEYUP
     },
-    "KeyUpAndDown": {...},
+    "KeyUpAndDown_up": {...},
+    "KeyUpAndDown_down": {...},
     "AlphaNum": {...}
 }
 </code></pre>
@@ -881,7 +883,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L282" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L306" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -924,7 +926,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L209" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L233" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -967,7 +969,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L296" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L320" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1009,7 +1011,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L239" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L263" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1052,7 +1054,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L226" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L250" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1095,7 +1097,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L249" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L273" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1138,7 +1140,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L307" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L331" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1180,7 +1182,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L260" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L284" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1223,7 +1225,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L321" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L345" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1265,7 +1267,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L392" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L419" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1308,7 +1310,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L329" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L215" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1324,6 +1326,90 @@ $ bower install autocomplete.js#2.1.* --save
 
                                 <strong>response</strong> argument must be a <strong>string</strong> or an <strong>array of <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.0/src/autocomplete.ts#L74" target="_blank">ResponseItem</a></strong>.
 
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_RenderResponseItems" id="_RenderResponseItems">
+                        _RenderResponseItems
+                    </a>
+                </td>
+
+                <td>
+                    Make rendered for JSON returned
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_RenderResponseItems_prototype" aria-controls="_RenderResponseItems_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L372" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_RenderResponseItems_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _RenderResponseItems: function(response) {
+  }
+});
+</code></pre>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <a href="#_RenderRaw" id="_RenderRaw">
+                        _RenderRaw
+                    </a>
+                </td>
+
+                <td>
+                    Make rendered for HTML returned
+                </td>
+
+                <td>
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#_RenderRaw_prototype" aria-controls="_RenderRaw_prototype" role="tab" data-toggle="tab">
+                                    Prototype
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L398" target="_blank">
+                                    Source
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="_RenderRaw_prototype">
+                                <pre><code class="javascript">AutoComplete({
+  _RenderRaw: function(response) {
+  }
+});
+</code></pre>
+
+                                
                             </div>
                         </div>
                     </div>
@@ -1351,7 +1437,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L427" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L454" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1394,7 +1480,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L434" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L461" target="_blank">
                                     Source
                                 </a>
                             </li>
@@ -1437,7 +1523,7 @@ $ bower install autocomplete.js#2.1.* --save
                             </li>
 
                             <li>
-                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.1.5/src/autocomplete.ts#L271" target="_blank">
+                                <a href="https://github.com/autocompletejs/autocomplete.js/blob/v2.2.0/src/autocomplete.ts#L295" target="_blank">
                                     Source
                                 </a>
                             </li>
