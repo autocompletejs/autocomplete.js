@@ -517,7 +517,11 @@ class AutoComplete {
         var mappings = {};
 
         for (var key in params.KeyboardMappings) {
-            var event = params.KeyboardMappings[key].Event || EventType.KEYUP;
+            var event: EventType = EventType.KEYUP;
+
+            if (params.KeyboardMappings[key].Event !== undefined) {
+                event = params.KeyboardMappings[key].Event
+            }
 
             if (event == type) {
                 mappings[key] = params.KeyboardMappings[key];

@@ -2,11 +2,11 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.1.5
+ * Autocomplete.js v2.2.0
  * Developed by Baptiste Donaux
- * https://autocomplete-js.com
+ * http://autocomplete-js.com
  *
- * (c) 2016, Baptiste Donaux
+ * (c) 2017, Baptiste Donaux
  */
 "use strict";
 var ConditionOperator;
@@ -14,6 +14,11 @@ var ConditionOperator;
     ConditionOperator[ConditionOperator["AND"] = 0] = "AND";
     ConditionOperator[ConditionOperator["OR"] = 1] = "OR";
 })(ConditionOperator || (ConditionOperator = {}));
+var EventType;
+(function (EventType) {
+    EventType[EventType["KEYDOWN"] = 0] = "KEYDOWN";
+    EventType[EventType["KEYUP"] = 1] = "KEYUP";
+})(EventType || (EventType = {}));
 /**
  * Core
  *
@@ -52,12 +57,8 @@ var AutoComplete = (function () {
                 blur: params._Blur.bind(params),
                 destroy: AutoComplete.prototype.destroy.bind(null, params),
                 focus: params._Focus.bind(params),
-                keyup: AutoComplete.prototype.event.bind(null, params),
-                keydown: function (event) {
-                    if (event.keyCode == 38 || event.keyCode == 40) {
-                        event.preventDefault();
-                    }
-                },
+                keyup: AutoComplete.prototype.event.bind(null, params, EventType.KEYUP),
+                keydown: AutoComplete.prototype.event.bind(null, params, EventType.KEYDOWN),
                 position: params._Position.bind(params)
             };
             for (var event in params.$Listeners) {
@@ -65,7 +66,20 @@ var AutoComplete = (function () {
             }
         }
     };
-    AutoComplete.prototype.event = function (params, event) {
+    AutoComplete.prototype.getEventsByType = function (params, type) {
+        var mappings = {};
+        for (var key in params.KeyboardMappings) {
+            var event = EventType.KEYUP;
+            if (params.KeyboardMappings[key].Event !== undefined) {
+                event = params.KeyboardMappings[key].Event;
+            }
+            if (event == type) {
+                mappings[key] = params.KeyboardMappings[key];
+            }
+        }
+        return mappings;
+    };
+    AutoComplete.prototype.event = function (params, type, event) {
         var eventIdentifier = function (condition) {
             if ((match === true && mapping.Operator == ConditionOperator.AND) || (match === false && mapping.Operator == ConditionOperator.OR)) {
                 condition = AutoComplete.merge({
@@ -89,13 +103,13 @@ var AutoComplete = (function () {
                 }
             }
         };
-        for (var name in params.KeyboardMappings) {
+        for (var name in AutoComplete.prototype.getEventsByType(params, type)) {
             var mapping = AutoComplete.merge({
                 Operator: ConditionOperator.AND
             }, params.KeyboardMappings[name]), match = ConditionOperator.AND == mapping.Operator;
             mapping.Conditions.forEach(eventIdentifier);
             if (match === true) {
-                mapping.Callback.bind(params, event)();
+                mapping.Callback.call(params, event);
             }
         }
     };
@@ -177,9 +191,25 @@ var AutoComplete = (function () {
                         }
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: EventType.KEYUP
             },
-            "KeyUpAndDown": {
+            "KeyUpAndDown_down": {
+                Conditions: [{
+                        Is: 38,
+                        Not: false
+                    },
+                    {
+                        Is: 40,
+                        Not: false
+                    }],
+                Callback: function (event) {
+                    event.preventDefault();
+                },
+                Operator: ConditionOperator.OR,
+                Event: EventType.KEYDOWN
+            },
+            "KeyUpAndDown_up": {
                 Conditions: [{
                         Is: 38,
                         Not: false
@@ -209,7 +239,8 @@ var AutoComplete = (function () {
                         first.classList.add("active");
                     }
                 },
-                Operator: ConditionOperator.OR
+                Operator: ConditionOperator.OR,
+                Event: EventType.KEYUP
             },
             "AlphaNum": {
                 Conditions: [{
@@ -234,7 +265,8 @@ var AutoComplete = (function () {
                         }.bind(this));
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: EventType.KEYUP
             }
         },
         DOMResults: null,
