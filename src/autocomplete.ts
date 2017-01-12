@@ -66,6 +66,7 @@ enum ConditionOperator {
 }
 
 interface MappingEvent {
+    Event: string;
     Conditions: MappingCondition[];
     Callback: any;
     Operator: ConditionOperator;
@@ -130,7 +131,8 @@ class AutoComplete {
                         }
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: "keyup"
             },
             "KeyUpAndDown": {
                 Conditions: [{
@@ -167,7 +169,8 @@ class AutoComplete {
                         first.classList.add("active");
                     }
                 },
-                Operator: ConditionOperator.OR
+                Operator: ConditionOperator.OR,
+                Event: "keyup"
             },
             "AlphaNum": {
                 Conditions: [{
@@ -195,7 +198,8 @@ class AutoComplete {
                         }.bind(this));
                     }
                 },
-                Operator: ConditionOperator.AND
+                Operator: ConditionOperator.AND,
+                Event: "keyup"
             }
         },
 
@@ -518,7 +522,8 @@ class AutoComplete {
 
         for (var name in params.KeyboardMappings) {
             var mapping: MappingEvent = AutoComplete.merge({
-                    Operator: ConditionOperator.AND
+                    Operator: ConditionOperator.AND,
+                    Event: "keyup"
                 }, params.KeyboardMappings[name]),
                 match: boolean = ConditionOperator.AND == mapping.Operator;
 
