@@ -159,7 +159,7 @@ var AutoComplete = (function () {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
-        MinChars: 3,
+        MinChars: 0,
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
@@ -265,7 +265,7 @@ var AutoComplete = (function () {
             if (isNaN(limit) || limit === null) {
                 return this.Limit;
             }
-            return parseInt(limit);
+            return parseInt(limit, 10);
         },
         /**
          * Returns the minimum number of characters entered before firing ajax
@@ -275,7 +275,7 @@ var AutoComplete = (function () {
             if (isNaN(minchars) || minchars === null) {
                 return this.MinChars;
             }
-            return parseInt(minchars);
+            return parseInt(minchars, 10);
         },
         /**
          * Apply transformation on labels response
