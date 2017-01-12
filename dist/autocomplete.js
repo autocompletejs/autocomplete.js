@@ -173,6 +173,7 @@ var AutoComplete = (function () {
             "Content-type": "application/x-www-form-urlencoded"
         },
         Limit: 0,
+        MinChars: 0,
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
@@ -253,7 +254,7 @@ var AutoComplete = (function () {
                     }],
                 Callback: function () {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"), currentValue = this._Pre();
-                    if (currentValue !== "") {
+                    if (currentValue !== "" && currentValue.length >= this._MinChars()) {
                         if (!oldValue || currentValue != oldValue) {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
@@ -296,7 +297,17 @@ var AutoComplete = (function () {
             if (isNaN(limit) || limit === null) {
                 return this.Limit;
             }
-            return parseInt(limit);
+            return parseInt(limit, 10);
+        },
+        /**
+         * Returns the minimum number of characters entered before firing ajax
+         */
+        _MinChars: function () {
+            var minchars = this.Input.getAttribute("data-autocomplete-minchars");
+            if (isNaN(minchars) || minchars === null) {
+                return this.MinChars;
+            }
+            return parseInt(minchars, 10);
         },
         /**
          * Apply transformation on labels response
@@ -351,7 +362,7 @@ var AutoComplete = (function () {
          */
         _Focus: function () {
             var oldValue = this.Input.getAttribute("data-autocomplete-old-value");
-            if (!oldValue || this.Input.value != oldValue) {
+            if ((!oldValue || this.Input.value != oldValue) && this._MinChars() <= this.Input.value.length) {
                 this.DOMResults.setAttribute("class", "autocomplete open");
             }
         },
