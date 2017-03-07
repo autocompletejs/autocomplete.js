@@ -582,6 +582,36 @@ class AutoComplete {
         }
     }
 
+    makeRequest(params: Params, callback: any): XMLHttpRequest {
+        var propertyHttpHeaders: string[] = Object.getOwnPropertyNames(params.HttpHeaders),
+            request: XMLHttpRequest = new XMLHttpRequest(),
+            method: string = params._HttpMethod(),
+            url: string = params._Url(),
+            queryParams: string = params._QueryArg() + "=" + params._Pre();
+
+        if (method.match(/^GET$/i)) {
+            if (url.indexOf("?") !== -1) {
+                url += "&" + queryParams;
+            } else {
+                url += "?" + queryParams;
+            }
+        }
+
+        request.open(method, url, true);
+
+        for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
+            request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
+        }
+
+        request.onreadystatechange = function() {
+            if (request.readyState == 4 && request.status == 200) {
+                callback(request);
+            }
+        };
+
+        return request;
+    }
+
     ajax(params: Params, callback: any, timeout: boolean = true): void {
         if (params.$AjaxTimer) {
             window.clearTimeout(params.$AjaxTimer);
@@ -594,33 +624,8 @@ class AutoComplete {
                 params.Request.abort();
             }
 
-            var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders),
-                method      = params._HttpMethod(),
-                url         = params._Url(),
-                queryParams = params._QueryArg() + "=" + params._Pre();
-
-            if (method.match(/^GET$/i)) {
-                if (url.indexOf("?") !== -1) {
-                    url += "&" + queryParams;
-                } else {
-                    url += "?" + queryParams;
-                }
-            }
-
-            params.Request = new XMLHttpRequest();
-            params.Request.open(method, url, true);
-
-            for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
-                params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
-            }
-
-            params.Request.onreadystatechange = function() {
-                if (params.Request.readyState == 4 && params.Request.status == 200) {
-                    callback(params.Request);
-                }
-            };
-
-            params.Request.send(queryParams);
+            params.Request = AutoComplete.prototype.makeRequest(params, callback);
+            params.Request.send(params._QueryArg() + "=" + params._Pre());
         }
     }
 
