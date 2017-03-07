@@ -213,11 +213,9 @@ class AutoComplete {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
 
-                        AutoComplete.prototype.ajax(this, function() {
-                            if (this.Request.readyState == 4 && this.Request.status == 200) {
-                                this._Render(this._Post(this.Request.response));
-                                this._Open();
-                            }
+                        AutoComplete.prototype.ajax(this, function(request: XMLHttpRequest) {
+                            this._Render(this._Post(request.response));
+                            this._Open();
                         }.bind(this));
                     }
                 },
@@ -616,7 +614,11 @@ class AutoComplete {
                 params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
             }
 
-            params.Request.onreadystatechange = callback;
+            params.Request.onreadystatechange = function() {
+                if (params.Request.readyState == 4 && params.Request.status == 200) {
+                    callback(params.Request);
+                }
+            };
 
             params.Request.send(queryParams);
         }
