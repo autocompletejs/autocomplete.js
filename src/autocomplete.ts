@@ -215,15 +215,12 @@ class AutoComplete {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
 
-                        var callback: any = function(response: string) {
-                            this._Render(this._Post(response));
-                            this._Open();
-                        }.bind(this);
-
                         AutoComplete.prototype.cache(
                             this,
-                            AutoComplete.prototype.makeRequest(this, callback),
-                            callback
+                            function(response: string) {
+                                this._Render(this._Post(response));
+                                this._Open();
+                            }.bind(this)
                         );
                     }
                 },
@@ -339,7 +336,7 @@ class AutoComplete {
         /**
          * Manage the cache
          */
-        _Cache: function(value: string): string|null {
+        _Cache: function(value: string): string|undefined {
             return this.$Cache[value];
         },
 
@@ -647,10 +644,12 @@ class AutoComplete {
         }
     }
 
-    cache(params: Params, request: XMLHttpRequest, callback: any): void {
-        var response: string|null = params._Cache(params._Pre());
+    cache(params: Params, callback: any): void {
+        var response: string|undefined = params._Cache(params._Pre());
 
         if (response === undefined) {
+            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback);
+
             AutoComplete.prototype.ajax(params, request);
         } else {
             callback(response);
