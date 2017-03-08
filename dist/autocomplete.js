@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.5.0
+ * Autocomplete.js v2.6.0
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -42,9 +42,11 @@ var AutoComplete = (function () {
             });
         }
         else {
-            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
+            var specificParams = AutoComplete.merge(AutoComplete.defaults, params, {
                 DOMResults: document.createElement("div")
-            }), selector);
+            });
+            AutoComplete.prototype.create(specificParams, selector);
+            return specificParams;
         }
     }
     AutoComplete.prototype.create = function (params, element) {
