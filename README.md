@@ -6,8 +6,8 @@
 Build easy autocompletion !
 
 <!-- [![Codacy Badge](https://api.codacy.com/project/badge/Grade/41ac566eefc64b2784fdce568bca6e24)](https://www.codacy.com/app/baptistedonaux/autocomplete-js) -->
-[![Build Status](https://travis-ci.org/autocompletejs/autocomplete.js.svg?branch=v2.5.0&style=flat-quared)](https://travis-ci.org/autocompletejs/autocomplete.js)
-[![License MIT](https://img.shields.io/dub/l/vibe-d.svg?maxAge=2592000&style=flat-quared)](https://github.com/autocompletejs/autocomplete.js/blob/v2.5.0/LICENCE.md)
+[![Build Status](https://travis-ci.org/autocompletejs/autocomplete.js.svg?branch=v2.6.0&style=flat-quared)](https://travis-ci.org/autocompletejs/autocomplete.js)
+[![License MIT](https://img.shields.io/dub/l/vibe-d.svg?maxAge=2592000&style=flat-quared)](https://github.com/autocompletejs/autocomplete.js/blob/v2.6.0/LICENCE.md)
 
 ## Learn
 
