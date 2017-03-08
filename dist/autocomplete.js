@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.4.0
+ * Autocomplete.js v2.5.0
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -113,34 +113,52 @@ var AutoComplete = (function () {
             }
         }
     };
-    AutoComplete.prototype.ajax = function (params, callback, timeout) {
+    AutoComplete.prototype.makeRequest = function (params, callback) {
+        var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), request = new XMLHttpRequest(), method = params._HttpMethod(), url = params._Url(), queryParams = params._Pre(), queryParamsStringify = params._QueryArg() + "=" + queryParams;
+        if (method.match(/^GET$/i)) {
+            if (url.indexOf("?") !== -1) {
+                url += "&" + queryParamsStringify;
+            }
+            else {
+                url += "?" + queryParamsStringify;
+            }
+        }
+        request.open(method, url, true);
+        for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
+            request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
+        }
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                params.$Cache[queryParams] = request.response;
+                callback(request.response);
+            }
+        };
+        return request;
+    };
+    AutoComplete.prototype.ajax = function (params, request, timeout) {
         if (timeout === void 0) { timeout = true; }
         if (params.$AjaxTimer) {
             window.clearTimeout(params.$AjaxTimer);
         }
         if (timeout === true) {
-            params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, callback, false), params.Delay);
+            params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, request, false), params.Delay);
         }
         else {
             if (params.Request) {
                 params.Request.abort();
             }
-            var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), method = params._HttpMethod(), url = params._Url(), queryParams = params._QueryArg() + "=" + params._Pre();
-            if (method.match(/^GET$/i)) {
-                if (url.indexOf("?") !== -1) {
-                    url += "&" + queryParams;
-                }
-                else {
-                    url += "?" + queryParams;
-                }
-            }
-            params.Request = new XMLHttpRequest();
-            params.Request.open(method, url, true);
-            for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
-                params.Request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
-            }
-            params.Request.onreadystatechange = callback;
-            params.Request.send(queryParams);
+            params.Request = request;
+            params.Request.send(params._QueryArg() + "=" + params._Pre());
+        }
+    };
+    AutoComplete.prototype.cache = function (params, callback) {
+        var response = params._Cache(params._Pre());
+        if (response === undefined) {
+            var request = AutoComplete.prototype.makeRequest(params, callback);
+            AutoComplete.prototype.ajax(params, request);
+        }
+        else {
+            callback(response);
         }
     };
     AutoComplete.prototype.destroy = function (params) {
@@ -260,11 +278,9 @@ AutoComplete.defaults = {
                     if (!oldValue || currentValue != oldValue) {
                         this.DOMResults.setAttribute("class", "autocomplete open");
                     }
-                    AutoComplete.prototype.ajax(this, function () {
-                        if (this.Request.readyState == 4 && this.Request.status == 200) {
-                            this._Render(this._Post(this.Request.response));
-                            this._Open();
-                        }
+                    AutoComplete.prototype.cache(this, function (response) {
+                        this._Render(this._Post(response));
+                        this._Open();
                     }.bind(this));
                 }
             },
@@ -358,6 +374,12 @@ AutoComplete.defaults = {
                 params._Blur(true);
             }, 150);
         }
+    },
+    /**
+     * Manage the cache
+     */
+    _Cache: function (value) {
+        return this.$Cache[value];
     },
     /**
      * Manage the open
@@ -492,6 +514,7 @@ AutoComplete.defaults = {
         this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
     },
     $AjaxTimer: null,
+    $Cache: {},
     $Listeners: {}
 };
 module.exports = AutoComplete;
