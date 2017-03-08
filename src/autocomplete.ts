@@ -510,9 +510,13 @@ class AutoComplete {
                 new AutoComplete(params, input);
             });
         } else {
-            AutoComplete.prototype.create(AutoComplete.merge(AutoComplete.defaults, params, {
+            var specificParams = AutoComplete.merge(AutoComplete.defaults, params, {
                 DOMResults: document.createElement("div"),
-            }), selector);
+            });
+
+            AutoComplete.prototype.create(specificParams, selector);
+
+            return specificParams;
         }
     }
 
