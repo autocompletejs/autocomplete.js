@@ -31,6 +31,7 @@ interface Params {
 
     // Workflow methods
     _Blur:                any;
+    _Cache:               any;
     _EmptyMessage:        any;
     _Focus:               any;
     _Highlight:           any;
@@ -50,6 +51,7 @@ interface Params {
 
     // Internal item
     $AjaxTimer:           number;
+    $Cache:               { [_: string]: string; };
     $Listeners:           { [_: string]: any; };
 }
 
@@ -213,8 +215,8 @@ class AutoComplete {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
 
-                        var callback: any = function(request: XMLHttpRequest) {
-                            this._Render(this._Post(request.response));
+                        var callback: any = function(response: string) {
+                            this._Render(this._Post(response));
                             this._Open();
                         }.bind(this);
 
@@ -332,6 +334,13 @@ class AutoComplete {
                     params._Blur(true);
                 }, 150);
             }
+        },
+
+        /**
+         * Manage the cache
+         */
+        _Cache: function(value: string): string|null {
+            return this.$Cache[value];
         },
 
         /**
@@ -488,7 +497,8 @@ class AutoComplete {
         },
 
         $AjaxTimer: null,
-        $Listeners: {},
+        $Cache: {},
+        $Listeners: {}
     };
 
     // Constructor
@@ -593,13 +603,14 @@ class AutoComplete {
             request: XMLHttpRequest = new XMLHttpRequest(),
             method: string = params._HttpMethod(),
             url: string = params._Url(),
-            queryParams: string = params._QueryArg() + "=" + params._Pre();
+            queryParams: string = params._Pre(),
+            queryParamsStringify: string = params._QueryArg() + "=" + queryParams;
 
         if (method.match(/^GET$/i)) {
             if (url.indexOf("?") !== -1) {
-                url += "&" + queryParams;
+                url += "&" + queryParamsStringify;
             } else {
-                url += "?" + queryParams;
+                url += "?" + queryParamsStringify;
             }
         }
 
@@ -611,7 +622,8 @@ class AutoComplete {
 
         request.onreadystatechange = function() {
             if (request.readyState == 4 && request.status == 200) {
-                callback(request);
+                params.$Cache[queryParams] = request.response;
+                callback(request.response);
             }
         };
 
@@ -636,7 +648,13 @@ class AutoComplete {
     }
 
     cache(params: Params, request: XMLHttpRequest, callback: any): void {
-        AutoComplete.prototype.ajax(params, request);
+        var response: string|null = params._Cache(params._Pre());
+
+        if (response === undefined) {
+            AutoComplete.prototype.ajax(params, request);
+        } else {
+            callback(response);
+        }
     }
 
     destroy(params: Params): void {
