@@ -213,10 +213,16 @@ class AutoComplete {
                             this.DOMResults.setAttribute("class", "autocomplete open");
                         }
 
-                        AutoComplete.prototype.ajax(this, function(request: XMLHttpRequest) {
+                        var callback: any = function(request: XMLHttpRequest) {
                             this._Render(this._Post(request.response));
                             this._Open();
-                        }.bind(this));
+                        }.bind(this);
+
+                        AutoComplete.prototype.cache(
+                            this,
+                            AutoComplete.prototype.makeRequest(this, callback),
+                            callback
+                        );
                     }
                 },
                 Operator: ConditionOperator.AND,
@@ -612,21 +618,25 @@ class AutoComplete {
         return request;
     }
 
-    ajax(params: Params, callback: any, timeout: boolean = true): void {
+    ajax(params: Params, request: XMLHttpRequest, timeout: boolean = true): void {
         if (params.$AjaxTimer) {
             window.clearTimeout(params.$AjaxTimer);
         }
 
         if (timeout === true) {
-            params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, callback, false), params.Delay);
+            params.$AjaxTimer = window.setTimeout(AutoComplete.prototype.ajax.bind(null, params, request, false), params.Delay);
         } else {
             if (params.Request) {
                 params.Request.abort();
             }
 
-            params.Request = AutoComplete.prototype.makeRequest(params, callback);
+            params.Request = request;
             params.Request.send(params._QueryArg() + "=" + params._Pre());
         }
+    }
+
+    cache(params: Params, request: XMLHttpRequest, callback: any): void {
+        AutoComplete.prototype.ajax(params, request);
     }
 
     destroy(params: Params): void {
