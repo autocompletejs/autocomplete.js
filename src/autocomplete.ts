@@ -605,7 +605,7 @@ class AutoComplete {
             method: string = params._HttpMethod(),
             url: string = params._Url(),
             queryParams: string = params._Pre(),
-            queryParamsStringify: string = params._QueryArg() + "=" + queryParams;
+            queryParamsStringify: string = encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(queryParams);
 
         if (method.match(/^GET$/i)) {
             if (url.indexOf("?") !== -1) {
