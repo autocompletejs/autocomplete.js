@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.6.0
+ * Autocomplete.js v2.6.1
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -116,7 +116,7 @@ var AutoComplete = (function () {
         }
     };
     AutoComplete.prototype.makeRequest = function (params, callback) {
-        var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), request = new XMLHttpRequest(), method = params._HttpMethod(), url = params._Url(), queryParams = params._Pre(), queryParamsStringify = params._QueryArg() + "=" + queryParams;
+        var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), request = new XMLHttpRequest(), method = params._HttpMethod(), url = params._Url(), queryParams = params._Pre(), queryParamsStringify = encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(queryParams);
         if (method.match(/^GET$/i)) {
             if (url.indexOf("?") !== -1) {
                 url += "&" + queryParamsStringify;
