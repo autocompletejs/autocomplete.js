@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.6.1
+ * Autocomplete.js v2.6.2
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -205,8 +205,9 @@ AutoComplete.defaults = {
                     Is: 13,
                     Not: false
                 }],
-            Callback: function () {
+            Callback: function (event) {
                 if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
+                    event.preventDefault();
                     var liActive = this.DOMResults.querySelector("li.active");
                     if (liActive !== null) {
                         this._Select(liActive);
@@ -215,7 +216,7 @@ AutoComplete.defaults = {
                 }
             },
             Operator: ConditionOperator.AND,
-            Event: EventType.KEYUP
+            Event: EventType.KEYDOWN
         },
         "KeyUpAndDown_down": {
             Conditions: [{
