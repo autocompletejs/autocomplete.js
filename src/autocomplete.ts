@@ -1,7 +1,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.6.1
+ * Autocomplete.js v2.6.2
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -131,8 +131,10 @@ class AutoComplete {
                     Is: 13,
                     Not: false
                 }],
-                Callback: function() {
+                Callback: function(event) {
                     if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
+                        event.preventDefault();
+
                         var liActive = this.DOMResults.querySelector("li.active");
 
                         if (liActive !== null) {
@@ -142,7 +144,7 @@ class AutoComplete {
                     }
                 },
                 Operator: ConditionOperator.AND,
-                Event: EventType.KEYUP
+                Event: EventType.KEYDOWN
             },
             "KeyUpAndDown_down": {
                 Conditions: [{
