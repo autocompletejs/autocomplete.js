@@ -133,11 +133,10 @@ class AutoComplete {
                 }],
                 Callback: function(event) {
                     if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
-                        event.preventDefault();
-
                         var liActive = this.DOMResults.querySelector("li.active");
 
                         if (liActive !== null) {
+                            event.preventDefault();
                             this._Select(liActive);
                             this.DOMResults.setAttribute("class", "autocomplete");
                         }
@@ -211,7 +210,7 @@ class AutoComplete {
                 Callback: function() {
                     var oldValue = this.Input.getAttribute("data-autocomplete-old-value"),
                         currentValue = this._Pre();
-    
+
                     if (currentValue !== "" && currentValue.length >= this._MinChars()) {
                         if (!oldValue || currentValue != oldValue) {
                             this.DOMResults.setAttribute("class", "autocomplete open");
@@ -275,7 +274,7 @@ class AutoComplete {
                 return this.MinChars;
             }
 
-            return parseInt(minchars, 10);  
+            return parseInt(minchars, 10);
         },
 
         /**
