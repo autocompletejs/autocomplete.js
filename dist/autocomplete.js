@@ -192,7 +192,8 @@ AutoComplete.defaults = {
         }
     },
     HttpHeaders: {
-        "Content-type": "application/x-www-form-urlencoded"
+        "Content-type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "XMLHttpRequest"
     },
     Limit: 0,
     MinChars: 0,
