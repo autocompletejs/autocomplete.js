@@ -612,7 +612,7 @@ class AutoComplete {
         }
     }
 
-    makeRequest(params: Params, callback: any, callbackErr: any, retryNumber:number): XMLHttpRequest {
+    makeRequest(params: Params, callback: any, callbackErr: any): XMLHttpRequest {
         var propertyHttpHeaders: string[] = Object.getOwnPropertyNames(params.HttpHeaders),
             request: XMLHttpRequest = new XMLHttpRequest(),
             method: string = params._HttpMethod(),
@@ -647,10 +647,15 @@ class AutoComplete {
             }
         };
      
-        request.ontimeout = function() {
-            var retryRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr, ++retryNumber);
-            AutoComplete.prototype.ajax(params, retryRequest, false);
-        };
+        if (params.RequestTimeout) {
+            request.ontimeout = function() {
+                var retryRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
+                if (this.retries <= params.MaxTimeoutRetries)
+                    retryRequest.timeout = params.RequestTimeout
+                retryRequest.retries = ++this.retries;
+                AutoComplete.prototype.ajax(params, retryRequest, false);
+            };
+        }
 
         return request;
     }
@@ -676,8 +681,13 @@ class AutoComplete {
         var response: string|undefined = params._Cache(params._Pre());
 
         if (response === undefined) {
-            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr, 0);
+            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
 
+            if (params.RequestTimeout) {
+                request.timeout = params.RequestTimeout;
+                request.retries = 0;
+            }
+         
             AutoComplete.prototype.ajax(params, request);
         } else {
             callback(response);
