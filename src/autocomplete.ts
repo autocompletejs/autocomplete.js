@@ -20,8 +20,6 @@ interface Params {
     MinChars:             number;
     QueryArg:             string;
     Url:                  string;
-    RequestTimeout:       number;
-    MaxTimeoutRetries:    number;
 
     // Keyboard mapping event
     KeyboardMappings:     { [_: string]: MappingEvent };
@@ -127,8 +125,6 @@ class AutoComplete {
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
-        RequestTimeout: undefined,
-        MaxTimeoutRetries: 3,
 
         KeyboardMappings: {
             "Enter": {
@@ -629,9 +625,6 @@ class AutoComplete {
         }
 
         request.open(method, url, true);
-     
-        if (params.RequestTimeout && (retryNumber <= params.MaxTimeoutRetries))
-            request.timeout = params.RequestTimeout;
 
         for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
             request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
@@ -646,16 +639,6 @@ class AutoComplete {
                 callbackErr();
             }
         };
-     
-        if (params.RequestTimeout) {
-            request.ontimeout = function() {
-                var retryRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
-                if (this.retries <= params.MaxTimeoutRetries)
-                    retryRequest.timeout = params.RequestTimeout
-                retryRequest.retries = ++this.retries;
-                AutoComplete.prototype.ajax(params, retryRequest, false);
-            };
-        }
 
         return request;
     }
@@ -683,11 +666,6 @@ class AutoComplete {
         if (response === undefined) {
             var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
 
-            if (params.RequestTimeout) {
-                request.timeout = params.RequestTimeout;
-                request.retries = 0;
-            }
-         
             AutoComplete.prototype.ajax(params, request);
         } else {
             callback(response);
