@@ -20,6 +20,8 @@ interface Params {
     MinChars:             number;
     QueryArg:             string;
     Url:                  string;
+    RequestTimeout:       number;
+    MaxTimeoutRetries:    number;
 
     // Keyboard mapping event
     KeyboardMappings:     { [_: string]: MappingEvent };
@@ -125,6 +127,8 @@ class AutoComplete {
         HttpMethod: "GET",
         QueryArg: "q",
         Url: null,
+        RequestTimeout: undefined,
+        MaxTimeoutRetries: 3,
 
         KeyboardMappings: {
             "Enter": {
@@ -608,7 +612,7 @@ class AutoComplete {
         }
     }
 
-    makeRequest(params: Params, callback: any, callbackErr: any): XMLHttpRequest {
+    makeRequest(params: Params, callback: any, callbackErr: any, retryNumber:number): XMLHttpRequest {
         var propertyHttpHeaders: string[] = Object.getOwnPropertyNames(params.HttpHeaders),
             request: XMLHttpRequest = new XMLHttpRequest(),
             method: string = params._HttpMethod(),
@@ -625,6 +629,9 @@ class AutoComplete {
         }
 
         request.open(method, url, true);
+     
+        if (params.RequestTimeout && (retryNumber <= params.MaxTimeoutRetries))
+            request.timeout = params.RequestTimeout;
 
         for (var i = propertyHttpHeaders.length - 1; i >= 0; i--) {
             request.setRequestHeader(propertyHttpHeaders[i], params.HttpHeaders[propertyHttpHeaders[i]]);
@@ -638,6 +645,11 @@ class AutoComplete {
             else if (request.status >= 400) {
                 callbackErr();
             }
+        };
+     
+        request.ontimeout = function() {
+            var retryRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr, ++retryNumber);
+            AutoComplete.prototype.ajax(params, retryRequest, false);
         };
 
         return request;
@@ -664,7 +676,7 @@ class AutoComplete {
         var response: string|undefined = params._Cache(params._Pre());
 
         if (response === undefined) {
-            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
+            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr, 0);
 
             AutoComplete.prototype.ajax(params, request);
         } else {
