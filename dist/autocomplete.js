@@ -178,7 +178,8 @@ var AutoComplete = (function () {
         }
     },
     HttpHeaders: {
-        "Content-type": "application/x-www-form-urlencoded"
+        "Content-type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "XMLHttpRequest"
     },
     Limit: 0,
     MinChars: 0,
@@ -196,6 +197,7 @@ var AutoComplete = (function () {
                     var liActive = this.DOMResults.querySelector("li.active");
                     if (liActive !== null) {
                         event.preventDefault();
+
                         this._Select(liActive);
                         this.DOMResults.setAttribute("class", "autocomplete");
                     }
