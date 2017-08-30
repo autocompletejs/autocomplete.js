@@ -176,14 +176,31 @@ var AutoComplete = (function () {
                 merge[tmp] = arguments[i][tmp];
             }
         }
-        return merge;
-    };
-    AutoComplete.defaults = {
-        Delay: 150,
-        EmptyMessage: "No result here",
-        Highlight: {
-            getRegex: function (value) {
-                return new RegExp(value, "ig");
+    },
+    HttpHeaders: {
+        "Content-type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "XMLHttpRequest"
+    },
+    Limit: 0,
+    MinChars: 0,
+    HttpMethod: "GET",
+    QueryArg: "q",
+    Url: null,
+    KeyboardMappings: {
+        "Enter": {
+            Conditions: [{
+                    Is: 13,
+                    Not: false
+                }],
+            Callback: function (event) {
+                if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
+                    event.preventDefault();
+                    var liActive = this.DOMResults.querySelector("li.active");
+                    if (liActive !== null) {
+                        this._Select(liActive);
+                        this.DOMResults.setAttribute("class", "autocomplete");
+                    }
+                }
             },
             transform: function (value) {
                 return "<strong>" + value + "</strong>";
