@@ -194,9 +194,10 @@ var AutoComplete = (function () {
                 }],
             Callback: function (event) {
                 if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
-                    event.preventDefault();
                     var liActive = this.DOMResults.querySelector("li.active");
                     if (liActive !== null) {
+                        event.preventDefault();
+
                         this._Select(liActive);
                         this.DOMResults.setAttribute("class", "autocomplete");
                     }
