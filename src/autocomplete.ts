@@ -48,7 +48,7 @@ interface Params {
     _RenderResponseItems: any;
     _Select:              any;
     _Url:                 any;
-    _RequestError:        any;
+    _Error:               any;
 
     // Internal item
     $AjaxTimer:           number;
@@ -224,7 +224,7 @@ class AutoComplete {
                                 this._Render(this._Post(response));
                                 this._Open();
                             }.bind(this),
-                            this._RequestError
+                            this._Error
                         );
                     }
                 },
@@ -499,7 +499,7 @@ class AutoComplete {
         /**
          * Handle HTTP error on the request
          */
-        _RequestError: function(): void {
+        _Error: function(): void {
         },
 
         $AjaxTimer: null,
