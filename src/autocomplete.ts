@@ -48,6 +48,7 @@ interface Params {
     _RenderResponseItems: any;
     _Select:              any;
     _Url:                 any;
+    _Error:               any;
 
     // Internal item
     $AjaxTimer:           number;
@@ -221,7 +222,8 @@ class AutoComplete {
                             function(response: string) {
                                 this._Render(this._Post(response));
                                 this._Open();
-                            }.bind(this)
+                            }.bind(this),
+                            this._Error
                         );
                     }
                 },
@@ -493,6 +495,11 @@ class AutoComplete {
             }
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
         },
+        /**
+         * Handle HTTP error on the request
+         */
+        _Error: function(): void {
+        },
 
         $AjaxTimer: null,
         $Cache: {},
@@ -600,7 +607,7 @@ class AutoComplete {
         }
     }
 
-    makeRequest(params: Params, callback: any): XMLHttpRequest {
+    makeRequest(params: Params, callback: any, callbackErr: any): XMLHttpRequest {
         var propertyHttpHeaders: string[] = Object.getOwnPropertyNames(params.HttpHeaders),
             request: XMLHttpRequest = new XMLHttpRequest(),
             method: string = params._HttpMethod(),
@@ -627,6 +634,9 @@ class AutoComplete {
                 params.$Cache[queryParams] = request.response;
                 callback(request.response);
             }
+            else if (request.status >= 400) {
+                callbackErr();
+            }
         };
 
         return request;
@@ -649,11 +659,11 @@ class AutoComplete {
         }
     }
 
-    cache(params: Params, callback: any): void {
+    cache(params: Params, callback: any, callbackErr: any): void {
         var response: string|undefined = params._Cache(params._Pre());
 
         if (response === undefined) {
-            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback);
+            var request: XMLHttpRequest = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
 
             AutoComplete.prototype.ajax(params, request);
         } else {
