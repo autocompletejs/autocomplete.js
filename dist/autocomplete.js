@@ -25,7 +25,7 @@ var EventType;
  * @class
  * @author Baptiste Donaux <baptiste.donaux@gmail.com> @baptistedonaux
  */
-var AutoComplete = (function () {
+var AutoComplete = /** @class */ (function () {
     // Constructor
     function AutoComplete(params, selector) {
         if (params === void 0) { params = {}; }
@@ -284,6 +284,9 @@ var AutoComplete = (function () {
                             this._Open();
                         }.bind(this));
                     }
+                    else {
+                        this._Close();
+                    }
                 },
                 Operator: ConditionOperator.AND,
                 Event: EventType.KEYUP
@@ -367,7 +370,7 @@ var AutoComplete = (function () {
         _Blur: function (now) {
             if (now === void 0) { now = false; }
             if (now) {
-                this.DOMResults.setAttribute("class", "autocomplete");
+                this._Close();
             }
             else {
                 var params = this;
@@ -403,6 +406,9 @@ var AutoComplete = (function () {
                     };
                 }
             });
+        },
+        _Close: function () {
+            this.DOMResults.setAttribute("class", "autocomplete");
         },
         /**
          * Position the results HTML element

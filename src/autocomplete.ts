@@ -39,6 +39,7 @@ interface Params {
     _Limit:               any;
     _MinChars:            any;
     _Open:                any;
+    _Close:               any;
     _Position:            any;
     _Post:                any;
     _Pre:                 any;
@@ -224,6 +225,8 @@ class AutoComplete {
                                 this._Open();
                             }.bind(this)
                         );
+                    } else {
+                      this._Close();
                     }
                 },
                 Operator: ConditionOperator.AND,
@@ -326,7 +329,7 @@ class AutoComplete {
          */
         _Blur: function(now: boolean = false): void {
             if (now) {
-                this.DOMResults.setAttribute("class", "autocomplete");
+              this._Close();
             } else {
                 var params = this;
                 setTimeout(function() {
@@ -365,6 +368,10 @@ class AutoComplete {
                     };
                 }
             });
+        },
+
+        _Close: function(): void {
+          this.DOMResults.setAttribute("class", "autocomplete");
         },
 
         /**
