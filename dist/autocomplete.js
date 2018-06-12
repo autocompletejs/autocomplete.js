@@ -1,8 +1,8 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*
  * @license MIT
  *
- * Autocomplete.js v2.6.4
+ * Autocomplete.js v2.7.0
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *
@@ -115,7 +115,7 @@ var AutoComplete = /** @class */ (function () {
             }
         }
     };
-    AutoComplete.prototype.makeRequest = function (params, callback) {
+    AutoComplete.prototype.makeRequest = function (params, callback, callbackErr) {
         var propertyHttpHeaders = Object.getOwnPropertyNames(params.HttpHeaders), request = new XMLHttpRequest(), method = params._HttpMethod(), url = params._Url(), queryParams = params._Pre(), queryParamsStringify = encodeURIComponent(params._QueryArg()) + "=" + encodeURIComponent(queryParams);
         if (method.match(/^GET$/i)) {
             if (url.indexOf("?") !== -1) {
@@ -133,6 +133,9 @@ var AutoComplete = /** @class */ (function () {
             if (request.readyState == 4 && request.status == 200) {
                 params.$Cache[queryParams] = request.response;
                 callback(request.response);
+            }
+            else if (request.status >= 400) {
+                callbackErr();
             }
         };
         return request;
@@ -153,10 +156,10 @@ var AutoComplete = /** @class */ (function () {
             params.Request.send(params._QueryArg() + "=" + params._Pre());
         }
     };
-    AutoComplete.prototype.cache = function (params, callback) {
+    AutoComplete.prototype.cache = function (params, callback, callbackErr) {
         var response = params._Cache(params._Pre());
         if (response === undefined) {
-            var request = AutoComplete.prototype.makeRequest(params, callback);
+            var request = AutoComplete.prototype.makeRequest(params, callback, callbackErr);
             AutoComplete.prototype.ajax(params, request);
         }
         else {
@@ -176,32 +179,14 @@ var AutoComplete = /** @class */ (function () {
                 merge[tmp] = arguments[i][tmp];
             }
         }
-    },
-    HttpHeaders: {
-        "Content-type": "application/x-www-form-urlencoded",
-        "X-Requested-With": "XMLHttpRequest"
-    },
-    Limit: 0,
-    MinChars: 0,
-    HttpMethod: "GET",
-    QueryArg: "q",
-    Url: null,
-    KeyboardMappings: {
-        "Enter": {
-            Conditions: [{
-                    Is: 13,
-                    Not: false
-                }],
-            Callback: function (event) {
-                if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
-                    var liActive = this.DOMResults.querySelector("li.active");
-                    if (liActive !== null) {
-                        event.preventDefault();
-
-                        this._Select(liActive);
-                        this.DOMResults.setAttribute("class", "autocomplete");
-                    }
-                }
+        return merge;
+    };
+    AutoComplete.defaults = {
+        Delay: 150,
+        EmptyMessage: "No result here",
+        Highlight: {
+            getRegex: function (value) {
+                return new RegExp(value, "ig");
             },
             transform: function (value) {
                 return "<strong>" + value + "</strong>";
@@ -223,9 +208,9 @@ var AutoComplete = /** @class */ (function () {
                     }],
                 Callback: function (event) {
                     if (this.DOMResults.getAttribute("class").indexOf("open") != -1) {
-                        event.preventDefault();
                         var liActive = this.DOMResults.querySelector("li.active");
                         if (liActive !== null) {
+                            event.preventDefault();
                             this._Select(liActive);
                             this.DOMResults.setAttribute("class", "autocomplete");
                         }
@@ -300,7 +285,7 @@ var AutoComplete = /** @class */ (function () {
                         AutoComplete.prototype.cache(this, function (response) {
                             this._Render(this._Post(response));
                             this._Open();
-                        }.bind(this));
+                        }.bind(this), this._Error);
                     }
                     else {
                         this._Close();
@@ -537,6 +522,11 @@ var AutoComplete = /** @class */ (function () {
                 this.Input.value = item.innerHTML;
             }
             this.Input.setAttribute("data-autocomplete-old-value", this.Input.value);
+        },
+        /**
+         * Handle HTTP error on the request
+         */
+        _Error: function () {
         },
         $AjaxTimer: null,
         $Cache: {},
