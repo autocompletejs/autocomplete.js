@@ -1,6 +1,6 @@
 {
   "name": "autocomplete-js",
-  "version": "2.6.4",
+  "version": "2.7.0",
   "author": "support@autocomplete-js.com",
   "license": "MIT",
   "description": "autocomplete.js is a fast and lightweight autocomplete library, without any dependencies.",
@@ -17,13 +17,13 @@
     "url": "https://github.com/autocompletejs/autocomplete.js/issues"
   },
   "devDependencies": {
-    "browserify": "^14.1.0",
+    "browserify": "16.2.*",
     "browserify-header": "^0.9.2",
     "clean-css-cli": "^4.0.8",
     "jshint": "^2.9.4",
-    "less": "^2.7.2",
+    "less": "3.0.*",
     "minifyify": "^7.3.5",
-    "tsify": "^3.0.1",
+    "tsify": "4.0.*",
     "typescript": "^2.2.1"
   },
   "scripts": {
