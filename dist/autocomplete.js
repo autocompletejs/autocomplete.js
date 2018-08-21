@@ -2,7 +2,7 @@
 /*
  * @license MIT
  *
- * Autocomplete.js v2.7.0
+ * Autocomplete.js v2.7.1
  * Developed by Baptiste Donaux
  * http://autocomplete-js.com
  *

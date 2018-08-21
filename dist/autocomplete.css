@@ -32,6 +32,7 @@ input[data-autocomplete] {
 .autocomplete > ul > li {
   cursor: pointer;
   padding: 5px 0 5px 10px;
+  white-space: nowrap;
 }
 .autocomplete > ul > li.active,
 .autocomplete > ul > li:active,
